@@ -12,5 +12,13 @@ namespace HumaneSociety
         {
             role = "adopter";
         }
+
+        public override void StartFlow()
+        {
+            //Main menu
+            string userInput = UI.GetMainMenuOptions(role);
+
+        }
+
     }
 }
