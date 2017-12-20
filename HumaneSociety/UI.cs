@@ -13,6 +13,7 @@ namespace HumaneSociety
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("WELCOME TO A.R. HUMANE SOCIETY");
             Console.ResetColor();
+            Console.WriteLine("Instructions to come...");
 
         }
 
@@ -45,9 +46,37 @@ namespace HumaneSociety
             Console.WriteLine();
         }
 
-        internal static void DisplayMainMenu(string role)
+
+        public static string DisplayMainMenu(string role)
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("{0} MAIN MENU\n", role.ToUpper());
+            Console.ResetColor();
+            List<string> menuOptions = new List<string>();
+            if ( role == "employee" )
+            {
+                menuOptions.Add("Add Animal to Database");
+                menuOptions.Add("Search Animals");
+                menuOptions.Add("List All Animals");
+                menuOptions.Add("Search Adopters");
+                menuOptions.Add("List All Adopters");
+            }
+            else
+            {
+                menuOptions.Add("Create/Edit Profile");
+                menuOptions.Add("Search Animals");
+                menuOptions.Add("List All Animals");
+            }
+            List<string> menuNumbers = new List<string>();
+            for ( int i=0; i<menuOptions.Count; i++ )
+            {
+                Console.WriteLine("{0}: {1}", i, menuOptions[i]);
+                menuNumbers.Add(i.ToString());
+            }
+            DisplayMenuHeader();
+            return GetValidUserOption("", menuNumbers);
+
         }
 
         public static string GetValidUserOption(string instruction, List<string> validOptions)
