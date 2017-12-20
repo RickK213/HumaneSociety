@@ -17,10 +17,9 @@ namespace HumaneSociety
 
         }
 
-        public static string GetAddAnimalOption()
+        public static string GetAddAnimalOption(bool allowAll)
         {
-            DisplayPageHeader("Add an animal");
-            List<string> menuOptions = GetAddAnimalMenu();
+            List<string> menuOptions = GetAddAnimalMenu(allowAll);
             DisplayMenu(menuOptions);
             List<string> menuNumbers = GetMenuNumbers(menuOptions);
             DisplayMenuHeader();
@@ -77,18 +76,22 @@ namespace HumaneSociety
             return menuOptions;
         }
 
-        static List<string> GetAddAnimalMenu()
+        static List<string> GetAddAnimalMenu(bool allowAll)
         {
             List<string> menuOptions = new List<string>();
-            menuOptions.Add("Add a Dog");
-            menuOptions.Add("Add a Cat");
-            menuOptions.Add("Add a Bird");
-            menuOptions.Add("Add a Rabbit");
-            menuOptions.Add("Add a Ferret");
+            menuOptions.Add("Dog");
+            menuOptions.Add("Cat");
+            menuOptions.Add("Bird");
+            menuOptions.Add("Rabbit");
+            menuOptions.Add("Ferret");
+            if (allowAll)
+            {
+                menuOptions.Add("All");
+            }
             return menuOptions;
         }
 
-        static void DisplayPageHeader(string header)
+        public static void DisplayPageHeader(string header)
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;

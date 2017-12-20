@@ -15,33 +15,22 @@ namespace HumaneSociety
             role = "employee";
         }
 
-        public void AddAnimal()
+        public void AddAnimalToDatabase()
         {
-            string userInput = UI.GetAddAnimalOption();
-            Animal animalToAdd;
-            switch (userInput)
-            {
-                case ("0"):
-                    //create a dog object
-                    break;
-                case ("1"):
-                    //create a cat object
-                    break;
-                case ("2"):
-                    //create a bird object
-                    break;
-                case ("3"):
-                    //create a rabbit object
-                    break;
-                case ("4"):
-                    //create a ferret object
-                    break;
-            }
+            SetAnimal(false, "Add an animal");    //override method if necessary
+            SetAnimalName();
+            SetAnimalRoomNumber();
+            SetAnimalImmunizationStatus();
+            SetAnimalFoodPerWeek();
+            SetAnimalPrice();
+            animal.IsAdopted = false;
+            
+            //1. determine species - done
+            //2. ask for name of animal, room number, if it is immunized, food per week and price adopter will pay
+            //3. isAdopted = false by default
+            //4. submit all necessary information to the database
         }
-        //1. determine species
-        //2. ask for name of animal, if it is immunized, food per week and price adopter will pay
-        //3. isAdopted = false by default
-        //4. submit all necessary information to the database
+
         public override void StartFlow()
         {
             //Main menu
@@ -50,7 +39,7 @@ namespace HumaneSociety
             switch (userInput)
             {
                 case ("0"):
-                    AddAnimal();
+                    AddAnimalToDatabase();
                     break;
                 case ("1"):
                     SearchAnimals();
@@ -81,17 +70,11 @@ namespace HumaneSociety
         public void SearchByAdoptionStatus()
         {
             //if userInput == 0 true, 1 false; = true/false
-            species.IsAdopted = false;
+            animal.IsAdopted = false;
         }
-
-        public override void SearchByAnimalName()
+        public void SetAnimalRoomNumber()
         {
-            base.SearchByAnimalName();
-        }
 
-        public override void SearchByAnimalSpecies()
-        {
-            base.SearchByAnimalSpecies();
         }
     }
 }

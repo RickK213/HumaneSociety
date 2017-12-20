@@ -21,7 +21,7 @@ namespace HumaneSociety
             string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string path = (System.IO.Path.GetDirectoryName(executable));
             AppDomain.CurrentDomain.SetData("DataDirectory", path);
-            //link
+            //link where database is
             string strconn = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\HighScores.mdf;Integrated Security=True";
             conn = new SqlConnection(strconn);
 

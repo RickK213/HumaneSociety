@@ -8,8 +8,8 @@ namespace HumaneSociety
 {
     public abstract class User
     {
-        AnimalFactory determineSpecies = new ConcreteAnimalFactory();
-        public Animal species = null;
+        public AnimalFactory animalFactory = new ConcreteAnimalFactory();
+        public Animal animal = null;
         string userInput;
         public string role;
         public User()
@@ -20,25 +20,45 @@ namespace HumaneSociety
         {
             //do stuff that adopter sees
         }
-        public virtual void SearchByAnimalName()
+        public void SetAnimalName()
         {
             //userInput get name of animal
-            species.Name = userInput;
+            animal.Name = userInput;
         }
-        public virtual void SearchByAnimalSpecies()
+        public virtual void SetAnimal(bool allowAll, string pageHeader)
         {
-            //userInput get species of animal, this should be determined first if possible
-            species = determineSpecies.IdentifyAnimal(userInput);
+            UI.DisplayPageHeader(pageHeader);
+            string userInput = UI.GetAddAnimalOption(allowAll);
+            switch (userInput)
+            {
+                case ("0"):
+                    animal = animalFactory.CreateAnimal("dog");
+                    break;
+                case ("1"):
+                    animal = animalFactory.CreateAnimal("cat");
+                    break;
+                case ("2"):
+                    animal = animalFactory.CreateAnimal("bird");
+                    break;
+                case ("3"):
+                    animal = animalFactory.CreateAnimal("rabbit");
+                    break;
+                case ("4"):
+                    animal = animalFactory.CreateAnimal("ferret");
+                    break;
+                case ("5"):
+                    break;
+            }
         }
-        public void SearchByImmunizationStatus()
+        public void SetAnimalImmunizationStatus()
         {
             //if userInput == 0 true, 1 false; = true/false
-            species.IsImmunized = true;
+            animal.IsImmunized = true;
         }
-        public void SearchByPrice()
+        public void SetAnimalPrice()
         {
             //verify userInput is a money number before converting
-            species.Price = Convert.ToDouble(userInput);
+            animal.Price = Convert.ToDouble(userInput);
         }
         public void ScanDatabase()
         {
@@ -61,6 +81,10 @@ namespace HumaneSociety
             {
 
             }
+        }
+        public void SetAnimalFoodPerWeek()
+        {
+
         }
 
         public void SearchAnimals()

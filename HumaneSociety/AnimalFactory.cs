@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace HumaneSociety
 {
-    abstract class AnimalFactory
+    public abstract class AnimalFactory
     {
-        public abstract Animal IdentifyAnimal(string userInput);
+        public abstract Animal CreateAnimal(string userInput);
     }
 }

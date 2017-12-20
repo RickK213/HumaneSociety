@@ -12,6 +12,7 @@ namespace HumaneSociety
         private string name;
         private bool isAdopted;
         private bool isImmunized;
+        private int roomNumber;
         private int ounceFoodPerWeek;
         private double price;
 
@@ -60,6 +61,17 @@ namespace HumaneSociety
             set
             {
                 isImmunized = value;
+            }
+        }
+        public int RoomNumber
+        {
+            get
+            {
+                return roomNumber;
+            }
+            set
+            {
+                roomNumber = value;
             }
         }
         public int OunceFoodPerWeek
