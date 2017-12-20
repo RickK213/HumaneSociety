@@ -6,9 +6,17 @@ using System.Threading.Tasks;
 
 namespace HumaneSociety
 {
-    public class User
+    public abstract class User
     {
         public User()
+        {
+
+        }
+        public virtual void SearchByAnimalName()
+        {
+
+        }
+        public virtual void SearchByAnimalType()
         {
 
         }

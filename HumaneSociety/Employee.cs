@@ -8,9 +8,20 @@ namespace HumaneSociety
 {
     public class Employee : User
     {
+        AnimalFactory factory = new ConcreteAnimalFactory();
+        Animal animal = null;
+        //Animal = factory() 
         public Employee()
         {
 
+        }
+        public override void SearchByAnimalName()
+        {
+            base.SearchByAnimalName();
+        }
+        public override void SearchByAnimalType()
+        {
+            base.SearchByAnimalType();
         }
     }
 }
