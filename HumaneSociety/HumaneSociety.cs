@@ -8,6 +8,9 @@ namespace HumaneSociety
 {
     public class HumaneSociety
     {
+        AnimalFactory determineSpecies = new ConcreteAnimalFactory();
+        Animal species = null;
+
         User user;
         string userInput;
         public HumaneSociety()
@@ -27,7 +30,7 @@ namespace HumaneSociety
             {
                 user = new Employee();
             }
-            UI.DisplayMainMenu(user.role);
+            user.StartFlow();
         }
 
         public void Start_Rick()
@@ -43,7 +46,7 @@ namespace HumaneSociety
             {
                 user = new Employee();
             }
-            userInput = UI.DisplayMainMenu(user.role);
+            userInput = UI.GetMainMenuOptions(user.role);
         }
     }
 }

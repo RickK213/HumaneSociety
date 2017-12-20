@@ -13,6 +13,14 @@ namespace HumaneSociety
         {
             role = "employee";
         }
+        public void AddAnimal()
+        {
+
+        }
+        public override void StartFlow()
+        {
+            base.StartFlow();
+        }
         public override void SearchByAnimalName()
         {
             base.SearchByAnimalName();

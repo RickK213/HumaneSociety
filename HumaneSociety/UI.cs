@@ -47,7 +47,7 @@ namespace HumaneSociety
         }
 
 
-        public static string DisplayMainMenu(string role)
+        public static string GetMainMenuOptions(string role)
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;

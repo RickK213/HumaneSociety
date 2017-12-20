@@ -13,6 +13,10 @@ namespace HumaneSociety
         {
 
         }
+        public virtual void StartFlow()
+        {
+            //do stuff that adopter sees
+        }
         public virtual void SearchByAnimalName()
         {
 
