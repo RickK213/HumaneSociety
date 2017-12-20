@@ -2,9 +2,7 @@ CREATE SCHEMA hs;
 
 CREATE TABLE hs.Species (
 	SpeciesID int IDENTITY(1,1) PRIMARY KEY,
-	SpeciesName varchar(50) NOT NULL,
-	SubSpeciesName varchar(50),
-	FoodPerWeek int	
+	SpeciesName varchar(50) NOT NULL	
 );
 
 CREATE TABLE hs.Animals (
@@ -15,7 +13,8 @@ CREATE TABLE hs.Animals (
 	RoomNumber int,
 	IsAdopted int,
 	HasShots int,
-	Price float
+	Price float,
+	FoodPerWeek int
 );
 
 CREATE TABLE hs.Cities (
@@ -53,4 +52,10 @@ CREATE TABLE hs.Adopters (
 	AddressID int,
 	FOREIGN KEY (AddressID) REFERENCES hs.Addresses(AddressID),
 	AccountBalance float
+);
+
+CREATE TABLE hs.Rooms (
+	RoomID int IDENTITY(1,1) PRIMARY KEY,
+	AnimalID int,
+	FOREIGN KEY (AnimalID) REFERENCES hs.Animals(AnimalID),
 );
