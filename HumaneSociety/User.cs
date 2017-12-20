@@ -39,5 +39,15 @@ namespace HumaneSociety
         {
 
         }
+
+        public void SearchAnimals()
+        {
+
+        }
+
+        public void ListAnimals()
+        {
+
+        }
     }
 }
