@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace HumaneSociety
 {
-    public class Ferret : Animal
+    class Ferret : Animal
     {
         public Ferret()
         {
-
+            Species = "ferret";
         }
     }
 }
