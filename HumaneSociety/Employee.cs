@@ -21,13 +21,17 @@ namespace HumaneSociety
         {
             base.StartFlow();
         }
+        public void SearchByAdoptionStatus()
+        {
+
+        }
         public override void SearchByAnimalName()
         {
             base.SearchByAnimalName();
         }
-        public override void SearchByAnimalType()
+        public override void SearchByAnimalSpecies()
         {
-            base.SearchByAnimalType();
+            base.SearchByAnimalSpecies();
         }
     }
 }

@@ -8,6 +8,8 @@ namespace HumaneSociety
 {
     public abstract class User
     {
+        AnimalFactory determineSpecies = new ConcreteAnimalFactory();
+        Animal species = null;
         public string role;
         public User()
         {
@@ -21,7 +23,19 @@ namespace HumaneSociety
         {
 
         }
-        public virtual void SearchByAnimalType()
+        public virtual void SearchByAnimalSpecies()
+        {
+
+        }
+        public void SearchByImmunizationStatus()
+        {
+
+        }
+        public void SearchByPrice()
+        {
+
+        }
+        public void SearchByKeyWord()
         {
 
         }

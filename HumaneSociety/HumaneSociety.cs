@@ -8,9 +8,6 @@ namespace HumaneSociety
 {
     public class HumaneSociety
     {
-        AnimalFactory determineSpecies = new ConcreteAnimalFactory();
-        Animal species = null;
-
         User user;
         string userInput;
         public HumaneSociety()
