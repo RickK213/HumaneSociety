@@ -26,6 +26,53 @@ namespace HumaneSociety
             return GetValidUserOption("", menuNumbers);
         }
 
+        public static string GetAnimalName(bool allowNone)
+        {
+            Console.Write("\nEnter an animal Name");
+            if (allowNone)
+            {
+                Console.WriteLine(" (or leave blank)");
+            }
+            Console.WriteLine(":");
+            return Console.ReadLine();
+        }
+
+        public static string GetAnimalRoomNumber(bool allowNone)
+        {
+            Console.Write("\nEnter a room number for the animal");
+            if (allowNone)
+            {
+                Console.WriteLine(" (or leave blank)");
+            }
+            Console.WriteLine(":");
+            string userInput = Console.ReadLine();
+            int roomNumber;
+            if (!int.TryParse(userInput, out roomNumber))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Please enter number!");
+                Console.ResetColor();
+                return GetAnimalRoomNumber(allowNone);
+            }
+            else
+            {
+                return roomNumber.ToString();
+            }
+        }
+
+        public static string GetImmunizationStatus(bool isSearchingAnimal)
+        {
+            if (!isSearchingAnimal)
+            {
+                Console.WriteLine("\nHas the animal been immunized?");
+            }
+            else
+            {
+                Console.WriteLine("\nLimit search to immunized animals?");
+            }
+            return GetValidUserOption("", new List<string> {"y", "n"});
+        }
+
         public static void DisplayMenuHeader()
         {
             Console.ForegroundColor = ConsoleColor.Green;

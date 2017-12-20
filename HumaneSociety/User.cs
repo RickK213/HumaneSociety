@@ -10,7 +10,7 @@ namespace HumaneSociety
     {
         public AnimalFactory animalFactory = new ConcreteAnimalFactory();
         public Animal animal = null;
-        string userInput;
+        public string userInput;
         public string role;
         public User()
         {
@@ -20,9 +20,9 @@ namespace HumaneSociety
         {
             //do stuff that adopter sees
         }
-        public void SetAnimalName()
+        public void SetAnimalName(bool allowNone)
         {
-            //userInput get name of animal
+            userInput = UI.GetAnimalName(allowNone);
             animal.Name = userInput;
         }
         public virtual void SetAnimal(bool allowAll, string pageHeader)
@@ -50,9 +50,10 @@ namespace HumaneSociety
                     break;
             }
         }
-        public void SetAnimalImmunizationStatus()
+        public void SetAnimalImmunizationStatus(bool allowNone)
         {
-            //if userInput == 0 true, 1 false; = true/false
+            userInput = UI.GetImmunizationStatus(allowNone);
+            animal.Name = userInput;
             animal.IsImmunized = true;
         }
         public void SetAnimalPrice()

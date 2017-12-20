@@ -18,11 +18,11 @@ namespace HumaneSociety
         public void AddAnimalToDatabase()
         {
             SetAnimal(false, "Add an animal");    //override method if necessary
-            SetAnimalName();
-            SetAnimalRoomNumber();
-            SetAnimalImmunizationStatus();
-            SetAnimalFoodPerWeek();
-            SetAnimalPrice();
+            SetAnimalName(false);
+            SetAnimalRoomNumber(false);
+            SetAnimalImmunizationStatus(false);
+            //SetAnimalFoodPerWeek(false);
+            //SetAnimalPrice(false);
             animal.IsAdopted = false;
             
             //1. determine species - done
@@ -72,9 +72,10 @@ namespace HumaneSociety
             //if userInput == 0 true, 1 false; = true/false
             animal.IsAdopted = false;
         }
-        public void SetAnimalRoomNumber()
+        public void SetAnimalRoomNumber(bool allowNone)
         {
-
+            userInput = UI.GetAnimalRoomNumber(allowNone);
+            animal.RoomNumber = Convert.ToInt32(userInput);
         }
     }
 }
