@@ -8,6 +8,7 @@ namespace HumaneSociety
 {
     public class HumaneSociety
     {
+        User user;
         string userInput;
         public HumaneSociety()
         {
@@ -20,12 +21,13 @@ namespace HumaneSociety
             userInput = UI.GetValidUserOption("1: Continue as an Adopter\n2: Continue as an Employee", new List<string>() { "1", "2" });
             if (userInput == "1")
             {
-                //create a new adopter
+                user = new Adopter();
             }
             else
             {
-                //create a new employee
+                user = new Employee();
             }
+            UI.DisplayMainMenu(user.role);
         }
     }
 }

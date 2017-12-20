@@ -10,7 +10,7 @@ namespace HumaneSociety
     {
         public Adopter()
         {
-
+            role = "adopter";
         }
     }
 }

@@ -8,6 +8,7 @@ namespace HumaneSociety
 {
     public abstract class User
     {
+        public string role;
         public User()
         {
 

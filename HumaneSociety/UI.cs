@@ -45,6 +45,11 @@ namespace HumaneSociety
             Console.WriteLine();
         }
 
+        internal static void DisplayMainMenu(string role)
+        {
+            throw new NotImplementedException();
+        }
+
         public static string GetValidUserOption(string instruction, List<string> validOptions)
         {
             Console.WriteLine(instruction);

@@ -10,10 +10,10 @@ namespace HumaneSociety
     {
         AnimalFactory factory = new ConcreteAnimalFactory();
         Animal animal = null;
-        //Animal = factory() 
+        //Animal = factory. 
         public Employee()
         {
-
+            role = "employee";
         }
         public override void SearchByAnimalName()
         {
