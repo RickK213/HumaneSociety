@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace HumaneSociety
 {
-    abstract class Animal
+    public abstract class Animal
     {
         private string species;
         private string name;
         private bool isAdopted;
         private bool isImmunized;
+        private int ounceFoodPerWeek;
         private double price;
 
         public string Species
@@ -59,6 +60,17 @@ namespace HumaneSociety
             set
             {
                 isImmunized = value;
+            }
+        }
+        public int OunceFoodPerWeek
+        {
+            get
+            {
+                return ounceFoodPerWeek;
+            }
+            set
+            {
+                ounceFoodPerWeek = value;
             }
         }
         public double Price
