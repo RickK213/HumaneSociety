@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HumaneSociety
 {
-    public class Adopter : Profile
+    public class Adopter : User
     {
         public Adopter()
         {

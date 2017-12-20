@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HumaneSociety
 {
-    public class Profile
+    public class User
     {
-        public Profile()
+        public User()
         {
 
         }

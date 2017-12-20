@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace HumaneSociety
 {
-    public class Employee : User
+    public class Rabbit : Animal
     {
-        public Employee()
+        public Rabbit()
         {
-
+            
         }
     }
 }
