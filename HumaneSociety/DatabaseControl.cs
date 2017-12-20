@@ -16,6 +16,8 @@ namespace HumaneSociety
         public SqlCommandBuilder scb;
         public SqlCommand cmd;
         DataTable dt;
+
+        string rickConnection = "Data Source=localhost;Initial Catalog=HumaneSociety;Integrated Security=True";
         public DatabaseControl()
         {
             string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
