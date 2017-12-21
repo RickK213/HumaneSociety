@@ -47,6 +47,10 @@ namespace HumaneSociety
                     animal = animalFactory.CreateAnimal("ferret");
                     break;
                 case ("6"):
+                    animal = null;
+                    break;
+                case ("m"):
+                    StartFlow();
                     break;
                 case ("q"):
                     Environment.Exit(-1);

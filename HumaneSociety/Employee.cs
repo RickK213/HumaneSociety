@@ -38,20 +38,23 @@ namespace HumaneSociety
             
             switch (userInput)
             {
-                case ("0"):
+                case ("1"):
                     AddAnimalToDatabase();
                     break;
-                case ("1"):
+                case ("2"):
                     SearchAnimals();
                     break;
-                case ("2"):
+                case ("3"):
                     ListAnimals();
                     break;
-                case ("3"):
+                case ("4"):
                     SearchAdopters();
                     break;
-                case ("4"):
+                case ("5"):
                     ListAdopters();
+                    break;
+                case ("q"):
+                    Environment.Exit(-1);
                     break;
             }
 

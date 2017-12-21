@@ -127,15 +127,16 @@ namespace HumaneSociety
         static string GetAddAnimalMenu(bool allowAll)
         {
             StringBuilder menuOptions = new StringBuilder();
-            menuOptions.Append("1: Dog");
-            menuOptions.Append("2: Cat");
-            menuOptions.Append("3: Bird");
-            menuOptions.Append("4: Rabbit");
-            menuOptions.Append("5: Ferret");
+            menuOptions.Append("1: Dog\n");
+            menuOptions.Append("2: Cat\n");
+            menuOptions.Append("3: Bird\n");
+            menuOptions.Append("4: Rabbit\n");
+            menuOptions.Append("5: Ferret\n");
             if (allowAll)
             {
-                menuOptions.Append("6: All");
+                menuOptions.Append("6: All\n");
             }
+            menuOptions.Append("m: Return to Main Menu\n");
             menuOptions.Append("q: Quit Application");
             return menuOptions.ToString();
         }
