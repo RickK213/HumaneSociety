@@ -38,7 +38,7 @@ CREATE TABLE hs.States (
 
 CREATE TABLE hs.Zip_Codes (
 	ZipCodeID int IDENTITY(1,1) PRIMARY KEY,
-	Number varchar(5) NOT NULL,
+	Number varchar(10) NOT NULL,
 	UNIQUE(Number)
 );
 

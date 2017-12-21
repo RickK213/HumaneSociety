@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace HumaneSociety
@@ -26,19 +28,53 @@ namespace HumaneSociety
             return GetValidUserOption("", menuNumbers);
         }
 
+        public static void GetAnyKeyToContinue(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(message);
+            Console.ResetColor();
+            Console.ReadKey();
+        }
+
+        static bool isStateAbbreviation(String state)
+        {
+            string states = "|AL|AK|AS|AZ|AR|CA|CO|CT|DE|DC|FM|FL|GA|GU|HI|ID|IL|IN|IA|KS|KY|LA|ME|MH|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|MP|OH|OK|OR|PW|PA|PR|RI|SC|SD|TN|TX|UT|VT|VI|VA|WA|WV|WI|WY|";
+            return state.Length == 2 && states.IndexOf(state) > 0;
+        }
+
         public static string GetState()
         {
-            Console.WriteLine("Enter your State:");
-            //TO DO: VALIDATE FOR 2 CHARACTERS
-            return Console.ReadLine();
+            Console.WriteLine("Enter your State (Abbreviated - i.e. 'WI'):");
+            string state = Console.ReadLine();
+            if ( !isStateAbbreviation(state) )
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You must enter a valid State abbreviation. Please read the instructions.");
+                Console.ResetColor();
+                return GetState();
+            }
+            return state;
+        }
 
+        static bool IsZipCode(string zipCode)
+        {
+            string pattern = @"^\d{5}(?:[-\s]\d{4})?$";
+            Regex regex = new Regex(pattern);
+            return regex.IsMatch(zipCode);
         }
 
         public static string GetZipCode()
         {
             Console.WriteLine("Enter your Zip Code:");
-            //TO DO: VALIDATE FOR 5 INTEGERS
-            return Console.ReadLine();
+            string zipCode = Console.ReadLine();
+            if ( !IsZipCode(zipCode) )
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You must enter a valid U.S. Zip Code.");
+                Console.ResetColor();
+                return GetZipCode();
+            }
+            return zipCode;
         }
 
         public static string GetCity()
@@ -53,11 +89,31 @@ namespace HumaneSociety
             return Console.ReadLine();
         }
 
+
+        static bool IsValidEmailAddress(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
         public static string GetAdopterEmail()
         {
             Console.WriteLine("Enter your Email Address:");
-            //TO DO: VALIDATE FOR VALID EMAIL ADDRESS
-            return Console.ReadLine();
+            string emailAddress = Console.ReadLine();
+            if (!IsValidEmailAddress(emailAddress))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You must enter a valid email address.");
+                Console.ResetColor();
+                return GetAdopterEmail();
+            }
+            return emailAddress;
         }
 
         public static string GetAdopterName()
@@ -205,7 +261,7 @@ namespace HumaneSociety
             }
             else
             {
-                menuOptions.Append("1: Create/Edit Profile\n");
+                menuOptions.Append("1: Create Profile\n");
                 menuOptions.Append("2: Search Animals\n");
                 menuOptions.Append("3: List All Animals\n");
             }
