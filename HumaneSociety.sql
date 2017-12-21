@@ -59,6 +59,8 @@ CREATE TABLE hs.Adopters (
 	AdopterEmail varchar(50) NOT NULL,
 	AddressID int,
 	FOREIGN KEY (AddressID) REFERENCES hs.Addresses(AddressID),
+	AnimalAdoptedID int,
+	FOREIGN KEY (AnimalAdoptedID) REFERENCES hs.Animals(AnimalID)
 	HasPaid bit
 );
 
