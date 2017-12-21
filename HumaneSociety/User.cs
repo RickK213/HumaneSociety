@@ -156,7 +156,30 @@ namespace HumaneSociety
 
         public void SearchAnimals()
         {
+            bool isSearchingByName = false;
+            bool isSearchingBySpecies = false;
+            bool isSearchingByImmunization = false;
+            bool isSearchingByPrice = false;
 
+            //user specified search variables
+            string nameToSearch = "bluto";
+            string speciesToSearch = "dog";
+            bool statusOfImmunization = true;
+            double priceAmountToSearch = 13.09;
+            //bool isSearchingByAdoptionStatus = false;
+            //bool isSearchingByPaymentStatus = false;
+            List<Animal> animals = database.SearchAnimals();
+            var immunizedAnimals = animals.Where(
+                m => 
+                (isSearchingByName ? m.Name == nameToSearch : m.Name != null) &&
+                (isSearchingBySpecies ? m.Species == speciesToSearch : m.Species != null) &&
+                (isSearchingByImmunization ? m.IsImmunized == statusOfImmunization : m.IsImmunized != null) &&
+                (isSearchingByPrice ? m.Price < priceAmountToSearch : m.Price > 0)
+                ).OrderBy(m => m.AnimalID);
+            foreach (Animal animal in immunizedAnimals)
+            {
+                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + (animal.IsImmunized ? " is immunized" : " is not immunized"));
+            }
         }
 
         public void ListAnimals()
@@ -171,7 +194,7 @@ namespace HumaneSociety
             Console.WriteLine("Enter animal ID to confirm they're immunized.");
             userInput = Console.ReadLine();
             bool willImmunize = false;
-            database.ChangeBoolStatus("HasShots", (willImmunize ? 1 : 0), Convert.ToInt32(userInput));
+            database.ChangeBoolStatus("Animals", "HasShots", (willImmunize ? 1 : 0), Convert.ToInt32(userInput));
 
             animals = database.SearchAnimals();
             immunizedAnimals = animals.Where(m => m.IsImmunized == false).OrderBy(m => m.AnimalID);
