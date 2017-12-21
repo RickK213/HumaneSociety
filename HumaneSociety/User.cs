@@ -72,9 +72,10 @@ namespace HumaneSociety
             }
         }
 
-        public void SetAnimalPrice()
+        public void SetAnimalPrice(bool allowNone)
         {
             //verify userInput is a money number before converting
+            userInput = UI.GetAnimalPrice(allowNone);
             animal.Price = Convert.ToDouble(userInput);
         }
         public void ScanDatabase()
@@ -101,7 +102,8 @@ namespace HumaneSociety
         }
         public void SetAnimalFoodPerWeek(bool allowNone)
         {
-
+            userInput = UI.GetFoodPerWeek(allowNone);
+            animal.OunceFoodPerWeek = Convert.ToInt32(userInput);
         }
 
         public void SearchAnimals()

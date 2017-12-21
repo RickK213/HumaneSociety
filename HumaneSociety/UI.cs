@@ -37,6 +37,55 @@ namespace HumaneSociety
             return Console.ReadLine();
         }
 
+        public static string GetFoodPerWeek(bool allowNone)
+        {
+            Console.Write("\nEnter the amount of food consumer per week in ounces. Must be an integer");
+            if (allowNone)
+            {
+                Console.WriteLine(" (or leave blank)");
+            }
+            Console.WriteLine(":");
+            string userInput = Console.ReadLine();
+            int foodPerWeek;
+            if (!int.TryParse(userInput, out foodPerWeek))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Please enter an integer!");
+                Console.ResetColor();
+                return GetFoodPerWeek(allowNone);
+            }
+            else
+            {
+                return foodPerWeek.ToString();
+            }
+        }
+
+        public static string GetAnimalPrice(bool isSearchingAnimal)
+        {
+            if ( !isSearchingAnimal)
+            {
+                Console.WriteLine("Enter the price of the animal in dollars (i.e. 45.50)");
+            }
+            else
+            {
+                Console.WriteLine("Enter the maximum price for your search (i.e. 45.50)");
+            }
+            string userInput = Console.ReadLine();
+            double animalPrice;
+            if (!double.TryParse(userInput, out animalPrice))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Please enter a dollar amount. Be sure leave off '$' and include the decimal point");
+                Console.ResetColor();
+                return GetAnimalPrice(isSearchingAnimal);
+            }
+            else
+            {
+                return animalPrice.ToString();
+            }
+
+        }
+
         public static string GetAnimalRoomNumber(bool allowNone)
         {
             Console.Write("\nEnter a room number for the animal");
@@ -50,7 +99,7 @@ namespace HumaneSociety
             if (!int.TryParse(userInput, out roomNumber))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Please enter number!");
+                Console.WriteLine("Please enter a number!");
                 Console.ResetColor();
                 return GetAnimalRoomNumber(allowNone);
             }
