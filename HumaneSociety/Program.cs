@@ -10,8 +10,8 @@ namespace HumaneSociety
     {
         static void Main(string[] args)
         {
-            HumaneSociety humaneSociety = new HumaneSociety();
-            humaneSociety.Start();
+            //HumaneSociety humaneSociety = new HumaneSociety();
+            //humaneSociety.Start();
 
             ////test animal, remove later
             //test animal, remove later
@@ -30,8 +30,8 @@ namespace HumaneSociety
             //database.SearchAnimals(animal);
 
             //CSV stuff:
-            //CSVReader csvReader = new CSVReader();
-            //csvReader.Start();
+            CSVReader csvReader = new CSVReader();
+            csvReader.Start();
 
             Console.ReadKey();
         }
