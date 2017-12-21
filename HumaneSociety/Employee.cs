@@ -22,12 +22,8 @@ namespace HumaneSociety
             SetAnimalRoomNumber(false);
             SetAnimalImmunizationStatus(false);
             SetAnimalFoodPerWeek(false);
-            //SetAnimalPrice(false);
+            SetAnimalPrice(false);
             animal.IsAdopted = false;
-            
-            //1. determine species - done
-            //2. ask for name of animal, room number, if it is immunized, food per week and price adopter will pay
-            //3. isAdopted = false by default
             //4. submit all necessary information to the database
         }
 
