@@ -26,6 +26,46 @@ namespace HumaneSociety
             return GetValidUserOption("", menuNumbers);
         }
 
+        public static string GetState()
+        {
+            Console.WriteLine("Enter your State:");
+            //TO DO: VALIDATE FOR 2 CHARACTERS
+            return Console.ReadLine();
+
+        }
+
+        public static string GetZipCode()
+        {
+            Console.WriteLine("Enter your Zip Code:");
+            //TO DO: VALIDATE FOR 5 INTEGERS
+            return Console.ReadLine();
+        }
+
+        public static string GetCity()
+        {
+            Console.WriteLine("Enter your City:");
+            return Console.ReadLine();
+        }
+
+        public static string GetStreetOne()
+        {
+            Console.WriteLine("Enter your Street Address:");
+            return Console.ReadLine();
+        }
+
+        public static string GetAdopterEmail()
+        {
+            Console.WriteLine("Enter your Email Address:");
+            //TO DO: VALIDATE FOR VALID EMAIL ADDRESS
+            return Console.ReadLine();
+        }
+
+        public static string GetAdopterName()
+        {
+            Console.WriteLine("Enter your Name:");
+            return Console.ReadLine();
+        }
+
         public static string GetAnimalName(bool allowNone)
         {
             Console.Write("\nEnter an animal Name");

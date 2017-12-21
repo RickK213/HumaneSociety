@@ -8,19 +8,67 @@ namespace HumaneSociety
 {
     public abstract class User
     {
+        //member variables
         public DatabaseControl database = new DatabaseControl();
         public AnimalFactory animalFactory = new ConcreteAnimalFactory();
         public Animal animal = null;
         public string userInput;
         public string role;
+        string name;
+        string email;
+        string streetAddress;
+        string city;
+        string state;
+        string zipCode;
+
+        //properties
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public string Email
+        {
+            get { return email; }
+            set { email = value; }
+        }
+
+        public string StreetAddress
+        {
+            get { return streetAddress; }
+            set { streetAddress = value; }
+        }
+
+        public string City
+        {
+            get { return city; }
+            set { city = value; }
+        }
+
+        public string State
+        {
+            get { return state; }
+            set { state = value; }
+        }
+
+        public string ZipCode
+        {
+            get { return zipCode; }
+            set { zipCode = value; }
+        }
+
+        //constructor
         public User()
         {
 
         }
+
         public virtual void StartFlow()
         {
             //do stuff that adopter sees
         }
+
         public void SetAnimalName(bool allowNone)
         {
             userInput = UI.GetAnimalName(allowNone);

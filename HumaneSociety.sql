@@ -29,13 +29,13 @@ CREATE TABLE hs.States (
 
 CREATE TABLE hs.Zip_Codes (
 	ZipCodeID int IDENTITY(1,1) PRIMARY KEY,
-	Number varchar(5) NOT NULL
+	Number varchar(5) NOT NULL,
+	UNIQUE(Number)
 );
 
 CREATE TABLE hs.Addresses (
 	AddressID int IDENTITY(1,1) PRIMARY KEY,
 	Street1 varchar(100) NOT NULL,
-	Street2 varchar(100),
 	CityID int,
 	FOREIGN KEY (AddressID) REFERENCES hs.Cities(CityID),
 	StateID int,
@@ -48,10 +48,9 @@ CREATE TABLE hs.Adopters (
 	AdopterID int IDENTITY(1,1) PRIMARY KEY,
 	AdopterName varchar(50) NOT NULL,
 	AdopterEmail varchar(50) NOT NULL,
-	AdopterPassword varchar(50) NOT NULL,
 	AddressID int,
 	FOREIGN KEY (AddressID) REFERENCES hs.Addresses(AddressID),
-	AccountBalance float
+	HasPaid bit
 );
 
 CREATE TABLE hs.Rooms (

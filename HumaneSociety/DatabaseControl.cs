@@ -93,5 +93,73 @@ namespace HumaneSociety
             transaction.Rollback();
             conn.Close();
         }
+
+        public void SaveAdopter(User adopter)
+        {
+            int zipCodeID = SaveZipCode(adopter.ZipCode);
+            //int stateID = SaveState(adopter.State);
+            //string sqlQuery = "INSERT INTO hs.Adopters VALUES(@Street1, @CityID, @StateID, @ZipCodeID;";
+            //using (SqlConnection openCon = new SqlConnection(connectionUsed))
+            //{
+            //    using (SqlCommand querySaveAddress = new SqlCommand(sqlQuery))
+            //    {
+            //        openCon.Open();
+            //        querySaveAddress.Connection = openCon;
+            //        querySaveAddress.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = animal.Name;
+            //        querySaveAddress.Parameters.Add("@SpeciesID", SqlDbType.Int).Value = animal.SpeciesID;
+            //        querySaveAddress.Parameters.Add("@RoomNumber", SqlDbType.Int).Value = animal.RoomNumber;
+            //        querySaveAddress.Parameters.Add("@IsAdopted", SqlDbType.Bit).Value = animal.IsAdopted;
+            //        querySaveAddress.ExecuteNonQuery();
+            //        openCon.Close();
+            //    }
+            //}
+        }
+
+        public int GetDuplicateID(string valueToCheckFor, string IDName, string tableName, string columnName)
+        {
+
+            SqlDataReader myDataReader = null;
+            SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
+            SqlCommand mySqlCommand = new SqlCommand("SELECT " + IDName + " FROM " + tableName + " WHERE " + columnName + " = '" + valueToCheckFor + "';", mySqlConnection);
+            mySqlConnection.Open();
+            myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+
+            List<int> tableIDs = new List<int>();
+            while (myDataReader.Read())
+            {
+                tableIDs.Add(myDataReader.GetInt32(0));
+            }
+            if (tableIDs.Count>0)
+            {
+                return tableIDs[0];
+            }
+            return 0;
+        }
+
+        public int SaveZipCode(string zipCode)
+        {
+            int duplicateZipCodeID = GetDuplicateID(zipCode, "ZipCodeID", "hs.Zip_Codes", "Number");
+            if (duplicateZipCodeID > 0)
+            {
+                return duplicateZipCodeID;
+            }
+            using (SqlConnection connection = new SqlConnection(connectionUsed))
+            {
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO hs.Zip_Codes output INSERTED.ZipCodeID VALUES(@Number)", connection))
+                {
+                    cmd.Parameters.AddWithValue("@Number", zipCode);
+                    connection.Open();
+
+                    int zipCodeID = (int)cmd.ExecuteScalar();
+
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    return zipCodeID;
+                }
+            }
+        }
+
     }
 }
