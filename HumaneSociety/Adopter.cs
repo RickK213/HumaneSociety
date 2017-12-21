@@ -27,6 +27,8 @@ namespace HumaneSociety
             State = UI.GetState();
             ZipCode = UI.GetZipCode();
             database.SaveAdopter(this);
+            UI.GetAnyKeyToContinue("Profile Saved. Press any key to return to main menu.");
+            StartFlow();
         }
 
         public override void StartFlow()

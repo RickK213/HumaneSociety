@@ -174,7 +174,6 @@ namespace HumaneSociety
             conn.Close();
         }
 
-
         int GetDuplicateStateID(string streetAddress, int cityID, int stateID, int zipCodeID)
         {
             SqlDataReader myDataReader = null;

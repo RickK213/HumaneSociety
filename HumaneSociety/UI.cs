@@ -26,6 +26,14 @@ namespace HumaneSociety
             return GetValidUserOption("", menuNumbers);
         }
 
+        public static void GetAnyKeyToContinue(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(message);
+            Console.ResetColor();
+            Console.ReadKey();
+        }
+
         public static string GetState()
         {
             Console.WriteLine("Enter your State:");
@@ -205,7 +213,7 @@ namespace HumaneSociety
             }
             else
             {
-                menuOptions.Append("1: Create/Edit Profile\n");
+                menuOptions.Append("1: Create Profile\n");
                 menuOptions.Append("2: Search Animals\n");
                 menuOptions.Append("3: List All Animals\n");
             }
