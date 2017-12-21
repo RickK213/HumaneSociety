@@ -16,7 +16,7 @@ namespace HumaneSociety
         public SqlCommandBuilder scb;
         public SqlCommand cmd;
         DataTable dt;
-        //add try catch to determine connection
+        
         string rickConnection = "Data Source=localhost;Initial Catalog=HumaneSociety;Integrated Security=True";
         string alexConnection = "Data Source=localhost;Initial Catalog = HumaneSociety; Integrated Security = True";
         string connectionUsed;
@@ -25,6 +25,7 @@ namespace HumaneSociety
             string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string path = (System.IO.Path.GetDirectoryName(executable));
             AppDomain.CurrentDomain.SetData("DataDirectory", path);
+            
             //link where database is
             try
             {

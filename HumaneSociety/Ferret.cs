@@ -11,6 +11,7 @@ namespace HumaneSociety
         public Ferret()
         {
             Species = "ferret";
+            SpeciesID = 5;
         }
     }
 }

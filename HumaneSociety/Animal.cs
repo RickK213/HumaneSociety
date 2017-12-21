@@ -9,6 +9,7 @@ namespace HumaneSociety
     public abstract class Animal
     {
         private string species;
+        private int speciesID = 0;
         private string name;
         private bool isAdopted;
         private bool isImmunized;
@@ -27,6 +28,20 @@ namespace HumaneSociety
                 if (species == null)
                 {
                     species = value;
+                }
+            }
+        }
+        public int SpeciesID
+        {
+            get
+            {
+                return speciesID;
+            }
+            set
+            {
+                if(speciesID == 0)
+                {
+                    speciesID = value;
                 }
             }
         }

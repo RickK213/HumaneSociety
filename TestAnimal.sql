@@ -1,0 +1,1 @@
+﻿INSERT INTO hs.Animals VALUES ('Jeffery', 1, 15, 0, 1, 20.01, 15);

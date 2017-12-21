@@ -11,8 +11,8 @@ CREATE TABLE hs.Animals (
 	SpeciesID int,
 	FOREIGN KEY (SpeciesID) REFERENCES hs.Species(SpeciesID),
 	RoomNumber int,
-	IsAdopted int,
-	HasShots int,
+	IsAdopted bit,
+	HasShots bit,
 	Price float,
 	FoodPerWeek int
 );
@@ -59,3 +59,13 @@ CREATE TABLE hs.Rooms (
 	AnimalID int,
 	FOREIGN KEY (AnimalID) REFERENCES hs.Animals(AnimalID),
 );
+
+INSERT INTO hs.Species VALUES ('cat');
+
+INSERT INTO hs.Species VALUES ('dog');
+
+INSERT INTO hs.Species VALUES ('bird');
+
+INSERT INTO hs.Species VALUES ('rabbit');
+
+INSERT INTO hs.Species VALUES ('ferret');

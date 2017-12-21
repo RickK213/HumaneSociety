@@ -11,6 +11,7 @@ namespace HumaneSociety
         public Rabbit()
         {
             Species = "rabbit";
+            SpeciesID = 4;
         }
     }
 }
