@@ -160,9 +160,13 @@ namespace HumaneSociety
         //}
         public void AddAnimal(Animal animal)   //put arguments here to add full adoptable animal to database
         {
+
+            int roomID = GetIDSaveValue(animal.RoomNumber, "RoomID", "hs.Rooms", "RoomNumber");
+
             string sqlQuery = "INSERT INTO hs.Animals VALUES(@Name, @SpeciesID, @RoomNumber, @IsAdopted, @HasShots, @Price, @FoodPerWeek);"; //put name of table here (dbo.HighScores) and change @'s to appropriate terms
             using (SqlConnection openCon = new SqlConnection(connectionUsed))
             {
+
                 using (SqlCommand querySaveStaff = new SqlCommand(sqlQuery))
                 {
                     //name, species, room#, isAdopted, isImmunized, price, foodPerWeek
@@ -173,18 +177,24 @@ namespace HumaneSociety
                         querySaveStaff.Connection = openCon;
                         querySaveStaff.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = animal.Name;
                         querySaveStaff.Parameters.Add("@SpeciesID", SqlDbType.Int).Value = animal.SpeciesID;
-                        querySaveStaff.Parameters.Add("@RoomNumber", SqlDbType.Int).Value = animal.RoomNumber;
+                        querySaveStaff.Parameters.Add("@RoomNumber", SqlDbType.Int).Value = roomID;
                         querySaveStaff.Parameters.Add("@IsAdopted", SqlDbType.Bit).Value = animal.IsAdopted;
                         querySaveStaff.Parameters.Add("@HasShots", SqlDbType.Bit).Value = animal.IsImmunized;
                         querySaveStaff.Parameters.Add("@Price", SqlDbType.Float).Value = animal.Price;
                         querySaveStaff.Parameters.Add("@FoodPerWeek", SqlDbType.Int).Value = animal.OunceFoodPerWeek;
 
                         querySaveStaff.ExecuteNonQuery();
-                        openCon.Close();
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        //enter UI method that says not all information successfully passed through, try again
+                        Console.WriteLine("An error occurred: '{0}'", e);
+                    }
+                    finally
+                    {
+                        if (openCon.State == System.Data.ConnectionState.Open)
+                        {
+                            openCon.Close();
+                        }
                     }
 
                 }
@@ -292,7 +302,7 @@ namespace HumaneSociety
             SaveProfileData(user.Name, user.Email, addressID, false);
         }
 
-        public int GetDuplicateID(string valueToCheckFor, string IDName, string tableName, string columnName)
+        public int GetDuplicateID<T>(T valueToCheckFor, string IDName, string tableName, string columnName)
         {
             SqlDataReader myDataReader = null;
             SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
@@ -312,7 +322,7 @@ namespace HumaneSociety
             return 0;
         }
 
-        int GetIDSaveValue(string columnValue, string primaryKey, string tableName, string columnName)
+        int GetIDSaveValue<T>(T columnValue, string primaryKey, string tableName, string columnName)
         {
             int duplicateID = GetDuplicateID(columnValue, primaryKey, tableName, columnName);
             if (duplicateID > 0)

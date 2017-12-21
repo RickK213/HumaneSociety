@@ -12,6 +12,7 @@ namespace HumaneSociety
         {
             HumaneSociety humaneSociety = new HumaneSociety();
             humaneSociety.Start();
+
             ////test animal, remove later
             //test animal, remove later
             //Animal animal = new Dog();
@@ -27,6 +28,11 @@ namespace HumaneSociety
             //-/remove
             //DatabaseControl database = new DatabaseControl();
             //database.SearchAnimals(animal);
+
+            //CSV stuff:
+            //CSVReader csvReader = new CSVReader();
+            //csvReader.Start();
+
             Console.ReadKey();
         }
     }

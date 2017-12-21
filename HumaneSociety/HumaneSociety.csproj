@@ -49,6 +49,7 @@
     <Compile Include="Bird.cs" />
     <Compile Include="Cat.cs" />
     <Compile Include="ConcreteAnimalFactory.cs" />
+    <Compile Include="CSVReader.cs" />
     <Compile Include="DatabaseControl.cs" />
     <Compile Include="Dog.cs" />
     <Compile Include="Employee.cs" />
