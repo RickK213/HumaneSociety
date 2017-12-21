@@ -167,7 +167,9 @@ namespace HumaneSociety
 
         public void SaveAdopter(User adopter)
         {
-            int zipCodeID = SaveZipCode(adopter.ZipCode);
+            int zipCodeID = SaveOneUniqueValueInTable(adopter.ZipCode, "ZipCodeID", "hs.Zip_Codes", "Number");
+            int stateID = SaveOneUniqueValueInTable(adopter.State, "StateID", "hs.States", "StateName");
+            int cityID = SaveOneUniqueValueInTable(adopter.City, "CityID", "hs.Cities", "CityName");
             //int stateID = SaveState(adopter.State);
             //string sqlQuery = "INSERT INTO hs.Adopters VALUES(@Street1, @CityID, @StateID, @ZipCodeID;";
             //using (SqlConnection openCon = new SqlConnection(connectionUsed))
@@ -207,27 +209,27 @@ namespace HumaneSociety
             return 0;
         }
 
-        public int SaveZipCode(string zipCode)
+        public int SaveOneUniqueValueInTable(string columnValue, string primaryKey, string tableName, string columnName)
         {
-            int duplicateZipCodeID = GetDuplicateID(zipCode, "ZipCodeID", "hs.Zip_Codes", "Number");
-            if (duplicateZipCodeID > 0)
+            int duplicateID = GetDuplicateID(columnValue, primaryKey, tableName, columnName);
+            if (duplicateID > 0)
             {
-                return duplicateZipCodeID;
+                return duplicateID;
             }
             using (SqlConnection connection = new SqlConnection(connectionUsed))
             {
-                using (SqlCommand cmd = new SqlCommand("INSERT INTO hs.Zip_Codes output INSERTED.ZipCodeID VALUES(@Number)", connection))
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO " + tableName + " output INSERTED." + primaryKey + " VALUES(@" + columnName + ")", connection))
                 {
-                    cmd.Parameters.AddWithValue("@Number", zipCode);
+                    cmd.Parameters.AddWithValue("@" + columnName  + "", columnValue);
                     connection.Open();
 
-                    int zipCodeID = (int)cmd.ExecuteScalar();
+                    int insertedID = (int)cmd.ExecuteScalar();
 
                     if (connection.State == System.Data.ConnectionState.Open)
                     {
                         connection.Close();
                     }
-                    return zipCodeID;
+                    return insertedID;
                 }
             }
         }
