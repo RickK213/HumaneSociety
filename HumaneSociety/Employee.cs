@@ -24,6 +24,7 @@ namespace HumaneSociety
             SetAnimalFoodPerWeek(false);
             SetAnimalPrice(false);
             animal.IsAdopted = false;
+            database.AddAnimal(animal);
             //4. submit all necessary information to the database
         }
 

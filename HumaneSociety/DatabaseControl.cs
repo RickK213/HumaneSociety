@@ -59,16 +59,16 @@ namespace HumaneSociety
         }
         public void AddAnimal(Animal animal)   //put arguments here to add full adoptable animal to database
         {
-            string highScore = "INSERT INTO Animals VALUES(@Name, @SpeciesID, @RoomNumber, @IsAdopted, @HasShots, @Price, @FoodPerWeek);"; //put name of table here (dbo.HighScores) and change @'s to appropriate terms
+            string sqlQuery = "INSERT INTO hs.Animals VALUES(@Name, @SpeciesID, @RoomNumber, @IsAdopted, @HasShots, @Price, @FoodPerWeek);"; //put name of table here (dbo.HighScores) and change @'s to appropriate terms
             using (SqlConnection openCon = new SqlConnection(connectionUsed))
             {
-                using (SqlCommand querySaveStaff = new SqlCommand(highScore))
+                using (SqlCommand querySaveStaff = new SqlCommand(sqlQuery))
                 {
                     //name, species, room#, isAdopted, isImmunized, price, foodPerWeek
                     openCon.Open();
                     querySaveStaff.Connection = openCon;
                     querySaveStaff.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = animal.Name;
-                    querySaveStaff.Parameters.Add("@SpeciesID", SqlDbType.VarChar).Value = animal.Species;
+                    querySaveStaff.Parameters.Add("@SpeciesID", SqlDbType.Int).Value = animal.SpeciesID;
                     querySaveStaff.Parameters.Add("@RoomNumber", SqlDbType.Int).Value = animal.RoomNumber;
                     querySaveStaff.Parameters.Add("@IsAdopted", SqlDbType.Bit).Value = animal.IsAdopted;
                     querySaveStaff.Parameters.Add("@HasShots", SqlDbType.Bit).Value = animal.IsImmunized;
