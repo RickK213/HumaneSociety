@@ -32,22 +32,25 @@ namespace HumaneSociety
             string userInput = UI.GetAddAnimalOption(allowAll);
             switch (userInput)
             {
-                case ("0"):
+                case ("1"):
                     animal = animalFactory.CreateAnimal("dog");
                     break;
-                case ("1"):
+                case ("2"):
                     animal = animalFactory.CreateAnimal("cat");
                     break;
-                case ("2"):
+                case ("3"):
                     animal = animalFactory.CreateAnimal("bird");
                     break;
-                case ("3"):
+                case ("4"):
                     animal = animalFactory.CreateAnimal("rabbit");
                     break;
-                case ("4"):
+                case ("5"):
                     animal = animalFactory.CreateAnimal("ferret");
                     break;
-                case ("5"):
+                case ("6"):
+                    break;
+                case ("q"):
+                    Environment.Exit(-1);
                     break;
             }
         }

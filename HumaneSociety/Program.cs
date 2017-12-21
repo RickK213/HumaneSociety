@@ -12,7 +12,6 @@ namespace HumaneSociety
         {
             HumaneSociety humaneSociety = new HumaneSociety();
             humaneSociety.Start();
-            Console.ReadKey();
         }
     }
 }
