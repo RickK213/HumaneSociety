@@ -72,6 +72,41 @@ namespace HumaneSociety
             //if userInput == 0 true, 1 false; = true/false
             animal.IsAdopted = false;
         }
+        public override void SearchAnimals()
+        {
+            //turn true if user enters a search option
+            bool isSearchingByName = false;
+            bool isSearchingBySpecies = false;
+            bool isSearchingByImmunization = true;
+            bool isSearchingByPrice = false;
+            bool isSearchingByAdoptionStatus = true;
+            //add method to check Adopter's HasPaid status
+            bool isSearchingByPaymentStatus = false;
+            //
+
+            //user specified search variables
+            string nameToSearch = "Oreo";
+            string speciesToSearch = "dog";
+            bool statusOfImmunization = true;
+            double priceAmountToSearch = 113.09;
+            bool animalIsAdopted = false;
+            //add method to check Adopter's HasPaid status
+            bool adopterHasPayed = false;
+            //
+            List<Animal> animals = database.SearchAnimals();
+            var searchedAnimals = animals.Where(
+                m =>
+                (isSearchingByName ? m.Name == nameToSearch : m.Name != null) &&
+                (isSearchingBySpecies ? m.Species == speciesToSearch : m.Species != null) &&
+                (isSearchingByImmunization ? m.IsImmunized == statusOfImmunization : m.IsImmunized != null) &&
+                (isSearchingByPrice ? m.Price < priceAmountToSearch : m.Price > 0) &&
+                (isSearchingByAdoptionStatus ? m.IsAdopted == animalIsAdopted : m.IsAdopted != null)
+                ).OrderBy(m => m.AnimalID);
+            foreach (Animal animal in searchedAnimals)
+            {
+                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + " was found using the search criteria entered.");
+            }
+        }
         public void SetAnimalRoomNumber(bool allowNone)
         {
             userInput = UI.GetAnimalRoomNumber(allowNone);

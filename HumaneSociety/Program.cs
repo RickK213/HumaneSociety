@@ -23,8 +23,8 @@ namespace HumaneSociety
             //animal.Price = 25.06;
             //animal.RoomNumber = 3;
             ////-/remove
-            //User adopter = new Adopter();
-            //adopter.ListAnimals();
+            User employee = new Employee();
+            employee.SearchAnimals();
             //-/remove
             //DatabaseControl database = new DatabaseControl();
             //database.SearchAnimals(animal);
