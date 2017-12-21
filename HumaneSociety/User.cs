@@ -8,6 +8,7 @@ namespace HumaneSociety
 {
     public abstract class User
     {
+        public DatabaseControl database = new DatabaseControl();
         public AnimalFactory animalFactory = new ConcreteAnimalFactory();
         public Animal animal = null;
         public string userInput;
