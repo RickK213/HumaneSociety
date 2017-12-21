@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HumaneSociety
 {
-    class DatabaseControl
+    public class DatabaseControl
     {
         public SqlConnection conn;
         public SqlTransaction transaction;
@@ -16,19 +16,33 @@ namespace HumaneSociety
         public SqlCommandBuilder scb;
         public SqlCommand cmd;
         DataTable dt;
+        //add try catch to determine connection
         string rickConnection = "Data Source=localhost;Initial Catalog=HumaneSociety;Integrated Security=True";
         string alexConnection = "Data Source=localhost;Initial Catalog = HumaneSociety; Integrated Security = True";
+        string connectionUsed;
         public DatabaseControl()
         {
             string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string path = (System.IO.Path.GetDirectoryName(executable));
             AppDomain.CurrentDomain.SetData("DataDirectory", path);
             //link where database is
-            string strconn = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\HighScores.mdf;Integrated Security=True";
-            conn = new SqlConnection(strconn);
+            try
+            {
+                conn = new SqlConnection(rickConnection);
+                conn.Open();
+                conn.Close();
+                connectionUsed = rickConnection;
+            }
+            catch
+            {
+                conn = new SqlConnection(alexConnection);
+                conn.Open();
+                conn.Close();
+                connectionUsed = alexConnection;
+            }
 
         }
-        public void ObtainHighScores()
+        public void SearchAnimals()
         {
             conn.Close();
             conn.Open();
@@ -42,18 +56,23 @@ namespace HumaneSociety
             Console.WriteLine("4. " + dt.Rows[3][1].ToString() + " played " + dt.Rows[3][2].ToString() + " days with a score of: " + dt.Rows[3][3].ToString());
             Console.WriteLine("5. " + dt.Rows[4][1].ToString() + " played " + dt.Rows[4][2].ToString() + " days with a score of: " + dt.Rows[4][3].ToString());
         }
-        public void AddAnimal()   //put arguments here to add full adoptable animal to database
+        public void AddAnimal(Animal animal)   //put arguments here to add full adoptable animal to database
         {
-            string highScore = "INSERT INTO // VALUES(@Name, @Days, @Score);"; //put name of table here (dbo.HighScores) and change @'s to appropriate terms
-            using (SqlConnection openCon = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Andross\\Desktop\\school_projects\\C#\\LemonadeStand\\LemonadeStand\\HighScores.mdf;Integrated Security=True"))
+            string highScore = "INSERT INTO Animals VALUES(@Name, @SpeciesID, @RoomNumber, @IsAdopted, @HasShots, @Price, @FoodPerWeek);"; //put name of table here (dbo.HighScores) and change @'s to appropriate terms
+            using (SqlConnection openCon = new SqlConnection(connectionUsed))
             {
                 using (SqlCommand querySaveStaff = new SqlCommand(highScore))
                 {
+                    //name, species, room#, isAdopted, isImmunized, price, foodPerWeek
                     openCon.Open();
                     querySaveStaff.Connection = openCon;
-                    //querySaveStaff.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = player.Name;
-                    //querySaveStaff.Parameters.Add("@Days", SqlDbType.Int).Value = gameDays;
-                    //querySaveStaff.Parameters.Add("@Score", SqlDbType.Float).Value = userInventory.OverallProfit;
+                    querySaveStaff.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = animal.Name;
+                    querySaveStaff.Parameters.Add("@SpeciesID", SqlDbType.VarChar).Value = animal.Species;
+                    querySaveStaff.Parameters.Add("@RoomNumber", SqlDbType.Int).Value = animal.RoomNumber;
+                    querySaveStaff.Parameters.Add("@IsAdopted", SqlDbType.Bit).Value = animal.IsAdopted;
+                    querySaveStaff.Parameters.Add("@HasShots", SqlDbType.Bit).Value = animal.IsImmunized;
+                    querySaveStaff.Parameters.Add("@Price", SqlDbType.Float).Value = animal.Price;
+                    querySaveStaff.Parameters.Add("@FoodPerWeek", SqlDbType.Int).Value = animal.OunceFoodPerWeek;
 
                     querySaveStaff.ExecuteNonQuery();
 
