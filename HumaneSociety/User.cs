@@ -161,7 +161,25 @@ namespace HumaneSociety
 
         public void ListAnimals()
         {
+            List<Animal> animals = database.SearchAnimals();
+            var immunizedAnimals = animals.Where(m => m.IsImmunized == true).OrderBy(m => m.AnimalID);
+            foreach (Animal animal in immunizedAnimals)
+            {
+                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + (animal.IsImmunized ? " is immunized" : " is not immunized"));
+            }
+            //ask if employee would like to immunize
+            Console.WriteLine("Enter animal ID to confirm they're immunized.");
+            userInput = Console.ReadLine();
+            bool willImmunize = false;
+            database.ChangeBoolStatus("HasShots", (willImmunize ? 1 : 0), Convert.ToInt32(userInput));
 
+            animals = database.SearchAnimals();
+            immunizedAnimals = animals.Where(m => m.IsImmunized == false).OrderBy(m => m.AnimalID);
+            foreach (Animal animal in immunizedAnimals)
+            {
+                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + (animal.IsImmunized ? " is immunized" : " is not immunized"));
+            }
+            //test to see if animals are returned
         }
     }
 }

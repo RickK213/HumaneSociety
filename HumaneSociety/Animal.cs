@@ -8,6 +8,7 @@ namespace HumaneSociety
 {
     public abstract class Animal
     {
+        private int animalID = 0;
         private string species;
         private int speciesID = 0;
         private string name;
@@ -17,6 +18,20 @@ namespace HumaneSociety
         private int ounceFoodPerWeek;
         private double price;
 
+        public int AnimalID
+        {
+            get
+            {
+                return animalID;
+            }
+            set
+            {
+                if(animalID == 0)
+                {
+                    animalID = value;
+                }
+            }
+        }
         public string Species
         {
             get

@@ -12,17 +12,17 @@ namespace HumaneSociety
         {
             //HumaneSociety humaneSociety = new HumaneSociety();
             //humaneSociety.Start();
-            //test animal, remove later
-            Animal animal = new Dog();
-            animal.Name = "Fido";
-            animal.IsAdopted = false;
-            animal.IsImmunized = true;
-            animal.OunceFoodPerWeek = 27;
-            animal.Price = 25.06;
-            animal.RoomNumber = 3;
-            //-/remove
-            DatabaseControl database = new DatabaseControl();
-            database.SearchAnimals(animal);
+            ////test animal, remove later
+            //Animal animal = new Dog();
+            //animal.Name = "Fido";
+            //animal.IsAdopted = false;
+            //animal.IsImmunized = true;
+            //animal.OunceFoodPerWeek = 27;
+            //animal.Price = 25.06;
+            //animal.RoomNumber = 3;
+            ////-/remove
+            User adopter = new Adopter();
+            adopter.ListAnimals();
             Console.ReadKey();
         }
     }

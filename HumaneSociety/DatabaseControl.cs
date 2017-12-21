@@ -46,7 +46,7 @@ namespace HumaneSociety
             }
 
         }
-        public void SearchAnimals(Animal animal)
+        public List<Animal> SearchAnimals()
         {
             try
             {
@@ -67,6 +67,7 @@ namespace HumaneSociety
                 while (myDataReader.Read())
                 {
                     Animal storeAnimal = animalFactory.CreateAnimal(GetSpecies(myDataReader.GetInt32(2)));
+                    storeAnimal.AnimalID = myDataReader.GetInt32(0);
                     storeAnimal.Name = myDataReader.GetString(1);
                     storeAnimal.RoomNumber = myDataReader.GetInt32(3);
                     storeAnimal.IsAdopted = myDataReader.GetBoolean(4);
@@ -77,6 +78,8 @@ namespace HumaneSociety
                 }
                 myDataReader.Close();
                 conn.Close();
+
+                return animalsSearched;
                 //Console.WriteLine("   | Name | Species | Room | Adoption Status | Immunization Status | Price | Food Per Week");
                 //for(int i = 0; i < animalNames.Count; i++)
                 //{
@@ -87,11 +90,38 @@ namespace HumaneSociety
             {
 
             }
+            return null;
         }
         private string GetSpecies(int speciesKey)
         {
-            mySqlCommand = new SqlCommand("SELECT * FROM hs.Animals ORDER BY SpeciesID DESC", conn);
-            return "";
+            //mySqlCommand = new SqlCommand("SELECT SpeciesName FROM hs.Species WHERE SpeciesID = " + speciesKey, conn);
+            conn.Close();
+            conn.Open();
+            databaseCommand = new SqlDataAdapter("SELECT SpeciesName FROM hs.Species WHERE SpeciesID = " + speciesKey, conn);
+            //transaction = conn.BeginTransaction("SELECT * FROM HighScore");
+            fillerTable = new DataTable();
+            databaseCommand.Fill(fillerTable);
+            conn.Close();
+
+            return fillerTable.Rows[0][0].ToString();
+        }
+        public void ChangeBoolStatus(string statusToChange, int changeStatus, int animalID)
+        {
+            string queryToLaunch = "UPDATE hs.Animals SET " + statusToChange + " = " + changeStatus + " WHERE AnimalID = " + animalID + ";";
+            using (SqlConnection openCon = new SqlConnection(connectionUsed))
+            {
+                using (SqlCommand querySaveStaff = new SqlCommand(queryToLaunch))
+                {
+                    openCon.Open();
+                    querySaveStaff.Connection = openCon;
+                    //querySaveStaff.Parameters.Add("@statusToChange", SqlDbType.VarChar, 50).Value = statusToChange;
+                    //querySaveStaff.Parameters.Add("@changestatus", SqlDbType.Bit).Value = changeStatus;
+                    //querySaveStaff.Parameters.Add("@animalID", SqlDbType.Int).Value = animalID;
+
+                    querySaveStaff.ExecuteNonQuery();
+                    openCon.Close();
+                }
+            }
         }
         public void ScanList<T>(List<T> scannedList)
         {
