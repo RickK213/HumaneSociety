@@ -17,6 +17,8 @@ namespace HumaneSociety
         public SqlCommandBuilder scb;
         public SqlCommand mySqlCommand;
         DataTable fillerTable;
+
+        AnimalFactory animalFactory = new ConcreteAnimalFactory();
         
         string rickConnection = "Data Source=localhost;Initial Catalog=HumaneSociety;Integrated Security=True";
         string alexConnection = "Data Source=localhost;Initial Catalog = HumaneSociety; Integrated Security = True";
@@ -54,35 +56,42 @@ namespace HumaneSociety
                 myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
 
                 //column order: name, species, room#, isAdopted, isImmunized, price, foodPerWeek
-                List<string> animalNames = new List<string>();
-                List<int> animalSpecies = new List<int>();
-                List<int> animalRoom = new List<int>();
-                List<bool> animalIsAdopted = new List<bool>();
-                List<bool> animalIsImmunized = new List<bool>();
-                List<double> animalPrice = new List<double>();
-                List<int> animalFood = new List<int>();
+                //List<string> animalNames = new List<string>();
+                //List<int> animalSpecies = new List<int>();
+                //List<int> animalRoom = new List<int>();
+                //List<bool> animalIsAdopted = new List<bool>();
+                //List<bool> animalIsImmunized = new List<bool>();
+                //List<double> animalPrice = new List<double>();
+                //List<int> animalFood = new List<int>();
+                List<Animal> animalsSearched = new List<Animal>();
                 while (myDataReader.Read())
                 {
-                    animalNames.Add(myDataReader.GetString(1));
-                    animalSpecies.Add(myDataReader.GetInt32(2));
-                    animalRoom.Add(myDataReader.GetInt32(3));
-                    animalIsAdopted.Add(myDataReader.GetBoolean(4));
-                    animalIsImmunized.Add(myDataReader.GetBoolean(5));
-                    animalPrice.Add(myDataReader.GetDouble(6));
-                    animalFood.Add(myDataReader.GetInt32(7));
+                    Animal storeAnimal = animalFactory.CreateAnimal(GetSpecies(myDataReader.GetInt32(2)));
+                    storeAnimal.Name = myDataReader.GetString(1);
+                    storeAnimal.RoomNumber = myDataReader.GetInt32(3);
+                    storeAnimal.IsAdopted = myDataReader.GetBoolean(4);
+                    storeAnimal.IsImmunized = myDataReader.GetBoolean(5);
+                    storeAnimal.Price = myDataReader.GetDouble(6);
+                    storeAnimal.OunceFoodPerWeek = myDataReader.GetInt32(7);
+                    animalsSearched.Add(storeAnimal);
                 }
                 myDataReader.Close();
                 conn.Close();
-                Console.WriteLine("   | Name | Species | Room | Adoption Status | Immunization Status | Price | Food Per Week");
-                for(int i = 0; i < animalNames.Count; i++)
-                {
-                    Console.WriteLine(i + 1 + ". {0}|{1}|{2}|{3}|{4}|{5}|{6}", animalNames[i], animalSpecies[i], animalRoom[i], animalIsAdopted[i], animalIsImmunized[i], animalPrice[i], animalFood[i]);
-                }
+                //Console.WriteLine("   | Name | Species | Room | Adoption Status | Immunization Status | Price | Food Per Week");
+                //for(int i = 0; i < animalNames.Count; i++)
+                //{
+                //    Console.WriteLine(i + 1 + ". {0}|{1}|{2}|{3}|{4}|{5}|{6}", animalNames[i], animalSpecies[i], animalRoom[i], animalIsAdopted[i], animalIsImmunized[i], animalPrice[i], animalFood[i]);
+                //}
             }
             catch
             {
 
             }
+        }
+        private string GetSpecies(int speciesKey)
+        {
+            mySqlCommand = new SqlCommand("SELECT * FROM hs.Animals ORDER BY SpeciesID DESC", conn);
+            return "";
         }
         public void ScanList<T>(List<T> scannedList)
         {
