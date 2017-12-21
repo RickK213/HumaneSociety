@@ -10,19 +10,19 @@ namespace HumaneSociety
     {
         static void Main(string[] args)
         {
-            //HumaneSociety humaneSociety = new HumaneSociety();
-            //humaneSociety.Start();
+            HumaneSociety humaneSociety = new HumaneSociety();
+            humaneSociety.Start();
             //test animal, remove later
-            Animal animal = new Dog();
-            animal.Name = "Fido";
-            animal.IsAdopted = false;
-            animal.IsImmunized = true;
-            animal.OunceFoodPerWeek = 27;
-            animal.Price = 25.06;
-            animal.RoomNumber = 3;
+            //Animal animal = new Dog();
+            //animal.Name = "Fido";
+            //animal.IsAdopted = false;
+            //animal.IsImmunized = true;
+            //animal.OunceFoodPerWeek = 27;
+            //animal.Price = 25.06;
+            //animal.RoomNumber = 3;
             //-/remove
-            DatabaseControl database = new DatabaseControl();
-            database.SearchAnimals(animal);
+            //DatabaseControl database = new DatabaseControl();
+            //database.SearchAnimals(animal);
             Console.ReadKey();
         }
     }

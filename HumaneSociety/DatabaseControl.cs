@@ -19,7 +19,7 @@ namespace HumaneSociety
         DataTable fillerTable;
 
         AnimalFactory animalFactory = new ConcreteAnimalFactory();
-        
+
         string rickConnection = "Data Source=localhost;Initial Catalog=HumaneSociety;Integrated Security=True";
         string alexConnection = "Data Source=localhost;Initial Catalog = HumaneSociety; Integrated Security = True";
         string connectionUsed;
@@ -28,7 +28,7 @@ namespace HumaneSociety
             string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string path = (System.IO.Path.GetDirectoryName(executable));
             AppDomain.CurrentDomain.SetData("DataDirectory", path);
-            
+
             //link where database is
             try
             {
@@ -174,32 +174,97 @@ namespace HumaneSociety
             conn.Close();
         }
 
-        public void SaveAdopter(User adopter)
+
+        int GetDuplicateStateID(string streetAddress, int cityID, int stateID, int zipCodeID)
         {
-            int zipCodeID = SaveOneUniqueValueInTable(adopter.ZipCode, "ZipCodeID", "hs.Zip_Codes", "Number");
-            int stateID = SaveOneUniqueValueInTable(adopter.State, "StateID", "hs.States", "StateName");
-            int cityID = SaveOneUniqueValueInTable(adopter.City, "CityID", "hs.Cities", "CityName");
-            //int stateID = SaveState(adopter.State);
-            //string sqlQuery = "INSERT INTO hs.Adopters VALUES(@Street1, @CityID, @StateID, @ZipCodeID;";
-            //using (SqlConnection openCon = new SqlConnection(connectionUsed))
-            //{
-            //    using (SqlCommand querySaveAddress = new SqlCommand(sqlQuery))
-            //    {
-            //        openCon.Open();
-            //        querySaveAddress.Connection = openCon;
-            //        querySaveAddress.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = animal.Name;
-            //        querySaveAddress.Parameters.Add("@SpeciesID", SqlDbType.Int).Value = animal.SpeciesID;
-            //        querySaveAddress.Parameters.Add("@RoomNumber", SqlDbType.Int).Value = animal.RoomNumber;
-            //        querySaveAddress.Parameters.Add("@IsAdopted", SqlDbType.Bit).Value = animal.IsAdopted;
-            //        querySaveAddress.ExecuteNonQuery();
-            //        openCon.Close();
-            //    }
-            //}
+            SqlDataReader myDataReader = null;
+            SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
+            SqlCommand mySqlCommand = new SqlCommand("SELECT AddressID FROM  hs.Addresses WHERE Street1 = '" + streetAddress + "' AND CityID = '" + cityID + "' AND StateID = '" + stateID + "' AND ZipCodeID = '" + zipCodeID + "';", mySqlConnection);
+            mySqlConnection.Open();
+            myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+
+            List<int> tableIDs = new List<int>();
+            while (myDataReader.Read())
+            {
+                tableIDs.Add(myDataReader.GetInt32(0));
+            }
+            if (tableIDs.Count > 0)
+            {
+                return tableIDs[0];
+            }
+            return 0;
+        }
+
+        int GetIDSaveAddress(string streetAddress, int cityID, int stateID, int zipCodeID)
+        {
+            int duplicateID = GetDuplicateStateID(streetAddress, cityID, stateID, zipCodeID);
+            if (duplicateID > 0)
+            {
+                return duplicateID;
+            }
+            using (SqlConnection connection = new SqlConnection(connectionUsed))
+            {
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO hs.Addresses output INSERTED.StateID VALUES(@Street1, @CityID, @StateID, @ZipCodeID)", connection))
+                {
+                    cmd.Parameters.AddWithValue("@Street1", streetAddress);
+                    cmd.Parameters.AddWithValue("@CityID", cityID);
+                    cmd.Parameters.AddWithValue("@StateID", stateID);
+                    cmd.Parameters.AddWithValue("@ZipCodeID", zipCodeID);
+                    connection.Open();
+
+                    int insertedID = (int)cmd.ExecuteScalar();
+
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    return insertedID;
+                }
+            }
+        }
+
+        void SaveProfileData(string name, string email, int addressID, bool hasPaid)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionUsed))
+            {
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO hs.Adopters output INSERTED.AdopterID VALUES(@AdopterName, @AdopterEmail, @AddressID, @HasPaid)", connection))
+                {
+                    cmd.Parameters.AddWithValue("@AdopterName", name);
+                    cmd.Parameters.AddWithValue("@AdopterEmail", email);
+                    cmd.Parameters.AddWithValue("@AddressID", addressID);
+                    cmd.Parameters.AddWithValue("@HasPaid", hasPaid);
+                    connection.Open();
+                    try
+                    {
+                        int insertedID = (int)cmd.ExecuteScalar();
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("An error occurred: '{0}'", e);
+                    }
+                    finally
+                    {
+                        if (connection.State == System.Data.ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SaveAdopter(User user)
+        {
+            int zipCodeID = GetIDSaveValue(user.ZipCode, "ZipCodeID", "hs.Zip_Codes", "Number");
+            int stateID = GetIDSaveValue(user.State, "StateID", "hs.States", "StateName");
+            int cityID = GetIDSaveValue(user.City, "CityID", "hs.Cities", "CityName");
+            int addressID = GetIDSaveAddress(user.StreetAddress, cityID, stateID, zipCodeID);
+            SaveProfileData(user.Name, user.Email, addressID, false);
         }
 
         public int GetDuplicateID(string valueToCheckFor, string IDName, string tableName, string columnName)
         {
-
             SqlDataReader myDataReader = null;
             SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
             SqlCommand mySqlCommand = new SqlCommand("SELECT " + IDName + " FROM " + tableName + " WHERE " + columnName + " = '" + valueToCheckFor + "';", mySqlConnection);
@@ -218,7 +283,7 @@ namespace HumaneSociety
             return 0;
         }
 
-        public int SaveOneUniqueValueInTable(string columnValue, string primaryKey, string tableName, string columnName)
+        int GetIDSaveValue(string columnValue, string primaryKey, string tableName, string columnName)
         {
             int duplicateID = GetDuplicateID(columnValue, primaryKey, tableName, columnName);
             if (duplicateID > 0)
