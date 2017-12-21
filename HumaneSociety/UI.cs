@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -35,7 +36,6 @@ namespace HumaneSociety
             Console.ReadKey();
         }
 
-
         static bool isStateAbbreviation(String state)
         {
             string states = "|AL|AK|AS|AZ|AR|CA|CO|CT|DE|DC|FM|FL|GA|GU|HI|ID|IL|IN|IA|KS|KY|LA|ME|MH|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|MP|OH|OK|OR|PW|PA|PR|RI|SC|SD|TN|TX|UT|VT|VI|VA|WA|WV|WI|WY|";
@@ -45,7 +45,6 @@ namespace HumaneSociety
         public static string GetState()
         {
             Console.WriteLine("Enter your State (Abbreviated - i.e. 'WI'):");
-            //TO DO: VALIDATE FOR 2 CHARACTERS
             string state = Console.ReadLine();
             if ( !isStateAbbreviation(state) )
             {
@@ -90,11 +89,31 @@ namespace HumaneSociety
             return Console.ReadLine();
         }
 
+
+        static bool IsValidEmailAddress(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
         public static string GetAdopterEmail()
         {
             Console.WriteLine("Enter your Email Address:");
-            //TO DO: VALIDATE FOR VALID EMAIL ADDRESS
-            return Console.ReadLine();
+            string emailAddress = Console.ReadLine();
+            if (!IsValidEmailAddress(emailAddress))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You must enter a valid email address.");
+                Console.ResetColor();
+                return GetAdopterEmail();
+            }
+            return emailAddress;
         }
 
         public static string GetAdopterName()
