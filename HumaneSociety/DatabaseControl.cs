@@ -105,9 +105,9 @@ namespace HumaneSociety
 
             return fillerTable.Rows[0][0].ToString();
         }
-        public void ChangeBoolStatus(string statusToChange, int changeStatus, int animalID)
+        public void ChangeBoolStatus(string tableName, string statusToChange, int changeStatus, int animalID)
         {
-            string queryToLaunch = "UPDATE hs.Animals SET " + statusToChange + " = " + changeStatus + " WHERE AnimalID = " + animalID + ";";
+            string queryToLaunch = "UPDATE hs." + tableName + " SET " + statusToChange + " = " + changeStatus + " WHERE AnimalID = " + animalID + ";";
             using (SqlConnection openCon = new SqlConnection(connectionUsed))
             {
                 using (SqlCommand querySaveStaff = new SqlCommand(queryToLaunch))
