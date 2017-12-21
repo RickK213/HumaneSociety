@@ -154,31 +154,32 @@ namespace HumaneSociety
             animal.OunceFoodPerWeek = Convert.ToInt32(userInput);
         }
 
-        public void SearchAnimals()
+        public virtual void SearchAnimals()
         {
+            //turn true if user enters a search option
             bool isSearchingByName = false;
             bool isSearchingBySpecies = false;
-            bool isSearchingByImmunization = false;
-            bool isSearchingByPrice = false;
+            bool isSearchingByImmunization = true;
+            bool isSearchingByPrice = true;
 
             //user specified search variables
-            string nameToSearch = "bluto";
+            string nameToSearch = "Oreo";
             string speciesToSearch = "dog";
-            bool statusOfImmunization = true;
-            double priceAmountToSearch = 13.09;
+            bool statusOfImmunization = false;
+            double priceAmountToSearch = 113.09;
             //bool isSearchingByAdoptionStatus = false;
             //bool isSearchingByPaymentStatus = false;
             List<Animal> animals = database.SearchAnimals();
-            var immunizedAnimals = animals.Where(
+            var searchedAnimals = animals.Where(
                 m => 
                 (isSearchingByName ? m.Name == nameToSearch : m.Name != null) &&
                 (isSearchingBySpecies ? m.Species == speciesToSearch : m.Species != null) &&
                 (isSearchingByImmunization ? m.IsImmunized == statusOfImmunization : m.IsImmunized != null) &&
                 (isSearchingByPrice ? m.Price < priceAmountToSearch : m.Price > 0)
                 ).OrderBy(m => m.AnimalID);
-            foreach (Animal animal in immunizedAnimals)
+            foreach (Animal animal in searchedAnimals)
             {
-                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + (animal.IsImmunized ? " is immunized" : " is not immunized"));
+                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + " was found using the search criteria entered.");
             }
         }
 
