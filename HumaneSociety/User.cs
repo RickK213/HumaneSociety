@@ -61,9 +61,17 @@ namespace HumaneSociety
         public void SetAnimalImmunizationStatus(bool allowNone)
         {
             userInput = UI.GetImmunizationStatus(allowNone);
-            animal.Name = userInput;
-            animal.IsImmunized = true;
+            string immunizedStatus = userInput;
+            if ( immunizedStatus == "y" )
+            {
+                animal.IsImmunized = true;
+            }
+            else
+            {
+                animal.IsImmunized = false;
+            }
         }
+
         public void SetAnimalPrice()
         {
             //verify userInput is a money number before converting
@@ -91,7 +99,7 @@ namespace HumaneSociety
 
             }
         }
-        public void SetAnimalFoodPerWeek()
+        public void SetAnimalFoodPerWeek(bool allowNone)
         {
 
         }

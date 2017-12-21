@@ -21,7 +21,7 @@ namespace HumaneSociety
             SetAnimalName(false);
             SetAnimalRoomNumber(false);
             SetAnimalImmunizationStatus(false);
-            //SetAnimalFoodPerWeek(false);
+            SetAnimalFoodPerWeek(false);
             //SetAnimalPrice(false);
             animal.IsAdopted = false;
             
