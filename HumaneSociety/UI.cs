@@ -19,7 +19,7 @@ namespace HumaneSociety
 
         public static string GetAddAnimalOption(bool allowAll)
         {
-            List<string> menuOptions = GetAddAnimalMenu(allowAll);
+            string menuOptions = GetAddAnimalMenu(allowAll);
             DisplayMenu(menuOptions);
             List<string> menuNumbers = GetMenuNumbers(menuOptions);
             DisplayMenuHeader();
@@ -103,39 +103,41 @@ namespace HumaneSociety
         }
 
 
-        static List<string> GetMainMenu(string role)
+        static string GetMainMenu(string role)
         {
-            List<string> menuOptions = new List<string>();
+            StringBuilder menuOptions = new StringBuilder();
             if (role == "employee")
             {
-                menuOptions.Add("Add Animal to Database");
-                menuOptions.Add("Search Animals");
-                menuOptions.Add("List All Animals");
-                menuOptions.Add("Search Adopters");
-                menuOptions.Add("List All Adopters");
+                menuOptions.Append("1: Add Animal to Database\n");
+                menuOptions.Append("2: Search Animals\n");
+                menuOptions.Append("3: List All Animals\n");
+                menuOptions.Append("4: Search Adopters\n");
+                menuOptions.Append("5: List All Adopters\n");
             }
             else
             {
-                menuOptions.Add("Create/Edit Profile");
-                menuOptions.Add("Search Animals");
-                menuOptions.Add("List All Animals");
+                menuOptions.Append("1: Create/Edit Profile\n");
+                menuOptions.Append("2: Search Animals\n");
+                menuOptions.Append("3: List All Animals\n");
             }
-            return menuOptions;
+            menuOptions.Append("q: Quit Application");
+            return menuOptions.ToString();
         }
 
-        static List<string> GetAddAnimalMenu(bool allowAll)
+        static string GetAddAnimalMenu(bool allowAll)
         {
-            List<string> menuOptions = new List<string>();
-            menuOptions.Add("Dog");
-            menuOptions.Add("Cat");
-            menuOptions.Add("Bird");
-            menuOptions.Add("Rabbit");
-            menuOptions.Add("Ferret");
+            StringBuilder menuOptions = new StringBuilder();
+            menuOptions.Append("1: Dog");
+            menuOptions.Append("2: Cat");
+            menuOptions.Append("3: Bird");
+            menuOptions.Append("4: Rabbit");
+            menuOptions.Append("5: Ferret");
             if (allowAll)
             {
-                menuOptions.Add("All");
+                menuOptions.Append("6: All");
             }
-            return menuOptions;
+            menuOptions.Append("q: Quit Application");
+            return menuOptions.ToString();
         }
 
         public static void DisplayPageHeader(string header)
@@ -146,28 +148,29 @@ namespace HumaneSociety
             Console.ResetColor();
         }
 
-        static List<string> GetMenuNumbers(List<string> menuOptions)
+        static List<string> GetMenuNumbers(string menuOptions)
         {
             List<string> menuNumbers = new List<string>();
-            for (int i = 0; i < menuOptions.Count; i++)
+            string[] menuLines = menuOptions.Split(
+                new[] { "\n" },
+                StringSplitOptions.None
+            );
+            for (int i=0; i<menuLines.Length; i++ )
             {
-                menuNumbers.Add(i.ToString());
+                menuNumbers.Add(menuLines[i][0].ToString());
             }
             return menuNumbers;
         }
 
-        static void DisplayMenu(List<string> menuOptions)
+        static void DisplayMenu(string menuOptions)
         {
-            for (int i = 0; i < menuOptions.Count; i++)
-            {
-                Console.WriteLine("{0}: {1}", i.ToString(), menuOptions[i]);
-            }
+            Console.WriteLine(menuOptions);
         }
 
         public static string GetMainMenuOptions(string role)
         {
             DisplayPageHeader(role + " MAIN MENU");
-            List<string> menuOptions = GetMainMenu(role);
+            string menuOptions = GetMainMenu(role);
             DisplayMenu(menuOptions);
             List<string> menuNumbers = GetMenuNumbers(menuOptions);
             DisplayMenuHeader();
