@@ -5,12 +5,19 @@ CREATE TABLE hs.Species (
 	SpeciesName varchar(50) NOT NULL	
 );
 
+CREATE TABLE hs.Rooms (
+	RoomID int IDENTITY(1,1) PRIMARY KEY,
+	RoomNumber int,
+	UNIQUE(RoomNumber)
+);
+
 CREATE TABLE hs.Animals (
 	AnimalID int IDENTITY(1,1) PRIMARY KEY,
 	Name varchar(50) NOT NULL,
 	SpeciesID int,
 	FOREIGN KEY (SpeciesID) REFERENCES hs.Species(SpeciesID),
-	RoomNumber int,
+	RoomID int,
+	FOREIGN KEY (RoomID) REFERENCES hs.Rooms(RoomID),
 	IsAdopted bit,
 	HasShots bit,
 	Price float,
@@ -19,12 +26,14 @@ CREATE TABLE hs.Animals (
 
 CREATE TABLE hs.Cities (
 	CityID int IDENTITY(1,1) PRIMARY KEY,
-	CityName varchar(50) NOT NULL	
+	CityName varchar(50) NOT NULL,
+	UNIQUE(CityName)
 );
 
 CREATE TABLE hs.States (
 	StateID int IDENTITY(1,1) PRIMARY KEY,
-	StateName varchar(2) NOT NULL	
+	StateName varchar(2) NOT NULL,
+	UNIQUE(StateName)
 );
 
 CREATE TABLE hs.Zip_Codes (
@@ -51,12 +60,6 @@ CREATE TABLE hs.Adopters (
 	AddressID int,
 	FOREIGN KEY (AddressID) REFERENCES hs.Addresses(AddressID),
 	HasPaid bit
-);
-
-CREATE TABLE hs.Rooms (
-	RoomID int IDENTITY(1,1) PRIMARY KEY,
-	AnimalID int,
-	FOREIGN KEY (AnimalID) REFERENCES hs.Animals(AnimalID),
 );
 
 INSERT INTO hs.Species VALUES ('cat');
