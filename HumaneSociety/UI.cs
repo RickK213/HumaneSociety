@@ -15,7 +15,7 @@ namespace HumaneSociety
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("WELCOME TO A.R. HUMANE SOCIETY");
             Console.ResetColor();
-            Console.WriteLine("Instructions to come...");
+            Console.WriteLine("This is a useful application for maintaining the database for a humane society.");
 
         }
 
