@@ -237,7 +237,7 @@ namespace HumaneSociety
             if ( animals.Count > 0)
             {
                 UI.DisplayAnimals(animals);
-                Console.ReadKey();
+                EditAnimalFromList(animals);
             }
             else
             {
@@ -326,13 +326,9 @@ namespace HumaneSociety
             Console.ReadKey();
         }
 
-        public void SearchByName(string nameToSearch)
+        void EditAnimalFromList(List<Animal> animals)
         {
-            List<Animal> animals = database.GetAllAnimals();
-            List<Animal> foundAnimals;
-            foundAnimals = animals.Where(m => (m.Name == nameToSearch)).ToList();
-            UI.DisplayAnimals(foundAnimals);
-            userInput = UI.GetAnimalToEdit(foundAnimals);
+            userInput = UI.GetAnimalToEdit(animals);
             if (userInput == "")
             {
                 return;
@@ -342,10 +338,41 @@ namespace HumaneSociety
             EditAnimal(animalToEdit);
         }
 
+        public void SearchByName(string nameToSearch)
+        {
+            List<Animal> animals = database.GetAllAnimals();
+            List<Animal> foundAnimals;
+            foundAnimals = animals.Where(m => (m.Name.ToLower() == nameToSearch.ToLower())).ToList();
+            UI.DisplayAnimals(foundAnimals);
+            EditAnimalFromList(foundAnimals);
+        }
+
         public void EditAnimal(Animal animal)
         {
-            UI.DisplayPageHeader(String.Format("Edit {0}", animal.Name));
-            Console.ReadKey();
+            UI.DisplayPageHeader(String.Format("Edit Animal"));
+            UI.DisplaySingleAnimal(animal);
+            Console.WriteLine("Enter 'i' to switch immunization status to {0}", !animal.IsImmunized);
+            Console.WriteLine("Enter 'a' to switch addoption status to {0}", !animal.IsAdopted);
+            Console.WriteLine("Or press enter to return to main menu");
+            userInput = UI.GetValidUserOption("", new List<string>() {"i", "a", "" });
+            bool changeTo;
+            switch (userInput)
+            {
+                case ("i"):
+                    changeTo = !animal.IsImmunized;
+                    database.ChangeSingleValue("Animals", "HasShots", (changeTo ? 1 : 0), "AnimalID", animal.AnimalID);
+                    UI.GetAnyKeyToContinue("Immunization status changed. Press any key to return to main menu.");
+                    return;
+                case ("a"):
+                    changeTo = !animal.IsAdopted;
+                    database.ChangeSingleValue("Animals", "IsAdopted", (changeTo ? 1 : 0), "AnimalID", animal.AnimalID);
+                    UI.GetAnyKeyToContinue("Adoption status changed. Press any key to return to main menu.");
+                    return;
+                case (""):
+                    return;
+                default:
+                    return;
+            }
         }
 
     }
