@@ -59,7 +59,7 @@ namespace HumaneSociety
                 List<Animal> animalsSearched = new List<Animal>();
                 while (myDataReader.Read())
                 {
-                    Animal storeAnimal = animalFactory.CreateAnimal(GetOneOrMoreValues("SpeciesName", "Species", "SpeciesName", myDataReader.GetInt32(2)).Rows[0][0].ToString());
+                    Animal storeAnimal = animalFactory.CreateAnimal(GetOneOrMoreValues("SpeciesName", "Species", "SpeciesName", myDataReader.GetInt32(2)));
                     storeAnimal.AnimalID = myDataReader.GetInt32(0);
                     storeAnimal.Name = myDataReader.GetString(1);
                     storeAnimal.RoomNumber = myDataReader.GetInt32(3);
@@ -85,12 +85,12 @@ namespace HumaneSociety
             }
             return null;
         }
-        public List<User> SearchUsers()
+        public List<User> RetrieveUsers()
         {
             try
             {
                 SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
-                mySqlCommand = new SqlCommand("SELECT * FROM hs.Animals ORDER BY SpeciesID DESC", mySqlConnection); //put table name to search from, specify search
+                mySqlCommand = new SqlCommand("SELECT * FROM hs.Adopters ORDER BY HasPaid DESC", mySqlConnection); //put table name to search from, specify search
                 mySqlConnection.Open();
                 myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
 
@@ -127,7 +127,7 @@ namespace HumaneSociety
         /// </summary>
         /// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
         /// <returns>My result</returns>
-        public DataTable GetOneOrMoreValues<T>(string columnNameOne, string tableName, string columnNameTwo, T searchValue)
+        public string GetOneOrMoreValues<T>(string columnNameOne, string tableName, string columnNameTwo, T searchValue)
         {
             conn.Close();
             conn.Open();
@@ -136,7 +136,7 @@ namespace HumaneSociety
             databaseCommand.Fill(fillerTable);
             conn.Close();
 
-            return fillerTable;
+            return fillerTable.Rows[0][0].ToString();
         }
         /// <summary>
         /// Returns type DataTable.  Returns all data or column-specific data based on columnNameOne entry.

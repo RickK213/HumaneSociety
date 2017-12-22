@@ -68,16 +68,11 @@ namespace HumaneSociety
 
         public void SearchAdopters()
         {
-            var dataTable = database.GetAllValues("*", "Adopters").AsEnumerable().ToList();
-            //var scanDataTable = dataTable.ForEach(
-            //    m 
+            List<User> adopters = database.RetrieveUsers();
 
-                
-            //    )
-            foreach (var item in dataTable)
-            {
-                Console.WriteLine(item);
-            }
+            //send list of adopters to specified search and code to use: 
+            //check hasPaid: var scan = adopters.Where(m => m.HasPaid == 0);
+            //check if they adopted an animal: var scan = adopters.Where(m => m.AnimalAdopted > 0);
         }
 
         void ListAdopters()
