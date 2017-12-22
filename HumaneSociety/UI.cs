@@ -396,17 +396,29 @@ namespace HumaneSociety
             return (GetValidUserOption("Enter a species:", new List<string> {"cat", "dog", "bird", "rabbit", "ferret" }));
         }
 
-        public static void DisplaySingleAnimal(Animal animal)
+        public static void DisplaySingleObject(Animal animal)
         {
             Console.WriteLine("Animal ID: {0} | Name: {1} | Species: {2} | Room Number: {3}\nAdoption Status: {4} | Immunization Status: {5}\nFood Per Week (ounces): {6} | Price: {7:C2}\n-----------------------------------", animal.AnimalID, animal.Name, animal.Species, animal.RoomNumber, animal.IsAdopted.ToString(), animal.IsImmunized.ToString(), animal.OunceFoodPerWeek, animal.Price);
         }
+        public static void DisplaySingleObject(User adopter)
+        {
+            Console.WriteLine("Adopter ID: {0} | Name: {1} | Email: {2} | Address: {3}\nAnimal Adopted: {4}Has paid for animal: {5}\n-----------------------------------", adopter.AdopterID, adopter.Name, adopter.Email, adopter.StreetAddress, adopter.AdoptedAnimalID, adopter.HasPaid);
+        }
 
-        public static void DisplayAnimals(List<Animal> animals)
+        public static void DisplayList(List<Animal> animals)
         {
             DisplayPageHeader("Animals Found");
             foreach (Animal animal in animals)
             {
-                DisplaySingleAnimal(animal);
+                DisplaySingleObject(animal);
+            }
+        }
+        public static void DisplayList(List<User> adopters)
+        {
+            DisplayPageHeader("Adopters Found");
+            foreach (Adopter adopter in adopters)
+            {
+                //DisplaySingleAnimal(adopter);
             }
         }
 

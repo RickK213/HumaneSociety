@@ -99,11 +99,12 @@ namespace HumaneSociety
                 while (myDataReader.Read())
                 {
                     User adopter = new Adopter();
-                    adopter.Name = myDataReader.GetString(0);
-                    adopter.Email = myDataReader.GetString(1);
-                    adopter.StreetAddress = myDataReader.GetInt32(2).ToString();
-                    adopter.AdoptedAnimalID = myDataReader.GetInt32(3);
-                    adopter.HasPaid = myDataReader.GetBoolean(4);
+                    adopter.AdopterID = myDataReader.GetInt32(0);
+                    adopter.Name = myDataReader.GetString(1);
+                    adopter.Email = myDataReader.GetString(2);
+                    adopter.StreetAddress = myDataReader.GetInt32(3).ToString();
+                    adopter.AdoptedAnimalID = myDataReader.GetInt32(4);
+                    adopter.HasPaid = myDataReader.GetBoolean(5);
                     adoptersSearched.Add(adopter);
                 }
                 myDataReader.Close();
