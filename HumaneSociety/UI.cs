@@ -379,6 +379,28 @@ namespace HumaneSociety
             return userInput;
         }
 
+        public static void DisplayAnimals(List<Animal> animals)
+        {
+            foreach (Animal animal in animals)
+            {
+                Console.WriteLine("Animal ID: {0} | Name: {1} | Species: {2} | Room Number: {3}\nAdoption Status: {4} | Immunization Status: {5}\nFood Per Week (ounces): {6} | Price: {7:C2}\n-----------------------------------", animal.AnimalID, animal.Name, animal.Species, animal.RoomNumber, animal.IsAdopted.ToString(), animal.IsImmunized.ToString(), animal.OunceFoodPerWeek, animal.Price);
+            }
+            Console.WriteLine("Enter an Animal ID to edit animal.");
+        }
+
+        public static string GetAnimalToEdit(List<Animal> animals)
+        {
+            Console.WriteLine("Enter an Animal ID to edit that animal.");
+            Console.WriteLine("Or press enter to return to main menu");
+            List<string> validIDs = new List<string>();
+            foreach (Animal animal in animals)
+            {
+                validIDs.Add(animal.AnimalID.ToString());
+            }
+            validIDs.Add("");
+            return GetValidUserOption("", validIDs);
+        }
+
 
     }
 }

@@ -30,7 +30,7 @@ namespace HumaneSociety
             SetAnimalPrice(false);
             animal.IsAdopted = false;
             database.AddAnimal(animal);
-            //4. submit all necessary information to the database
+            UI.GetAnyKeyToContinue("Animal added to database. Press any key to return to main menu.");
         }
 
         public override void StartFlow()
@@ -42,6 +42,7 @@ namespace HumaneSociety
             {
                 case ("1"):
                     AddAnimalToDatabase();
+                    StartFlow();
                     break;
                 case ("2"):
                     SearchAnimals();
@@ -112,9 +113,9 @@ namespace HumaneSociety
             switch (userInput)
             {
                 case ("1"):
-                    //isSearchingByName = true;
-                    //nameToSearch = UI.GetAnimalName(false);
-                    //StartFlow();
+                    string nameToSearch = UI.GetAnimalName(false);
+                    SearchByName(nameToSearch);
+                    StartFlow();
                     break;
                 case ("5"):
                     SearchByMultipleCriteria();

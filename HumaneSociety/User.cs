@@ -236,17 +236,12 @@ namespace HumaneSociety
             List<Animal> animals = database.GetAllAnimals();
             if ( animals.Count > 0)
             {
-                foreach (Animal animal in animals)
-                {
-                    Console.WriteLine("Animal ID: {0} | Name: {1} | Species: {2} | Room Number: {3} | Adoption Status: {4} | Immunization Status | {5} | Food Per Week (ounces): {6} | Price: {7:C2}", animal.AnimalID, animal.Name, animal.Species, animal.RoomNumber, animal.IsAdopted.ToString(), animal.IsImmunized.ToString(), animal.OunceFoodPerWeek, animal.Price);
-                }
-                Console.WriteLine("Enter an Animal ID to edit animal.");
+                UI.DisplayAnimals(animals);
                 Console.ReadKey();
             }
             else
             {
-                Console.WriteLine("No animals in database. Press any key to return to main menu.");
-                Console.ReadKey(true);
+                UI.GetAnyKeyToContinue("No animals in database. Press any key to return to main menu.");
                 return;
             }
         }
@@ -293,8 +288,29 @@ namespace HumaneSociety
             {
                 Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + " was found using the search criteria entered.");
             }
-
-
         }
+
+        public void SearchByName(string nameToSearch)
+        {
+            List<Animal> animals = database.GetAllAnimals();
+            List<Animal> foundAnimals;
+            foundAnimals = animals.Where(m => (m.Name == nameToSearch)).ToList();
+            UI.DisplayAnimals(foundAnimals);
+            userInput = UI.GetAnimalToEdit(foundAnimals);
+            if (userInput == "")
+            {
+                return;
+            }
+            Animal animalToEdit;
+            animalToEdit = animals.Where(x => x.AnimalID.ToString() == userInput).ToList().First();
+            EditAnimal(animalToEdit);
+        }
+
+        public void EditAnimal(Animal animal)
+        {
+            UI.DisplayPageHeader(String.Format("Edit {0}", animal.Name));
+            Console.ReadKey();
+        }
+
     }
 }

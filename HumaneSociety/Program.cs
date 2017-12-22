@@ -10,6 +10,7 @@ namespace HumaneSociety
     {
         static void Main(string[] args)
         {
+            //string test = UI.GetValidUserOption("enter a species", new List<string> { "cat", "dog", "ferret", "rabbit", "bird"});
             HumaneSociety humaneSociety = new HumaneSociety();
             humaneSociety.Start();
 
