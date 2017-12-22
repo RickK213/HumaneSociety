@@ -307,9 +307,8 @@ namespace HumaneSociety
                 menuOptions.Append("1: Add Animal to Database\n");
                 menuOptions.Append("2: Search Animals\n");
                 menuOptions.Append("3: List All Animals\n");
-                menuOptions.Append("4: Search Adopters\n");
-                menuOptions.Append("5: List All Adopters\n");
-                menuOptions.Append("6: Import Animals from CSV\n");
+                menuOptions.Append("4: List All Adopters\n");
+                menuOptions.Append("5: Import Animals from CSV\n");
             }
             else
             {
