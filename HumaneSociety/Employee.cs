@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,9 +58,18 @@ namespace HumaneSociety
 
         }
 
-        void SearchAdopters()
+        public void SearchAdopters()
         {
+            var dataTable = database.GetAllValues("*", "Adopters").AsEnumerable().ToList();
+            //var scanDataTable = dataTable.ForEach(
+            //    m 
 
+                
+            //    )
+            foreach (var item in dataTable)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         void ListAdopters()

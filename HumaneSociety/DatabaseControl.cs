@@ -66,7 +66,7 @@ namespace HumaneSociety
                 List<Animal> animalsSearched = new List<Animal>();
                 while (myDataReader.Read())
                 {
-                    Animal storeAnimal = animalFactory.CreateAnimal(GetSpecies(myDataReader.GetInt32(2)));
+                    Animal storeAnimal = animalFactory.CreateAnimal(GetOneOrMoreValues("SpeciesName", "Species", "SpeciesName", myDataReader.GetInt32(2)).Rows[0][0].ToString());
                     storeAnimal.AnimalID = myDataReader.GetInt32(0);
                     storeAnimal.Name = myDataReader.GetString(1);
                     storeAnimal.RoomNumber = myDataReader.GetInt32(3);
@@ -92,37 +92,69 @@ namespace HumaneSociety
             }
             return null;
         }
-        private string GetSpecies(int speciesKey)
+        /// <summary>
+        /// Returns type DataTable.  To get specific value, after method call enter '.Rows[i][i]'.  Add .ToString() to the end to make it a string (if it's a string-able value) 
+        /// </summary>
+        /// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
+        /// <returns>My result</returns>
+        public DataTable GetOneOrMoreValues<T>(string columnNameOne, string tableName, string columnNameTwo, T searchValue)
         {
-            //mySqlCommand = new SqlCommand("SELECT SpeciesName FROM hs.Species WHERE SpeciesID = " + speciesKey, conn);
             conn.Close();
             conn.Open();
-            databaseCommand = new SqlDataAdapter("SELECT SpeciesName FROM hs.Species WHERE SpeciesID = " + speciesKey, conn);
-            //transaction = conn.BeginTransaction("SELECT * FROM HighScore");
+            databaseCommand = new SqlDataAdapter("SELECT " + columnNameOne + " FROM hs." + tableName + " WHERE " + columnNameTwo + " = " + searchValue, conn);
             fillerTable = new DataTable();
             databaseCommand.Fill(fillerTable);
             conn.Close();
 
-            return fillerTable.Rows[0][0].ToString();
+            return fillerTable;
         }
-        public void ChangeBoolStatus(string tableName, string statusToChange, int changeStatus, int animalID)
+        /// <summary>
+        /// Returns type DataTable.  Returns all data or column-specific data based on columnNameOne entry.
+        /// </summary>
+        /// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
+        /// <returns>My result</returns>
+        public DataTable GetAllValues(string columnNameOne, string tableName)
         {
-            string queryToLaunch = "UPDATE hs." + tableName + " SET " + statusToChange + " = " + changeStatus + " WHERE AnimalID = " + animalID + ";";
+            conn.Close();
+            conn.Open();
+            databaseCommand = new SqlDataAdapter("SELECT " + columnNameOne + " FROM hs." + tableName, conn);
+            fillerTable = new DataTable();
+            databaseCommand.Fill(fillerTable);
+            conn.Close();
+
+            return fillerTable;
+        }
+        public void ChangeSingleValue<T>(string tableName, string statusToChange, T changeStatusToChange, string columnName, T columnValue)
+        {
+            string queryToLaunch = "UPDATE hs." + tableName + " SET " + statusToChange + " = " + changeStatusToChange + " WHERE " + columnName + " = " + columnValue + ";";
             using (SqlConnection openCon = new SqlConnection(connectionUsed))
             {
                 using (SqlCommand querySaveStaff = new SqlCommand(queryToLaunch))
                 {
+                    //try catch finally
                     openCon.Open();
                     querySaveStaff.Connection = openCon;
-                    //querySaveStaff.Parameters.Add("@statusToChange", SqlDbType.VarChar, 50).Value = statusToChange;
-                    //querySaveStaff.Parameters.Add("@changestatus", SqlDbType.Bit).Value = changeStatus;
-                    //querySaveStaff.Parameters.Add("@animalID", SqlDbType.Int).Value = animalID;
 
                     querySaveStaff.ExecuteNonQuery();
                     openCon.Close();
                 }
             }
         }
+        //SqlDataReader myDataReader = null;
+        //SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
+        //SqlCommand mySqlCommand = new SqlCommand("SELECT AddressID FROM  hs.Addresses WHERE Street1 = '" + streetAddress + "' AND CityID = '" + cityID + "' AND StateID = '" + stateID + "' AND ZipCodeID = '" + zipCodeID + "';", mySqlConnection);
+        //mySqlConnection.Open();
+        //    myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+
+        //    List<int> tableIDs = new List<int>();
+        //    while (myDataReader.Read())
+        //    {
+        //        tableIDs.Add(myDataReader.GetInt32(0));
+        //    }
+        //    if (tableIDs.Count > 0)
+        //    {
+        //        return tableIDs[0];
+        //    }
         public void ScanList<T>(List<T> scannedList)
         {
 
@@ -266,11 +298,12 @@ namespace HumaneSociety
         {
             using (SqlConnection connection = new SqlConnection(connectionUsed))
             {
-                using (SqlCommand cmd = new SqlCommand("INSERT INTO hs.Adopters output INSERTED.AdopterID VALUES(@AdopterName, @AdopterEmail, @AddressID, @HasPaid)", connection))
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO hs.Adopters output INSERTED.AdopterID VALUES(@AdopterName, @AdopterEmail, @AddressID, @AnimalAdopted, @HasPaid)", connection))
                 {
                     cmd.Parameters.AddWithValue("@AdopterName", name);
                     cmd.Parameters.AddWithValue("@AdopterEmail", email);
                     cmd.Parameters.AddWithValue("@AddressID", addressID);
+                    cmd.Parameters.AddWithValue("@AnimalAdopted", 0);
                     cmd.Parameters.AddWithValue("@HasPaid", hasPaid);
                     connection.Open();
                     try

@@ -195,7 +195,7 @@ namespace HumaneSociety
             Console.WriteLine("Enter animal ID to confirm they're immunized.");
             userInput = Console.ReadLine();
             bool willImmunize = false;
-            database.ChangeBoolStatus("Animals", "HasShots", (willImmunize ? 1 : 0), Convert.ToInt32(userInput));
+            database.ChangeSingleValue("Animals", "HasShots", (willImmunize ? 1 : 0), "AnimalID", Convert.ToInt32(userInput));
 
             animals = database.SearchAnimals();
             immunizedAnimals = animals.Where(m => m.IsImmunized == false).OrderBy(m => m.AnimalID);
