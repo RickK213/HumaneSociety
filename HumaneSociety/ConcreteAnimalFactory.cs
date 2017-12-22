@@ -25,7 +25,9 @@ namespace HumaneSociety
                 case "null":
                     return null;
                 default:
-                    throw new ApplicationException(string.Format("We don't have {0} at our facility.  Please enter a vaild choice.", userInput));
+                    string errorMessage = string.Format("We don't have {0} at our facility.  Please enter a vaild choice.", userInput);
+                    Console.WriteLine(errorMessage);
+                    throw new ApplicationException(errorMessage);
             }
         }
     }

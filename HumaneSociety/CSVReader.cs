@@ -10,9 +10,6 @@ namespace HumaneSociety
 {
     public class CSVReader
     {
-        //As a developer, I want to use LINQ to import a CSV file that already contains data about several animals
-        //that are being transferred from a different humane society.
-
         //direct path to file:
         //C:\Users\Rick Kippert\Dropbox\_devCodeCamp\Assignments\week9-2-humane_society\cSharp-HumaneSociety
 
@@ -22,9 +19,14 @@ namespace HumaneSociety
         //Relative path:
         //../../../animals.csv
 
-
         //member variables
         string filePath = @"../../../animals.csv";
+
+        //Test CSVs:
+        //string filePath = @"../../../animals-one_empty_field.csv";
+        //string filePath = @"../../../animals-invalid_species.csv";
+        //string filePath = @"../../../animals-invalid_and_empty_fields.csv";
+
         public DatabaseControl database = new DatabaseControl();
         public AnimalFactory animalFactory = new ConcreteAnimalFactory();
         public Animal animal = null;
@@ -62,10 +64,12 @@ namespace HumaneSociety
             return false;
         }
 
-        void ImportCSV()
+        public bool ImportCSV()
         {
             Console.Clear();
 
+            //TO DO: ADD try, catch, finally BELOW
+            List<Animal> rawAnimals = new List<Animal>();
             using (TextFieldParser parser = new TextFieldParser(filePath))
             {
                 parser.TextFieldType = FieldType.Delimited;
@@ -80,12 +84,36 @@ namespace HumaneSociety
                     animal.RoomNumber = Convert.ToInt32(fields[2]);
                     animal.IsImmunized = GetBoolFromYesorNo(fields[3]);
                     animal.Price = Convert.ToDouble(fields[4]);
-                    animal.Price = Convert.ToInt32(fields[5]);
-                    database.AddAnimal(animal);
-
+                    animal.OunceFoodPerWeek = Convert.ToInt32(fields[5]);
+                    rawAnimals.Add(animal);
                 }
             }
-            Console.WriteLine("File imported!");
+            List<Animal> validAnimals;
+            validAnimals = rawAnimals.Where(
+                x =>
+                (x.Name.Length > 0) &&
+                (x.Species.Length > 0) &&
+                (x.RoomNumber > 0) &&
+                (x.Price > 0) &&
+                (x.OunceFoodPerWeek > 0)
+                ).ToList();
+
+            int numberOfInvalidRows = rawAnimals.Count - validAnimals.Count;
+
+            if ( numberOfInvalidRows > 0 )
+            {
+                Console.WriteLine("{0} rows in your CSV contained errors. Please check your file and try again.", numberOfInvalidRows);
+                return false;
+            }
+            else
+            {
+                foreach (Animal animal in validAnimals)
+                {
+                    database.AddAnimal(animal);
+                }
+            }
+            Console.WriteLine("Success! {0} animals have been imported to your database!", validAnimals.Count);
+            return true;
         }
 
     }
