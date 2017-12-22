@@ -90,12 +90,11 @@ namespace HumaneSociety
             List<User> adopters = database.RetrieveUsers();
             if (adopters.Count > 0)
             {
-                //UI.DisplayAnimals(adopters);
-                //EditAnimalFromList(adopters);
+                UI.DisplayList(adopters);
             }
             else
             {
-                UI.GetAnyKeyToContinue("No animals in database. Press any key to return to main menu.");
+                UI.GetAnyKeyToContinue("No adopters in database. Press any key to return to main menu.");
                 return;
             }
         }

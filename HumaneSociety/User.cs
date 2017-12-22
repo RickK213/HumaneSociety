@@ -21,7 +21,7 @@ namespace HumaneSociety
         string city;
         string state;
         string zipCode;
-        int adoptedAnimalID;
+        int? adoptedAnimalID;
         bool hasPaid = false;
 
         //properties
@@ -71,7 +71,7 @@ namespace HumaneSociety
             get { return zipCode; }
             set { zipCode = value; }
         }
-        public int AdoptedAnimalID
+        public int? AdoptedAnimalID
         {
             get
             {
