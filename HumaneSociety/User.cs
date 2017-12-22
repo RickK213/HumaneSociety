@@ -355,6 +355,43 @@ namespace HumaneSociety
             EditAnimalFromList(foundAnimals);
         }
 
+        public void SearchByImmunization(string immunizationToSearch)
+        {
+            List<Animal> animals = database.GetAllAnimals();
+            List<Animal> foundAnimals;
+            bool resultStatus = false;
+            if (immunizationToSearch == "y")
+            {
+                resultStatus = true;
+            }
+            foundAnimals = animals.Where(m => (m.IsImmunized == resultStatus)).ToList();
+            UI.DisplayAnimals(foundAnimals);
+            EditAnimalFromList(foundAnimals);
+        }
+
+        public void SearchByAdoption(string adoptionToSearch)
+        {
+            List<Animal> animals = database.GetAllAnimals();
+            List<Animal> foundAnimals;
+            bool resultStatus = false;
+            if (adoptionToSearch == "y")
+            {
+                resultStatus = true;
+            }
+            foundAnimals = animals.Where(m => (m.IsAdopted == resultStatus)).ToList();
+            UI.DisplayAnimals(foundAnimals);
+            EditAnimalFromList(foundAnimals);
+        }
+
+        public void SearchByMaxPrice(string maxPrice)
+        {
+            List<Animal> animals = database.GetAllAnimals();
+            List<Animal> foundAnimals;
+            foundAnimals = animals.Where(m => (m.Price < Convert.ToDouble(maxPrice) )).ToList();
+            UI.DisplayAnimals(foundAnimals);
+            EditAnimalFromList(foundAnimals);
+        }
+
         public void EditAnimal(Animal animal)
         {
             UI.DisplayPageHeader(String.Format("Edit Animal"));

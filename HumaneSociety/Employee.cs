@@ -114,11 +114,26 @@ namespace HumaneSociety
                     break;
                 case ("2"):
                     string speciesToSearch = UI.GetSpeciesName();
-                    SearchByName(speciesToSearch);
+                    SearchBySpecies(speciesToSearch);
+                    StartFlow();
+                    break;
+                case ("3"):
+                    string immunizationToSearch = UI.GetImmunizationStatus(true);
+                    SearchByImmunization(immunizationToSearch);
+                    StartFlow();
+                    break;
+                case ("4"):
+                    string priceMax = UI.GetAnimalPrice(true);
+                    SearchByMaxPrice(priceMax);
                     StartFlow();
                     break;
                 case ("5"):
                     SearchByMultipleCriteria();
+                    StartFlow();
+                    break;
+                case ("6"):
+                    string adoptionToSearch = UI.GetAdoptionStatus();
+                    SearchByAdoption(adoptionToSearch);
                     StartFlow();
                     break;
                 case ("m"):

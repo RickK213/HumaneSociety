@@ -224,7 +224,7 @@ namespace HumaneSociety
             menuOptions.Append("1: Search by Animal Name\n");
             menuOptions.Append("2: Search by Species\n");
             menuOptions.Append("3: Search by Immunization Status\n");
-            menuOptions.Append("4: Search by Price\n");
+            menuOptions.Append("4: Search by Maximum Price\n");
             menuOptions.Append("5: Search by Multiple Criteria\n");
             if (role == "employee")
             {
@@ -245,6 +245,11 @@ namespace HumaneSociety
             return GetValidUserOption("", menuNumbers);
         }
 
+        public static string GetAdoptionStatus()
+        {
+            return (GetValidUserOption("'y' will search for adopted animals. 'n' will search for non-adopted animals", new List<string> {"y", "n" }));
+        }
+
         public static string GetImmunizationStatus(bool isSearchingAnimal)
         {
             if (!isSearchingAnimal)
@@ -253,7 +258,7 @@ namespace HumaneSociety
             }
             else
             {
-                Console.WriteLine("\nLimit search to immunized animals?");
+                Console.WriteLine("\nEnter 'y' to search for immunized animals or 'n' to search for non-immunized animals.");
             }
             return GetValidUserOption("", new List<string> {"y", "n"});
         }
@@ -391,17 +396,19 @@ namespace HumaneSociety
 
         public static void DisplayAnimals(List<Animal> animals)
         {
+            DisplayPageHeader("Animals Found");
             foreach (Animal animal in animals)
             {
                 DisplaySingleAnimal(animal);
             }
-            Console.WriteLine("Enter an Animal ID to edit animal.");
         }
 
         public static string GetAnimalToEdit(List<Animal> animals)
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Enter an Animal ID to edit that animal.");
             Console.WriteLine("Or press enter to return to main menu");
+            Console.ResetColor();
             List<string> validIDs = new List<string>();
             foreach (Animal animal in animals)
             {
