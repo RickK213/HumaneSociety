@@ -207,27 +207,94 @@ namespace HumaneSociety
             }
         }
 
+        //public void ListAnimals()
+        //{
+        //    List<Animal> animals = database.SearchAnimals();
+        //    var immunizedAnimals = animals.Where(m => m.IsImmunized == true).OrderBy(m => m.AnimalID);
+        //    foreach (Animal animal in immunizedAnimals)
+        //    {
+        //        Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + (animal.IsImmunized ? " is immunized" : " is not immunized"));
+        //    }
+        //    //ask if employee would like to immunize
+        //    Console.WriteLine("Enter animal ID to confirm they're immunized.");
+        //    userInput = Console.ReadLine();
+        //    bool willImmunize = false;
+        //    database.ChangeSingleValue("Animals", "HasShots", (willImmunize ? 1 : 0), "AnimalID", Convert.ToInt32(userInput));
+
+        //    animals = database.SearchAnimals();
+        //    immunizedAnimals = animals.Where(m => m.IsImmunized == false).OrderBy(m => m.AnimalID);
+        //    foreach (Animal animal in immunizedAnimals)
+        //    {
+        //        Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + (animal.IsImmunized ? " is immunized" : " is not immunized"));
+        //    }
+        //    //test to see if animals are returned
+        //}
+
         public void ListAnimals()
         {
-            List<Animal> animals = database.SearchAnimals();
-            var immunizedAnimals = animals.Where(m => m.IsImmunized == true).OrderBy(m => m.AnimalID);
-            foreach (Animal animal in immunizedAnimals)
+            UI.DisplayPageHeader("All Animals");
+            List<Animal> animals = database.GetAllAnimals();
+            if ( animals.Count > 0)
             {
-                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + (animal.IsImmunized ? " is immunized" : " is not immunized"));
+                foreach (Animal animal in animals)
+                {
+                    Console.WriteLine("Animal ID: {0} | Name: {1} | Species: {2} | Room Number: {3} | Adoption Status: {4} | Immunization Status | {5} | Food Per Week (ounces): {6} | Price: {7:C2}", animal.AnimalID, animal.Name, animal.Species, animal.RoomNumber, animal.IsAdopted.ToString(), animal.IsImmunized.ToString(), animal.OunceFoodPerWeek, animal.Price);
+                }
+                Console.WriteLine("Enter an Animal ID to edit animal.");
+                Console.ReadKey();
             }
-            //ask if employee would like to immunize
-            Console.WriteLine("Enter animal ID to confirm they're immunized.");
-            userInput = Console.ReadLine();
-            bool willImmunize = false;
-            database.ChangeSingleValue("Animals", "HasShots", (willImmunize ? 1 : 0), "AnimalID", Convert.ToInt32(userInput));
+            else
+            {
+                Console.WriteLine("No animals in database. Press any key to return to main menu.");
+                Console.ReadKey(true);
+                return;
+            }
+        }
 
-            animals = database.SearchAnimals();
-            immunizedAnimals = animals.Where(m => m.IsImmunized == false).OrderBy(m => m.AnimalID);
-            foreach (Animal animal in immunizedAnimals)
+        public void SearchByMultipleCriteria()
+        {
+            bool isSearchingByName = false;
+            bool isSearchingBySpecies = false;
+            bool isSearchingByImmunization = false;
+            bool isSearchingByPrice = false;
+            bool isSearchingByAdoptionStatus = false;
+
+            string nameToSearch = null;
+            string speciesToSearch = null;
+            bool statusOfImmunization = false;
+            double priceAmountToSearch = 0;
+            bool animalIsAdopted = false;
+
+            //PUT THE NEXT 5 OR SO LINES IN UI?
+            UI.DisplayPageHeader("Search by Multiple Criteria");
+            Console.WriteLine("Enter the criteria you would like to search for seperated by a comma.");
+            Console.WriteLine("Options include 'name', 'species', 'immunization', 'price'");
+            Console.WriteLine("Example: price,name,species");
+            string sampleInput = "price,name,species";
+            //strip all spaces
+            //split sampleInput into array or list seperated at the comma.
+            Console.ReadKey();
+
+            //TO DO: put the below into method?
+
+            List<Animal> animals = database.GetAllAnimals();
+            List<Animal> foundAnimals;
+            foundAnimals = animals.Where(
+                m =>
+                (isSearchingByName ? m.Name == nameToSearch : m.Name != null) &&
+                (isSearchingBySpecies ? m.Species == speciesToSearch : m.Species != null) &&
+                (isSearchingByImmunization ? m.IsImmunized == statusOfImmunization : m.IsImmunized != null) &&
+                (isSearchingByPrice ? m.Price < priceAmountToSearch : m.Price > 0) &&
+                (isSearchingByAdoptionStatus ? m.IsAdopted == animalIsAdopted : m.IsAdopted != null)
+                ).OrderBy(m => m.AnimalID).ToList();
+
+            //TO DO: Write method in UI to display a list of animals
+            foreach (Animal animal in foundAnimals)
             {
-                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + (animal.IsImmunized ? " is immunized" : " is not immunized"));
+                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + " was found using the search criteria entered.");
             }
-            //test to see if animals are returned
+
+
         }
     }
 }

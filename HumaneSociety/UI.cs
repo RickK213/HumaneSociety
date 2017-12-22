@@ -217,6 +217,34 @@ namespace HumaneSociety
             }
         }
 
+
+        static string GetSearchMenu(string role)
+        {
+            StringBuilder menuOptions = new StringBuilder();
+            menuOptions.Append("1: Search by Animal Name\n");
+            menuOptions.Append("2: Search by Species\n");
+            menuOptions.Append("3: Search by Immunization Status\n");
+            menuOptions.Append("4: Search by Price\n");
+            menuOptions.Append("5: Search by Multiple Criteria\n");
+            if (role == "employee")
+            {
+                menuOptions.Append("6: Search by Adoption Status\n");
+            }
+            menuOptions.Append("m: Return to Main Menu\n");
+            menuOptions.Append("q: Quit Application");
+            return menuOptions.ToString();
+        }
+
+        public static string GetSearchOption(string role)
+        {
+            DisplayPageHeader("Search Animals");
+            string menuOptions = GetSearchMenu(role);
+            DisplayMenu(menuOptions);
+            List<string> menuNumbers = GetMenuNumbers(menuOptions);
+            DisplayMenuHeader();
+            return GetValidUserOption("", menuNumbers);
+        }
+
         public static string GetImmunizationStatus(bool isSearchingAnimal)
         {
             if (!isSearchingAnimal)
