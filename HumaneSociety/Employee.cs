@@ -86,7 +86,7 @@ namespace HumaneSociety
             }
             else
             {
-                UI.GetAnyKeyToContinue("No adopters in database. Press any key to return to main menu.");
+                UI.GetAnyKeyToContinue("No adopters found. Press any key to return to main menu.");
                 return;
             }
         }
@@ -123,6 +123,7 @@ namespace HumaneSociety
                     {
                         EditAnimalFromList(foundAnimals);
                     }
+                    UI.DisplayNoAnimalsFound();
                     StartFlow();
                     break;
                 case ("6"):

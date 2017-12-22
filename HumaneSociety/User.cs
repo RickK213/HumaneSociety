@@ -241,7 +241,15 @@ namespace HumaneSociety
                     StartFlow();
                     break;
                 case ("5"):
-                    SearchByMultipleCriteria();
+                    List<Animal> animalsFound = SearchByMultipleCriteria();
+                    if(animalsFound.Count > 0)
+                    {
+                        UI.GetAnyKeyToContinue("Press any key to return to main menu.");
+                    }
+                    else
+                    {
+                        UI.DisplayNoAnimalsFound();
+                    }
                     StartFlow();
                     break;
                 case ("m"):
@@ -340,7 +348,6 @@ namespace HumaneSociety
                 List<Animal> animals = database.GetAllAnimals();
                 if (animals.Count == 0)
                 {
-                    UI.DisplayNoAnimalsFound();
                     return animals;
                 }
                 List<Animal> foundAnimals;

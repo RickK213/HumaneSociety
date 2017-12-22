@@ -52,6 +52,7 @@ namespace HumaneSociety
 
         public List<User> RetrieveUsers()
         {
+            List<User> adoptersSearched = new List<User>();
             try
             {
                 SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
@@ -59,7 +60,6 @@ namespace HumaneSociety
                 mySqlConnection.Open();
                 myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
 
-                List<User> adoptersSearched = new List<User>();
                 while (myDataReader.Read())
                 {
                     User adopter = new Adopter();
@@ -89,7 +89,7 @@ namespace HumaneSociety
             {
 
             }
-            return null;
+            return adoptersSearched;
         }
 
         /// <summary>
