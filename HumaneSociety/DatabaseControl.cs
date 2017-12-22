@@ -161,25 +161,14 @@ namespace HumaneSociety
 
             return values;
         }
-        //SqlDataReader myDataReader = null;
-        //SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
-        //SqlCommand mySqlCommand = new SqlCommand("SELECT AddressID FROM  hs.Addresses WHERE Street1 = '" + streetAddress + "' AND CityID = '" + cityID + "' AND StateID = '" + stateID + "' AND ZipCodeID = '" + zipCodeID + "';", mySqlConnection);
-        //mySqlConnection.Open();
-        //    myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
-
-        //    List<int> tableIDs = new List<int>();
-        //    while (myDataReader.Read())
-        //    {
-        //        tableIDs.Add(myDataReader.GetInt32(0));
-        //    }
-        //    if (tableIDs.Count > 0)
-        //    {
-        //        return tableIDs[0];
-        //    }
-
-        public void ChangeSingleValue<T>(string tableName, string statusToChange, T changeStatusToChange, string columnName, T columnValue)
+        /// <summary>
+        /// Changes a single value on the specified data table.  Arguments 2 and 3 are where the data will be changed.  Arguments 4 and 5 are what specifies WHERE it will change.
+        /// </summary>
+        /// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
+        /// <returns>My result</returns>
+        public void ChangeSingleValue<T>(string tableName, string columnValueToChange, T valueToInsert, string columnToVerifyWith, T verifyColumnValue)
         {
-            string queryToLaunch = "UPDATE hs." + tableName + " SET " + statusToChange + " = " + changeStatusToChange + " WHERE " + columnName + " = " + columnValue + ";";
+            string queryToLaunch = "UPDATE hs." + tableName + " SET " + columnValueToChange + " = " + valueToInsert + " WHERE " + columnToVerifyWith + " = " + verifyColumnValue + ";";
             using (SqlConnection openCon = new SqlConnection(connectionUsed))
             {
                 using (SqlCommand querySaveStaff = new SqlCommand(queryToLaunch))
@@ -193,74 +182,10 @@ namespace HumaneSociety
                 }
             }
         }
-        ///// <summary>
-        ///// Returns type DataTable.  To get specific value, after method call enter '.Rows[i][i]'.  Add .ToString() to the end to make it a string (if it's a string-able value) 
-        ///// </summary>
-        ///// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
-        ///// <returns>My result</returns>
-        //public DataTable GetOneOrMoreValues<T>(string columnNameOne, string tableName, string columnNameTwo, T searchValue)
-        //{
-        //    conn.Close();
-        //    conn.Open();
-        //    databaseCommand = new SqlDataAdapter("SELECT " + columnNameOne + " FROM hs." + tableName + " WHERE " + columnNameTwo + " = " + searchValue, conn);
-        //    fillerTable = new DataTable();
-        //    databaseCommand.Fill(fillerTable);
-        //    conn.Close();
-
-        //    return fillerTable;
-        //}
-        ///// <summary>
-        ///// Returns type DataTable.  Returns all data or column-specific data based on columnNameOne entry.
-        ///// </summary>
-        ///// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
-        ///// <returns>My result</returns>
-        //public DataTable GetAllValues(string columnNameOne, string tableName)
-        //{
-        //    conn.Close();
-        //    conn.Open();
-        //    databaseCommand = new SqlDataAdapter("SELECT " + columnNameOne + " FROM hs." + tableName, conn);
-        //    fillerTable = new DataTable();
-        //    databaseCommand.Fill(fillerTable);
-        //    conn.Close();
-
-        //    return fillerTable;
-        //}
-
         public void ScanList<T>(List<T> scannedList)
         {
 
         }
-        //public string GetLeaderboard()
-        //{
-
-        //    SqlDataReader myDataReader = null;
-
-        //    //SqlConnection mySqlConnection = new SqlConnection(connectionString);
-        //    mySqlCommand = new SqlCommand("SELECT TOP 5 Player_Name, Total_Profit FROM ls.High_Scores ORDER BY Total_Profit DESC;", mySqlConnection);
-        //    mySqlConnection.Open();
-        //    myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
-
-        //    List<string> playerNames = new List<string>();
-        //    List<double> playerScores = new List<double>();
-        //    while (myDataReader.Read())
-        //    {
-        //        playerNames.Add(myDataReader.GetString(0));
-        //        playerScores.Add(myDataReader.GetDouble(1));
-        //    }
-        //    // Always call Close when done reading.
-        //    myDataReader.Close();
-        //    // Close the connection when done with it.
-        //    mySqlConnection.Close();
-
-        //    string leaderboard = "L E A D E R B O A R D\n";
-        //    leaderboard += "=====================\n\n";
-        //    for (int i = 0; i < playerNames.Count; i++)
-        //    {
-        //        leaderboard += (i + 1) + ": " + playerNames[i] + "\n   ";
-        //        leaderboard += playerScores[i].ToString("C2") + "\n\n";
-        //    }
-        //    return leaderboard;
-        //}
         public void AddAnimal(Animal animal)   //put arguments here to add full adoptable animal to database
         {
 

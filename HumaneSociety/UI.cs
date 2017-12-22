@@ -257,6 +257,13 @@ namespace HumaneSociety
             }
             return GetValidUserOption("", new List<string> {"y", "n"});
         }
+        public static string CheckMultipleOptions(List<string> searchOptions)
+        {
+            
+            Console.WriteLine("\nLimit search to immunized animals?");
+            
+            return GetValidUserOption("", new List<string> { "y", "n" });
+        }
 
         public static void DisplayMenuHeader()
         {
