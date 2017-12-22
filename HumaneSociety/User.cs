@@ -347,6 +347,15 @@ namespace HumaneSociety
             EditAnimalFromList(foundAnimals);
         }
 
+        public void SearchBySpecies(string speciesToSearch)
+        {
+            List<Animal> animals = database.GetAllAnimals();
+            List<Animal> foundAnimals;
+            foundAnimals = animals.Where(m => (m.Species.ToLower() == speciesToSearch.ToLower())).ToList();
+            UI.DisplayAnimals(foundAnimals);
+            EditAnimalFromList(foundAnimals);
+        }
+
         public void EditAnimal(Animal animal)
         {
             UI.DisplayPageHeader(String.Format("Edit Animal"));

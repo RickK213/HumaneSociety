@@ -379,6 +379,11 @@ namespace HumaneSociety
             return userInput;
         }
 
+        public static string GetSpeciesName()
+        {
+            return (GetValidUserOption("Enter a species:", new List<string> {"cat", "dog", "bird", "rabbit", "ferret" }));
+        }
+
         public static void DisplaySingleAnimal(Animal animal)
         {
             Console.WriteLine("Animal ID: {0} | Name: {1} | Species: {2} | Room Number: {3}\nAdoption Status: {4} | Immunization Status: {5}\nFood Per Week (ounces): {6} | Price: {7:C2}\n-----------------------------------", animal.AnimalID, animal.Name, animal.Species, animal.RoomNumber, animal.IsAdopted.ToString(), animal.IsImmunized.ToString(), animal.OunceFoodPerWeek, animal.Price);

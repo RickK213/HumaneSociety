@@ -112,6 +112,11 @@ namespace HumaneSociety
                     SearchByName(nameToSearch);
                     StartFlow();
                     break;
+                case ("2"):
+                    string speciesToSearch = UI.GetSpeciesName();
+                    SearchByName(speciesToSearch);
+                    StartFlow();
+                    break;
                 case ("5"):
                     SearchByMultipleCriteria();
                     StartFlow();
