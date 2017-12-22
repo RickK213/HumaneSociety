@@ -46,7 +46,7 @@ CREATE TABLE hs.Addresses (
 	AddressID int IDENTITY(1,1) PRIMARY KEY,
 	Street1 varchar(100) NOT NULL,
 	CityID int,
-	FOREIGN KEY (AddressID) REFERENCES hs.Cities(CityID),
+	FOREIGN KEY (CityID) REFERENCES hs.Cities(CityID),
 	StateID int,
 	FOREIGN KEY (StateID) REFERENCES hs.States(StateID),
 	ZipCodeID int,

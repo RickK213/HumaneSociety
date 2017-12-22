@@ -248,7 +248,7 @@ namespace HumaneSociety
             conn.Close();
         }
 
-        int GetDuplicateStateID(string streetAddress, int cityID, int stateID, int zipCodeID)
+        int GetDuplicateAddressID(string streetAddress, int cityID, int stateID, int zipCodeID)
         {
             SqlDataReader myDataReader = null;
             SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
@@ -270,7 +270,7 @@ namespace HumaneSociety
 
         int GetIDSaveAddress(string streetAddress, int cityID, int stateID, int zipCodeID)
         {
-            int duplicateID = GetDuplicateStateID(streetAddress, cityID, stateID, zipCodeID);
+            int duplicateID = GetDuplicateAddressID(streetAddress, cityID, stateID, zipCodeID);
             if (duplicateID > 0)
             {
                 return duplicateID;
