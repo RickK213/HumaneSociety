@@ -48,6 +48,7 @@ namespace HumaneSociety
                     break;
                 case ("3"):
                     ListAnimals();
+                    StartFlow();
                     break;
                 case ("4"):
                     SearchAdopters();
@@ -87,39 +88,43 @@ namespace HumaneSociety
         }
         public override void SearchAnimals()
         {
-            //turn true if user enters a search option
-            bool isSearchingByName = false;
-            bool isSearchingBySpecies = false;
-            bool isSearchingByImmunization = true;
-            bool isSearchingByPrice = false;
-            bool isSearchingByAdoptionStatus = true;
-            //add method to check Adopter's HasPaid status
-            bool isSearchingByPaymentStatus = false;
-            //
+            userInput = UI.GetSearchOption(role);
 
-            //user specified search variables
-            string nameToSearch = "Oreo";   //do .ToLower() later on to keep it lower case
-            string speciesToSearch = "dog";
-            bool statusOfImmunization = true;
-            double priceAmountToSearch = 113.09;
-            bool animalIsAdopted = false;
-            //add method to check Adopter's HasPaid status
-            bool adopterHasPayed = false;
-            //
-            List<Animal> animals = database.SearchAnimals();
-            var searchedAnimals = animals.Where(
-                m =>
-                (isSearchingByName ? m.Name == nameToSearch : m.Name != null) &&
-                (isSearchingBySpecies ? m.Species == speciesToSearch : m.Species != null) &&
-                (isSearchingByImmunization ? m.IsImmunized == statusOfImmunization : m.IsImmunized != null) &&
-                (isSearchingByPrice ? m.Price < priceAmountToSearch : m.Price > 0) &&
-                (isSearchingByAdoptionStatus ? m.IsAdopted == animalIsAdopted : m.IsAdopted != null)
-                ).OrderBy(m => m.AnimalID);
-            foreach (Animal animal in searchedAnimals)
+            //bool adopterHasPayed;
+
+            //menuOptions.Append("1: Search by Animal Name\n");
+            //menuOptions.Append("2: Search by Species\n");
+            //menuOptions.Append("3: Search by Immunization Status\n");
+            //menuOptions.Append("4: Search by Price\n");
+            //menuOptions.Append("5: Search by Multiple Criteria\n");
+            //if (role == "employee")
+            //{
+            //    menuOptions.Append("6: Search by Adoption Status\n");
+            //}
+            //menuOptions.Append("m: Return to Main Menu\n");
+            //menuOptions.Append("q: Quit Application");
+
+            switch (userInput)
             {
-                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + " was found using the search criteria entered.");
+                case ("1"):
+                    //isSearchingByName = true;
+                    //nameToSearch = UI.GetAnimalName(false);
+                    //StartFlow();
+                    break;
+                case ("5"):
+                    SearchByMultipleCriteria();
+                    StartFlow();
+                    break;
+                case ("m"):
+                    StartFlow();
+                    break;
+                case ("q"):
+                    Environment.Exit(-1);
+                    break;
             }
+
         }
+
         public void SetAnimalRoomNumber(bool allowNone)
         {
             userInput = UI.GetAnimalRoomNumber(allowNone);

@@ -406,6 +406,54 @@ namespace HumaneSociety
             SaveProfileData(user.Name, user.Email, addressID, false);
         }
 
+
+        string GetSpecies(int speciesID)
+        {
+            SqlDataReader myDataReader = null;
+            SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
+            SqlCommand mySqlCommand = new SqlCommand("SELECT SpeciesName FROM hs.Species WHERE SpeciesID = " + speciesID + ";", mySqlConnection);
+            mySqlConnection.Open();
+            myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+            string speciesName = "";
+            while (myDataReader.Read())
+            {
+                speciesName = myDataReader.GetString(0);
+            }
+            myDataReader.Close();
+            conn.Close();
+            return speciesName;
+        }
+
+        public List<Animal> GetAllAnimals()
+        {
+            SqlDataReader myDataReader = null;
+            SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
+            SqlCommand mySqlCommand = new SqlCommand("SELECT * FROM hs.Animals;", mySqlConnection);
+            mySqlConnection.Open();
+            myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+            List<Animal> animals = new List<Animal>();
+            while (myDataReader.Read())
+            {
+                string species = GetSpecies(myDataReader.GetInt32(2));
+                Animal animal = animalFactory.CreateAnimal(species);
+                animal.AnimalID = myDataReader.GetInt32(0);
+                animal.Name = myDataReader.GetString(1);
+                animal.RoomNumber = myDataReader.GetInt32(3);
+                animal.IsAdopted = myDataReader.GetBoolean(4);
+                animal.IsImmunized = myDataReader.GetBoolean(5);
+                animal.Price = myDataReader.GetDouble(6);
+                animal.OunceFoodPerWeek = myDataReader.GetInt32(7);
+                animals.Add(animal);
+            }
+            myDataReader.Close();
+            conn.Close();
+            if ( animals.Count == 0 )
+            {
+                return null;
+            }
+            return animals;
+        }
+
         public int GetDuplicateID<T>(T valueToCheckFor, string IDName, string tableName, string columnName)
         {
             SqlDataReader myDataReader = null;
