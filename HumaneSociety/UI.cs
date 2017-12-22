@@ -130,7 +130,15 @@ namespace HumaneSociety
                 Console.WriteLine(" (or leave blank)");
             }
             Console.WriteLine(":");
-            return Console.ReadLine();
+            string name = Console.ReadLine();
+            if (name.Length==0 && !allowNone)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You must enter an animal name.");
+                Console.ResetColor();
+                return GetAnimalName(allowNone);
+            }
+            return name;
         }
 
         public static string GetFoodPerWeek(bool allowNone)
@@ -143,7 +151,7 @@ namespace HumaneSociety
             Console.WriteLine(":");
             string userInput = Console.ReadLine();
             int foodPerWeek;
-            if (!int.TryParse(userInput, out foodPerWeek))
+            if ( (!int.TryParse(userInput, out foodPerWeek)) && !allowNone)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Please enter an integer!");
@@ -167,6 +175,10 @@ namespace HumaneSociety
                 Console.WriteLine("Enter the maximum price for your search (i.e. 45.50)");
             }
             string userInput = Console.ReadLine();
+            if ( isSearchingAnimal && userInput.Length==0 )
+            {
+                return userInput;
+            }
             double animalPrice;
             if (!double.TryParse(userInput, out animalPrice))
             {
@@ -247,7 +259,6 @@ namespace HumaneSociety
             Console.WriteLine();
         }
 
-
         static string GetMainMenu(string role)
         {
             StringBuilder menuOptions = new StringBuilder();
@@ -258,6 +269,7 @@ namespace HumaneSociety
                 menuOptions.Append("3: List All Animals\n");
                 menuOptions.Append("4: Search Adopters\n");
                 menuOptions.Append("5: List All Adopters\n");
+                menuOptions.Append("6: Import Animals from CSV\n");
             }
             else
             {
