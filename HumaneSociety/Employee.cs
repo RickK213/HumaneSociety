@@ -13,6 +13,7 @@ namespace HumaneSociety
         //member variables
         CSVReader csvReader;
 
+        //constructor
         public Employee()
         {
 
@@ -20,9 +21,10 @@ namespace HumaneSociety
             csvReader = new CSVReader();
         }
 
+        //member methods
         public void AddAnimalToDatabase()
         {
-            SetAnimal(false, "Add an animal");    //override method if necessary
+            SetAnimal(false, "Add an animal");
             SetAnimalName(false);
             SetAnimalRoomNumber(false);
             SetAnimalImmunizationStatus(false);
@@ -42,7 +44,6 @@ namespace HumaneSociety
 
         public override void StartFlow()
         {
-            //Main menu
             string userInput = UI.GetMainMenuOptions(role);
             
             switch (userInput)
@@ -74,16 +75,6 @@ namespace HumaneSociety
 
         }
 
-        public void SearchAdopters()
-        {
-            List<User> adopters = database.RetrieveUsers();
-            EditAdopterFromList(adopters);
-
-            //send list of adopters to specified search and code to use: 
-            //check hasPaid: var scan = adopters.Where(m => m.HasPaid == 0);
-            //check if they adopted an animal: var scan = adopters.Where(m => m.AnimalAdopted > 0);
-        }
-
         void ListAdopters()
         {
             UI.DisplayPageHeader("All Adopters");
@@ -100,28 +91,9 @@ namespace HumaneSociety
             }
         }
 
-        public void SearchByAdoptionStatus()
-        {
-            //if userInput == 0 true, 1 false; = true/false
-            animal.IsAdopted = false;
-        }
         public override void SearchAnimals()
         {
             userInput = UI.GetSearchOption(role);
-
-            //bool adopterHasPayed;
-
-            //menuOptions.Append("1: Search by Animal Name\n");
-            //menuOptions.Append("2: Search by Species\n");
-            //menuOptions.Append("3: Search by Immunization Status\n");
-            //menuOptions.Append("4: Search by Price\n");
-            //menuOptions.Append("5: Search by Multiple Criteria\n");
-            //if (role == "employee")
-            //{
-            //    menuOptions.Append("6: Search by Adoption Status\n");
-            //}
-            //menuOptions.Append("m: Return to Main Menu\n");
-            //menuOptions.Append("q: Quit Application");
 
             switch (userInput)
             {

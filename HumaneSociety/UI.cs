@@ -455,6 +455,5 @@ namespace HumaneSociety
             GetAnyKeyToContinue("No animals found. Press any key to return to main menu.");
         }
 
-
     }
 }

@@ -100,6 +100,7 @@ namespace HumaneSociety
 
         }
 
+        //member methods
         void CreateProfile()
         {
             UI.DisplayPageHeader("Create Profile");
@@ -115,7 +116,6 @@ namespace HumaneSociety
 
         public virtual void StartFlow()
         {
-            //Main menu
             string userInput = UI.GetMainMenuOptions(role);
 
             switch (userInput)
@@ -191,32 +191,10 @@ namespace HumaneSociety
 
         public void SetAnimalPrice(bool allowNone)
         {
-            //verify userInput is a money number before converting
             userInput = UI.GetAnimalPrice(allowNone);
             animal.Price = Convert.ToDouble(userInput);
         }
-        public void ScanDatabase()
-        {
-            try
-            {
-                //if(species.Species != null)
-                //add to database scan species.species
-                //if(species.Name != null)
-                //add to database scan species.Name;
-                //if(species.IsAdopted != null)
-                //add to database scan species.IsAdopted;
-                //if(species.IsImmunized != null)
-                //add to database scan species.IsImmunized;
-                //if(species.Price != null)
-                //add to database scan species.Price;
-                //inform user of searched attributes
-                //show user results from database if any
-            }
-            catch
-            {
 
-            }
-        }
         public void SetAnimalFoodPerWeek(bool allowNone)
         {
             userInput = UI.GetFoodPerWeek(allowNone);
@@ -293,13 +271,12 @@ namespace HumaneSociety
             double priceAmountToSearch = 0;
             bool animalIsAdopted = false;
 
-            //PUT THE NEXT 5 OR SO LINES IN UI?
+            //TO DO: PUT THE NEXT 5 OR SO LINES IN UI?
             UI.DisplayPageHeader("Search by Multiple Criteria");
             Console.WriteLine("Enter the criteria you would like to search for seperated by a comma.");
             Console.WriteLine("Options include 'name', 'species', 'immunization', 'price'");
             Console.WriteLine("Example: price,name,species");
 
-            //add verification for termsToSearch
             int numberOfSearchOptionsAccepted = 0;
             string termsToSearch = Console.ReadLine();
             List<string> userSearchOptions = termsToSearch.Split(',').ToList();
@@ -308,7 +285,7 @@ namespace HumaneSociety
                 numberOfSearchOptionsAccepted += 1;
                 isSearchingByName = true;
                 Console.WriteLine("Search by name:");
-                nameToSearch = UI.GetAnimalName(false);// Console.ReadLine();
+                nameToSearch = UI.GetAnimalName(false);
             }
             if (userSearchOptions.Remove("species"))
             {
@@ -507,6 +484,7 @@ namespace HumaneSociety
                     return;
             }
         }
+
         public void EditAdopter(User user)
         {
             UI.DisplayPageHeader(String.Format("Edit Adopter"));
