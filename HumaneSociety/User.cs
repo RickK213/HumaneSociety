@@ -20,6 +20,8 @@ namespace HumaneSociety
         string city;
         string state;
         string zipCode;
+        int adoptedAnimalID;
+        bool hasPaid = false;
 
         //properties
         public string Name
@@ -56,6 +58,28 @@ namespace HumaneSociety
         {
             get { return zipCode; }
             set { zipCode = value; }
+        }
+        public int AdoptedAnimalID
+        {
+            get
+            {
+                return adoptedAnimalID;
+            }
+            set
+            {
+                adoptedAnimalID = value;
+            }
+        }
+
+        public bool HasPaid {
+            get
+            {
+                return hasPaid;
+            }
+            set
+            {
+                hasPaid = value;
+            }
         }
 
         //constructor

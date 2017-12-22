@@ -56,13 +56,6 @@ namespace HumaneSociety
                 myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
 
                 //column order: name, species, room#, isAdopted, isImmunized, price, foodPerWeek
-                //List<string> animalNames = new List<string>();
-                //List<int> animalSpecies = new List<int>();
-                //List<int> animalRoom = new List<int>();
-                //List<bool> animalIsAdopted = new List<bool>();
-                //List<bool> animalIsImmunized = new List<bool>();
-                //List<double> animalPrice = new List<double>();
-                //List<int> animalFood = new List<int>();
                 List<Animal> animalsSearched = new List<Animal>();
                 while (myDataReader.Read())
                 {
@@ -80,6 +73,43 @@ namespace HumaneSociety
                 conn.Close();
 
                 return animalsSearched;
+                //Console.WriteLine("   | Name | Species | Room | Adoption Status | Immunization Status | Price | Food Per Week");
+                //for(int i = 0; i < animalNames.Count; i++)
+                //{
+                //    Console.WriteLine(i + 1 + ". {0}|{1}|{2}|{3}|{4}|{5}|{6}", animalNames[i], animalSpecies[i], animalRoom[i], animalIsAdopted[i], animalIsImmunized[i], animalPrice[i], animalFood[i]);
+                //}
+            }
+            catch
+            {
+
+            }
+            return null;
+        }
+        public List<User> SearchUsers()
+        {
+            try
+            {
+                SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
+                mySqlCommand = new SqlCommand("SELECT * FROM hs.Animals ORDER BY SpeciesID DESC", mySqlConnection); //put table name to search from, specify search
+                mySqlConnection.Open();
+                myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+
+                //column order: name, email, address, animalAdopted, HasPaid
+                List<User> adoptersSearched = new List<User>();
+                while (myDataReader.Read())
+                {
+                    User adopter = new Adopter();
+                    adopter.Name = myDataReader.GetString(0);
+                    adopter.Email = myDataReader.GetString(1);
+                    adopter.StreetAddress = myDataReader.GetInt32(2).ToString();
+                    adopter.AdoptedAnimalID = myDataReader.GetInt32(3);
+                    adopter.HasPaid = myDataReader.GetBoolean(4);
+                    adoptersSearched.Add(adopter);
+                }
+                myDataReader.Close();
+                conn.Close();
+
+                return adoptersSearched;
                 //Console.WriteLine("   | Name | Species | Room | Adoption Status | Immunization Status | Price | Food Per Week");
                 //for(int i = 0; i < animalNames.Count; i++)
                 //{
@@ -113,32 +143,23 @@ namespace HumaneSociety
         /// </summary>
         /// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
         /// <returns>My result</returns>
-        public DataTable GetAllValues(string columnNameOne, string tableName)
+        public List<string> GetAllValues(string columnNameOne, string tableName)
         {
             conn.Close();
+            SqlDataReader myDataReader = null;
+            SqlCommand mySqlCommand = new SqlCommand("SELECT " + columnNameOne + " FROM hs." + tableName, conn);
             conn.Open();
-            databaseCommand = new SqlDataAdapter("SELECT " + columnNameOne + " FROM hs." + tableName, conn);
+            myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
             fillerTable = new DataTable();
             databaseCommand.Fill(fillerTable);
+            List<string> values = new List<string>();
+            while (myDataReader.Read())
+            {
+                values.Add(myDataReader.ToString());
+            }
             conn.Close();
 
-            return fillerTable;
-        }
-        public void ChangeSingleValue<T>(string tableName, string statusToChange, T changeStatusToChange, string columnName, T columnValue)
-        {
-            string queryToLaunch = "UPDATE hs." + tableName + " SET " + statusToChange + " = " + changeStatusToChange + " WHERE " + columnName + " = " + columnValue + ";";
-            using (SqlConnection openCon = new SqlConnection(connectionUsed))
-            {
-                using (SqlCommand querySaveStaff = new SqlCommand(queryToLaunch))
-                {
-                    //try catch finally
-                    openCon.Open();
-                    querySaveStaff.Connection = openCon;
-
-                    querySaveStaff.ExecuteNonQuery();
-                    openCon.Close();
-                }
-            }
+            return values;
         }
         //SqlDataReader myDataReader = null;
         //SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
@@ -155,6 +176,56 @@ namespace HumaneSociety
         //    {
         //        return tableIDs[0];
         //    }
+
+        public void ChangeSingleValue<T>(string tableName, string statusToChange, T changeStatusToChange, string columnName, T columnValue)
+        {
+            string queryToLaunch = "UPDATE hs." + tableName + " SET " + statusToChange + " = " + changeStatusToChange + " WHERE " + columnName + " = " + columnValue + ";";
+            using (SqlConnection openCon = new SqlConnection(connectionUsed))
+            {
+                using (SqlCommand querySaveStaff = new SqlCommand(queryToLaunch))
+                {
+                    //try catch finally
+                    openCon.Open();
+                    querySaveStaff.Connection = openCon;
+
+                    querySaveStaff.ExecuteNonQuery();
+                    openCon.Close();
+                }
+            }
+        }
+        ///// <summary>
+        ///// Returns type DataTable.  To get specific value, after method call enter '.Rows[i][i]'.  Add .ToString() to the end to make it a string (if it's a string-able value) 
+        ///// </summary>
+        ///// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
+        ///// <returns>My result</returns>
+        //public DataTable GetOneOrMoreValues<T>(string columnNameOne, string tableName, string columnNameTwo, T searchValue)
+        //{
+        //    conn.Close();
+        //    conn.Open();
+        //    databaseCommand = new SqlDataAdapter("SELECT " + columnNameOne + " FROM hs." + tableName + " WHERE " + columnNameTwo + " = " + searchValue, conn);
+        //    fillerTable = new DataTable();
+        //    databaseCommand.Fill(fillerTable);
+        //    conn.Close();
+
+        //    return fillerTable;
+        //}
+        ///// <summary>
+        ///// Returns type DataTable.  Returns all data or column-specific data based on columnNameOne entry.
+        ///// </summary>
+        ///// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
+        ///// <returns>My result</returns>
+        //public DataTable GetAllValues(string columnNameOne, string tableName)
+        //{
+        //    conn.Close();
+        //    conn.Open();
+        //    databaseCommand = new SqlDataAdapter("SELECT " + columnNameOne + " FROM hs." + tableName, conn);
+        //    fillerTable = new DataTable();
+        //    databaseCommand.Fill(fillerTable);
+        //    conn.Close();
+
+        //    return fillerTable;
+        //}
+
         public void ScanList<T>(List<T> scannedList)
         {
 
