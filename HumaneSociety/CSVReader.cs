@@ -17,10 +17,10 @@ namespace HumaneSociety
         //C:\Users\Rick Kippert\Dropbox\_devCodeCamp\Assignments\week9-2-humane_society\cSharp-HumaneSociety\HumaneSociety\bin\Debug
 
         //Relative path:
-        //../../../animals.csv
+        ../../../animals.csv
 
         //member variables
-        string filePath = @"../../../animals.csv";
+        //string filePath = @"../../../animals.csv";
 
         //Test CSVs:
         //string filePath = @"../../../animals-one_empty_field.csv";
@@ -40,17 +40,18 @@ namespace HumaneSociety
         //member methods
         public void Start()
         {
+            UI.DisplayPageHeader("Import animals from CSV");
             bool fileExists = File.Exists(filePath);
             if (fileExists)
             {
-                Console.WriteLine("Good News! The file at the relative path: " + filePath + " exists!\nPress any key to import the CSV into your database!");
-                Console.ReadKey();
+                Console.WriteLine("\nGood News! The file at the relative path: " + filePath + " exists!\nPress any key to import the CSV into your database!");
+                Console.ReadKey(true);
                 ImportCSV();
             }
             else
             {
-                Console.WriteLine("Sorry. I could not find the file {0}.\nPress Any Key to quit the application, add the 'animals.csv' file and try again!", filePath);
-                Console.ReadKey();
+                Console.WriteLine("\nSorry. I could not find the file {0}.\nPress Any Key to quit the application, add the 'animals.csv' file and try again!", filePath);
+                Console.ReadKey(true);
                 Environment.Exit(-1);
             }
         }
@@ -66,8 +67,6 @@ namespace HumaneSociety
 
         public bool ImportCSV()
         {
-            Console.Clear();
-
             //TO DO: ADD try, catch, finally BELOW
             List<Animal> rawAnimals = new List<Animal>();
             using (TextFieldParser parser = new TextFieldParser(filePath))
@@ -79,6 +78,12 @@ namespace HumaneSociety
                     //Each row:
                     //name	species	roomNumber	hasShots	price	foodPerWeek
                     string[] fields = parser.ReadFields();
+                    if ( fields.Any(x => x.Length==0) )
+                    {
+                        Console.WriteLine("We found an empty value in your CSV. Please check your file and try again.\nPress any key to return to main menu.");
+                        Console.ReadKey(true);
+                        return false;
+                    }
                     animal = animalFactory.CreateAnimal(fields[1]);
                     animal.Name = fields[0];
                     animal.RoomNumber = Convert.ToInt32(fields[2]);
@@ -102,7 +107,8 @@ namespace HumaneSociety
 
             if ( numberOfInvalidRows > 0 )
             {
-                Console.WriteLine("{0} rows in your CSV contained errors. Please check your file and try again.", numberOfInvalidRows);
+                Console.WriteLine("\n{0} rows in your CSV contained errors. Please check your file and try again.\nPress any key to return to main menu", numberOfInvalidRows);
+                Console.ReadKey(true);
                 return false;
             }
             else
@@ -112,7 +118,8 @@ namespace HumaneSociety
                     database.AddAnimal(animal);
                 }
             }
-            Console.WriteLine("Success! {0} animals have been imported to your database!", validAnimals.Count);
+            Console.WriteLine("\nSuccess! {0} animals have been imported to your database!\nPress any key to return to main menu.", validAnimals.Count);
+            Console.ReadKey(true);
             return true;
         }
 

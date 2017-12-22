@@ -8,11 +8,15 @@ namespace HumaneSociety
 {
     public class Employee : User
     {
-               
+
+        //member variables
+        CSVReader csvReader;
+
         public Employee()
         {
 
             role = "employee";
+            csvReader = new CSVReader();
         }
 
         public void AddAnimalToDatabase()
@@ -49,6 +53,10 @@ namespace HumaneSociety
                     break;
                 case ("5"):
                     ListAdopters();
+                    break;
+                case ("6"):
+                    csvReader.Start();
+                    StartFlow();
                     break;
                 case ("q"):
                     Environment.Exit(-1);
