@@ -164,8 +164,6 @@ namespace HumaneSociety
         /// <summary>
         /// Changes a single value on the specified data table.  Arguments 2 and 3 are where the data will be changed.  Arguments 4 and 5 are what specifies WHERE it will change.
         /// </summary>
-        /// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
-        /// <returns>My result</returns>
         public void ChangeSingleValue<T>(string tableName, string columnValueToChange, T valueToInsert, string columnToVerifyWith, T verifyColumnValue)
         {
             string queryToLaunch = "UPDATE hs." + tableName + " SET " + columnValueToChange + " = " + valueToInsert + " WHERE " + columnToVerifyWith + " = " + verifyColumnValue + ";";
@@ -186,45 +184,53 @@ namespace HumaneSociety
         {
 
         }
-        public void AddAnimal(Animal animal)   //put arguments here to add full adoptable animal to database
+        public bool AddAnimal(Animal animal)   //put arguments here to add full adoptable animal to database
         {
-
-            int roomID = GetIDSaveValue(animal.RoomNumber, "RoomID", "hs.Rooms", "RoomNumber");
-
-            string sqlQuery = "INSERT INTO hs.Animals VALUES(@Name, @SpeciesID, @RoomNumber, @IsAdopted, @HasShots, @Price, @FoodPerWeek);"; //put name of table here (dbo.HighScores) and change @'s to appropriate terms
-            using (SqlConnection openCon = new SqlConnection(connectionUsed))
+            int roomCheck = VerifyRoomIsAvailable(animal.RoomNumber);
+            if (roomCheck == animal.RoomNumber)
             {
+                return false;
+            }
+            else
+            {
+                int roomID = GetIDSaveValue(animal.RoomNumber, "RoomID", "hs.Rooms", "RoomNumber");
 
-                using (SqlCommand querySaveStaff = new SqlCommand(sqlQuery))
+                string sqlQuery = "INSERT INTO hs.Animals VALUES(@Name, @SpeciesID, @RoomNumber, @IsAdopted, @HasShots, @Price, @FoodPerWeek);"; //put name of table here (dbo.HighScores) and change @'s to appropriate terms
+                using (SqlConnection openCon = new SqlConnection(connectionUsed))
                 {
-                    //name, species, room#, isAdopted, isImmunized, price, foodPerWeek
-                    try
-                    {
-                        //
-                        openCon.Open();
-                        querySaveStaff.Connection = openCon;
-                        querySaveStaff.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = animal.Name;
-                        querySaveStaff.Parameters.Add("@SpeciesID", SqlDbType.Int).Value = animal.SpeciesID;
-                        querySaveStaff.Parameters.Add("@RoomNumber", SqlDbType.Int).Value = roomID;
-                        querySaveStaff.Parameters.Add("@IsAdopted", SqlDbType.Bit).Value = animal.IsAdopted;
-                        querySaveStaff.Parameters.Add("@HasShots", SqlDbType.Bit).Value = animal.IsImmunized;
-                        querySaveStaff.Parameters.Add("@Price", SqlDbType.Float).Value = animal.Price;
-                        querySaveStaff.Parameters.Add("@FoodPerWeek", SqlDbType.Int).Value = animal.OunceFoodPerWeek;
 
-                        querySaveStaff.ExecuteNonQuery();
-                    }
-                    catch (Exception e)
+                    using (SqlCommand querySaveStaff = new SqlCommand(sqlQuery))
                     {
-                        Console.WriteLine("An error occurred: '{0}'", e);
-                    }
-                    finally
-                    {
-                        if (openCon.State == System.Data.ConnectionState.Open)
+                        //name, species, room#, isAdopted, isImmunized, price, foodPerWeek
+                        try
                         {
-                            openCon.Close();
-                        }
-                    }
+                            //
+                            openCon.Open();
+                            querySaveStaff.Connection = openCon;
+                            querySaveStaff.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = animal.Name;
+                            querySaveStaff.Parameters.Add("@SpeciesID", SqlDbType.Int).Value = animal.SpeciesID;
+                            querySaveStaff.Parameters.Add("@RoomNumber", SqlDbType.Int).Value = roomID;
+                            querySaveStaff.Parameters.Add("@IsAdopted", SqlDbType.Bit).Value = animal.IsAdopted;
+                            querySaveStaff.Parameters.Add("@HasShots", SqlDbType.Bit).Value = animal.IsImmunized;
+                            querySaveStaff.Parameters.Add("@Price", SqlDbType.Float).Value = animal.Price;
+                            querySaveStaff.Parameters.Add("@FoodPerWeek", SqlDbType.Int).Value = animal.OunceFoodPerWeek;
 
+                            querySaveStaff.ExecuteNonQuery();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("An error occurred: '{0}'", e);
+                        }
+                        finally
+                        {
+                            if (openCon.State == System.Data.ConnectionState.Open)
+                            {
+                                openCon.Close();
+                            }
+                        }
+
+                    }
+                    return true;
                 }
             }
         }
@@ -397,6 +403,11 @@ namespace HumaneSociety
                 return tableIDs[0];
             }
             return 0;
+        }
+        private int VerifyRoomIsAvailable(int roomID)
+        {
+            int roomNumberUsed = GetDuplicateID(roomID, "RoomNumber", "hs.Rooms", "RoomNumber");
+            return roomNumberUsed;
         }
 
         int GetIDSaveValue<T>(T columnValue, string primaryKey, string tableName, string columnName)
