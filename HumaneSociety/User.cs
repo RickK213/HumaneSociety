@@ -88,9 +88,42 @@ namespace HumaneSociety
 
         }
 
+        void CreateProfile()
+        {
+            UI.DisplayPageHeader("Create Profile");
+            Name = UI.GetAdopterName();
+            Email = UI.GetAdopterEmail();
+            StreetAddress = UI.GetStreetOne();
+            City = UI.GetCity();
+            State = UI.GetState();
+            ZipCode = UI.GetZipCode();
+            database.SaveAdopter(this);
+            UI.GetAnyKeyToContinue("Profile Saved. Press any key to return to main menu.");
+        }
+
         public virtual void StartFlow()
         {
-            //do stuff that adopter sees
+            //Main menu
+            string userInput = UI.GetMainMenuOptions(role);
+
+            switch (userInput)
+            {
+                case ("1"):
+                    CreateProfile();
+                    StartFlow();
+                    break;
+                case ("2"):
+                    SearchAnimals();
+                    StartFlow();
+                    break;
+                case ("3"):
+                    ListAnimals();
+                    StartFlow();
+                    break;
+                case ("q"):
+                    Environment.Exit(-1);
+                    break;
+            }
         }
 
         public void SetAnimalName(bool allowNone)
@@ -180,55 +213,43 @@ namespace HumaneSociety
 
         public virtual void SearchAnimals()
         {
-            //turn true if user enters a search option
-            bool isSearchingByName = false;
-            bool isSearchingBySpecies = false;
-            bool isSearchingByImmunization = true;
-            bool isSearchingByPrice = true;
+            userInput = UI.GetSearchOption(role);
 
-            //user specified search variables
-            string nameToSearch = "Oreo";
-            string speciesToSearch = "dog";
-            bool statusOfImmunization = false;
-            double priceAmountToSearch = 113.09;
-            //bool isSearchingByAdoptionStatus = false;
-            //bool isSearchingByPaymentStatus = false;
-            List<Animal> animals = database.SearchAnimals();
-            var searchedAnimals = animals.Where(
-                m => 
-                (isSearchingByName ? m.Name == nameToSearch : m.Name != null) &&
-                (isSearchingBySpecies ? m.Species == speciesToSearch : m.Species != null) &&
-                (isSearchingByImmunization ? m.IsImmunized == statusOfImmunization : m.IsImmunized != null) &&
-                (isSearchingByPrice ? m.Price < priceAmountToSearch : m.Price > 0)
-                ).OrderBy(m => m.AnimalID);
-            foreach (Animal animal in searchedAnimals)
+            switch (userInput)
             {
-                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + " was found using the search criteria entered.");
+                case ("1"):
+                    string nameToSearch = UI.GetAnimalName(false);
+                    SearchByName(nameToSearch);
+                    StartFlow();
+                    break;
+                case ("2"):
+                    string speciesToSearch = UI.GetSpeciesName();
+                    SearchBySpecies(speciesToSearch);
+                    StartFlow();
+                    break;
+                case ("3"):
+                    string immunizationToSearch = UI.GetImmunizationStatus(true);
+                    SearchByImmunization(immunizationToSearch);
+                    StartFlow();
+                    break;
+                case ("4"):
+                    string priceMax = UI.GetAnimalPrice(true);
+                    SearchByMaxPrice(priceMax);
+                    StartFlow();
+                    break;
+                case ("5"):
+                    SearchByMultipleCriteria();
+                    StartFlow();
+                    break;
+                case ("m"):
+                    StartFlow();
+                    break;
+                case ("q"):
+                    Environment.Exit(-1);
+                    break;
             }
+
         }
-
-        //public void ListAnimals()
-        //{
-        //    List<Animal> animals = database.SearchAnimals();
-        //    var immunizedAnimals = animals.Where(m => m.IsImmunized == true).OrderBy(m => m.AnimalID);
-        //    foreach (Animal animal in immunizedAnimals)
-        //    {
-        //        Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + (animal.IsImmunized ? " is immunized" : " is not immunized"));
-        //    }
-        //    //ask if employee would like to immunize
-        //    Console.WriteLine("Enter animal ID to confirm they're immunized.");
-        //    userInput = Console.ReadLine();
-        //    bool willImmunize = false;
-        //    database.ChangeSingleValue("Animals", "HasShots", (willImmunize ? 1 : 0), "AnimalID", Convert.ToInt32(userInput));
-
-        //    animals = database.SearchAnimals();
-        //    immunizedAnimals = animals.Where(m => m.IsImmunized == false).OrderBy(m => m.AnimalID);
-        //    foreach (Animal animal in immunizedAnimals)
-        //    {
-        //        Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + (animal.IsImmunized ? " is immunized" : " is not immunized"));
-        //    }
-        //    //test to see if animals are returned
-        //}
 
         public void ListAnimals()
         {
@@ -336,6 +357,11 @@ namespace HumaneSociety
 
         void EditAnimalFromList(List<Animal> animals)
         {
+            if(this.role == "adopter")
+            {
+                UI.GetAnyKeyToContinue("Press any key to return to the main menu.");
+                return;
+            }
             userInput = UI.GetAnimalToEdit(animals);
             if (userInput == "")
             {
