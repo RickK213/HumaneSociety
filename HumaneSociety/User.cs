@@ -265,26 +265,28 @@ namespace HumaneSociety
             Console.WriteLine("Enter the criteria you would like to search for seperated by a comma.");
             Console.WriteLine("Options include 'name', 'species', 'immunization', 'price'");
             Console.WriteLine("Example: price,name,species");
-            string sampleInput = Console.ReadLine().ToLower();
-            List<string> userSearchOptions = sampleInput.Split(',').ToList();
+
+            //add verification for termsToSearch
+            string termsToSearch = Console.ReadLine();
+            List<string> userSearchOptions = termsToSearch.Split(',').ToList();
             if(userSearchOptions.Remove("name"))
             {
                 isSearchingByName = true;
-                Console.WriteLine("need string.  What is the name of the animal you are looking for?");
-                nameToSearch = Console.ReadLine();
+                Console.WriteLine("Search by name:");
+                nameToSearch = UI.GetAnimalName(false);// Console.ReadLine();
             }
             if (userSearchOptions.Remove("species"))
             {
                 isSearchingBySpecies = true;
-                Console.WriteLine("need string.  What is the species of animal you are looking for? (cat, dog, bird, rabbit or ferret)");
-                speciesToSearch = Console.ReadLine();
+                Console.WriteLine("Search by species:");
+                speciesToSearch = UI.GetValidUserOption("What is the species of animal you are looking for? (cat, dog, bird, rabbit or ferret)", new List<string> { "cat", "dog", "ferret", "rabbit", "bird" }); ;
             }
             if (userSearchOptions.Remove("immunization"))
             {
                 isSearchingByImmunization = true;
-                Console.WriteLine("need yes/no.  Would you like to see the animals we have that are immunized?");
-                string userInput = Console.ReadLine();
-                if (userInput == "yes")
+                Console.WriteLine("Search by immunization status:");
+                userInput = UI.GetImmunizationStatus(false);
+                if (userInput == "y")
                 {
                     statusOfImmunization = true;
                 }
@@ -297,7 +299,8 @@ namespace HumaneSociety
             {
                 isSearchingByPrice = true;
                 Console.WriteLine("need string convertable to double/float.  We can list all animals below a certain price.  What is the highest price you'd like to see?");
-                priceAmountToSearch = Convert.ToDouble(Console.ReadLine());
+                userInput = UI.GetAnimalPrice(false);
+                priceAmountToSearch = Convert.ToDouble(userInput);
             }
             //strip all spaces
             //split sampleInput into array or list seperated at the comma.
