@@ -53,6 +53,7 @@ namespace HumaneSociety
                     break;
                 case ("2"):
                     SearchAnimals();
+                    StartFlow();
                     break;
                 case ("3"):
                     ListAnimals();
@@ -60,9 +61,11 @@ namespace HumaneSociety
                     break;
                 case ("4"):
                     SearchAdopters();
+                    StartFlow();
                     break;
                 case ("5"):
                     ListAdopters();
+                    StartFlow();
                     break;
                 case ("6"):
                     csvReader.Start();
@@ -78,6 +81,7 @@ namespace HumaneSociety
         public void SearchAdopters()
         {
             List<User> adopters = database.RetrieveUsers();
+            EditAdopterFromList(adopters);
 
             //send list of adopters to specified search and code to use: 
             //check hasPaid: var scan = adopters.Where(m => m.HasPaid == 0);
@@ -91,6 +95,7 @@ namespace HumaneSociety
             if (adopters.Count > 0)
             {
                 UI.DisplayList(adopters);
+                EditAdopterFromList(adopters);
             }
             else
             {

@@ -384,6 +384,21 @@ namespace HumaneSociety
             animalToEdit = animals.Where(x => x.AnimalID.ToString() == userInput).ToList().First();
             EditAnimal(animalToEdit);
         }
+        public void EditAdopterFromList(List<User> users)
+        {
+            if (this.role == "adopter")
+            {
+                return;
+            }
+            userInput = UI.GetAdopterToEdit(users);
+            if (userInput == "")
+            {
+                return;
+            }
+            User userToEdit;
+            userToEdit = users.Where(x => x.AdopterID.ToString() == userInput).ToList().First();
+            EditAdopter(userToEdit);
+        }
 
         public void SearchByName(string nameToSearch)
         {
@@ -485,6 +500,44 @@ namespace HumaneSociety
                     changeTo = !animal.IsAdopted;
                     database.ChangeSingleValue("Animals", "IsAdopted", (changeTo ? 1 : 0), "AnimalID", animal.AnimalID);
                     UI.GetAnyKeyToContinue("Adoption status changed. Press any key to return to main menu.");
+                    return;
+                case (""):
+                    return;
+                default:
+                    return;
+            }
+        }
+        public void EditAdopter(User user)
+        {
+            UI.DisplayPageHeader(String.Format("Edit Adopter"));
+            UI.DisplaySingleObject(user);
+            Console.WriteLine("Enter 'a' to add a Animal they adopted by ID");
+            Console.WriteLine("Enter 'p' to switch payment status to {0}", !user.HasPaid);
+            Console.WriteLine("Or press enter to return to main menu");
+            userInput = UI.GetValidUserOption("", new List<string>() { "a", "p", "" });
+            bool changeTo;
+            switch (userInput)
+            {
+                case ("a"):
+                    Console.WriteLine("Enter the Animal ID for the animal that the user is adopting");
+                    //TODO validate for valid animal id
+                    userInput = Console.ReadLine();
+                    int animalID;
+                    while (!int.TryParse(userInput, out animalID))
+                    {
+                        Console.WriteLine("Enter the Animal ID for the animal that the user is adopting");
+                        userInput = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Please enter an integer.");
+                        Console.ResetColor();
+                    }
+                    database.ChangeSingleValue("Adopters", "AnimalAdoptedID", animalID, "AdopterID", user.AdopterID);
+                    UI.GetAnyKeyToContinue(String.Format("Adopted Animal ID changed to {0}. Press any key to return to main menu.",animalID));
+                    return;
+                case ("p"):
+                    changeTo = !user.HasPaid;
+                    database.ChangeSingleValue("Adopters", "HasPaid", (changeTo ? 1 : 0), "AdopterID", user.AdopterID);
+                    UI.GetAnyKeyToContinue("Payment status changed. Press any key to return to main menu.");
                     return;
                 case (""):
                     return;
