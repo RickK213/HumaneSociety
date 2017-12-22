@@ -43,6 +43,10 @@ namespace HumaneSociety
                 conn.Close();
                 connectionUsed = alexConnection;
             }
+            finally
+            {
+                conn.Close();
+            }
 
         }
 
@@ -99,12 +103,25 @@ namespace HumaneSociety
             {
                 using (SqlCommand querySaveStaff = new SqlCommand(queryToLaunch))
                 {
-                    //try catch finally
-                    openCon.Open();
-                    querySaveStaff.Connection = openCon;
+                    try
+                    {
+                        openCon.Open();
+                        querySaveStaff.Connection = openCon;
 
-                    querySaveStaff.ExecuteNonQuery();
-                    openCon.Close();
+                        querySaveStaff.ExecuteNonQuery();
+                        openCon.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("An error occurred: '{0}'", e);
+                    }
+                    finally
+                    {
+                        if (openCon.State == System.Data.ConnectionState.Open)
+                        {
+                            openCon.Close();
+                        }
+                    }
                 }
             }
         }
@@ -162,50 +179,80 @@ namespace HumaneSociety
 
         int GetDuplicateAddressID(string streetAddress, int cityID, int stateID, int zipCodeID)
         {
-            SqlDataReader myDataReader = null;
-            SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
-            SqlCommand mySqlCommand = new SqlCommand("SELECT AddressID FROM  hs.Addresses WHERE Street1 = '" + streetAddress + "' AND CityID = '" + cityID + "' AND StateID = '" + stateID + "' AND ZipCodeID = '" + zipCodeID + "';", mySqlConnection);
-            mySqlConnection.Open();
-            myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+            try
+            {
+                SqlDataReader myDataReader = null;
+                SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
+                SqlCommand mySqlCommand = new SqlCommand("SELECT AddressID FROM  hs.Addresses WHERE Street1 = '" + streetAddress + "' AND CityID = '" + cityID + "' AND StateID = '" + stateID + "' AND ZipCodeID = '" + zipCodeID + "';", mySqlConnection);
+                mySqlConnection.Open();
+                myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
 
-            List<int> tableIDs = new List<int>();
-            while (myDataReader.Read())
-            {
-                tableIDs.Add(myDataReader.GetInt32(0));
+                List<int> tableIDs = new List<int>();
+                while (myDataReader.Read())
+                {
+                    tableIDs.Add(myDataReader.GetInt32(0));
+                }
+                if (tableIDs.Count > 0)
+                {
+                    return tableIDs[0];
+                }
+                return 0;
             }
-            if (tableIDs.Count > 0)
+            catch (Exception e)
             {
-                return tableIDs[0];
+                Console.WriteLine("An error occurred: '{0}'", e);
+            }
+            finally
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    conn.Close();
+                }
             }
             return 0;
         }
 
         int GetIDSaveAddress(string streetAddress, int cityID, int stateID, int zipCodeID)
         {
-            int duplicateID = GetDuplicateAddressID(streetAddress, cityID, stateID, zipCodeID);
-            if (duplicateID > 0)
+            try
             {
-                return duplicateID;
-            }
-            using (SqlConnection connection = new SqlConnection(connectionUsed))
-            {
-                using (SqlCommand cmd = new SqlCommand("INSERT INTO hs.Addresses output INSERTED.StateID VALUES(@Street1, @CityID, @StateID, @ZipCodeID)", connection))
+                int duplicateID = GetDuplicateAddressID(streetAddress, cityID, stateID, zipCodeID);
+                if (duplicateID > 0)
                 {
-                    cmd.Parameters.AddWithValue("@Street1", streetAddress);
-                    cmd.Parameters.AddWithValue("@CityID", cityID);
-                    cmd.Parameters.AddWithValue("@StateID", stateID);
-                    cmd.Parameters.AddWithValue("@ZipCodeID", zipCodeID);
-                    connection.Open();
-
-                    int insertedID = (int)cmd.ExecuteScalar();
-
-                    if (connection.State == System.Data.ConnectionState.Open)
+                    return duplicateID;
+                }
+                using (SqlConnection connection = new SqlConnection(connectionUsed))
+                {
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO hs.Addresses output INSERTED.StateID VALUES(@Street1, @CityID, @StateID, @ZipCodeID)", connection))
                     {
-                        connection.Close();
+                        cmd.Parameters.AddWithValue("@Street1", streetAddress);
+                        cmd.Parameters.AddWithValue("@CityID", cityID);
+                        cmd.Parameters.AddWithValue("@StateID", stateID);
+                        cmd.Parameters.AddWithValue("@ZipCodeID", zipCodeID);
+                        connection.Open();
+
+                        int insertedID = (int)cmd.ExecuteScalar();
+
+                        if (connection.State == System.Data.ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                        return insertedID;
                     }
-                    return insertedID;
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred: '{0}'", e);
+            }
+            finally
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            return 0;
         }
 
         void SaveProfileData(string name, string email, int addressID, bool hasPaid, string preferedAnimalPersonality)
@@ -252,64 +299,109 @@ namespace HumaneSociety
 
         string GetSingleValueFromID(int IDNumber, string columnName, string tableName, string IDName)
         {
-            SqlDataReader myDataReader = null;
-            SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
-            SqlCommand mySqlCommand = new SqlCommand("SELECT " + columnName + " FROM " + tableName + " WHERE " + IDName + " = " + IDNumber + ";", mySqlConnection);
-            mySqlConnection.Open();
-            myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            string value = "";
-            while (myDataReader.Read())
+            try
             {
-                value = myDataReader.GetValue(0).ToString();
+                SqlDataReader myDataReader = null;
+                SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
+                SqlCommand mySqlCommand = new SqlCommand("SELECT " + columnName + " FROM " + tableName + " WHERE " + IDName + " = " + IDNumber + ";", mySqlConnection);
+                mySqlConnection.Open();
+                myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+                string value = "";
+                while (myDataReader.Read())
+                {
+                    value = myDataReader.GetValue(0).ToString();
+                }
+                myDataReader.Close();
+                conn.Close();
+                return value;
             }
-            myDataReader.Close();
-            conn.Close();
-            return value;
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred: '{0}'", e);
+            }
+            finally
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            return "";
         }
 
         public List<Animal> GetAllAnimals()
         {
-            SqlDataReader myDataReader = null;
-            SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
-            SqlCommand mySqlCommand = new SqlCommand("SELECT * FROM hs.Animals;", mySqlConnection);
-            mySqlConnection.Open();
-            myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            List<Animal> animals = new List<Animal>();
-            while (myDataReader.Read())
+            try
             {
-                string species = GetSingleValueFromID(myDataReader.GetInt32(2), "SpeciesName", "hs.Species", "SpeciesID");
-                Animal animal = animalFactory.CreateAnimal(species);
-                animal.AnimalID = myDataReader.GetInt32(0);
-                animal.Name = myDataReader.GetString(1);
-                string roomNumber = GetSingleValueFromID(myDataReader.GetInt32(3), "RoomNumber", "hs.Rooms", "RoomID");
-                animal.RoomNumber = Convert.ToInt32(roomNumber);
-                animal.IsAdopted = myDataReader.GetBoolean(4);
-                animal.IsImmunized = myDataReader.GetBoolean(5);
-                animal.Price = myDataReader.GetDouble(6);
-                animal.OunceFoodPerWeek = myDataReader.GetInt32(7);
-                animals.Add(animal);
+                SqlDataReader myDataReader = null;
+                SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
+                SqlCommand mySqlCommand = new SqlCommand("SELECT * FROM hs.Animals;", mySqlConnection);
+                mySqlConnection.Open();
+                myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+                List<Animal> animals = new List<Animal>();
+                while (myDataReader.Read())
+                {
+                    string species = GetSingleValueFromID(myDataReader.GetInt32(2), "SpeciesName", "hs.Species", "SpeciesID");
+                    Animal animal = animalFactory.CreateAnimal(species);
+                    animal.AnimalID = myDataReader.GetInt32(0);
+                    animal.Name = myDataReader.GetString(1);
+                    string roomNumber = GetSingleValueFromID(myDataReader.GetInt32(3), "RoomNumber", "hs.Rooms", "RoomID");
+                    animal.RoomNumber = Convert.ToInt32(roomNumber);
+                    animal.IsAdopted = myDataReader.GetBoolean(4);
+                    animal.IsImmunized = myDataReader.GetBoolean(5);
+                    animal.Price = myDataReader.GetDouble(6);
+                    animal.OunceFoodPerWeek = myDataReader.GetInt32(7);
+                    animals.Add(animal);
+                }
+                myDataReader.Close();
+                conn.Close();
+                return animals;
             }
-            myDataReader.Close();
-            conn.Close();
-            return animals;
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred: '{0}'", e);
+            }
+            finally
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            return null;
         }
 
         public int GetDuplicateID<T>(T valueToCheckFor, string IDName, string tableName, string columnName)
         {
-            SqlDataReader myDataReader = null;
-            SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
-            SqlCommand mySqlCommand = new SqlCommand("SELECT " + IDName + " FROM " + tableName + " WHERE " + columnName + " = '" + valueToCheckFor + "';", mySqlConnection);
-            mySqlConnection.Open();
-            myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+            try
+            {
+                SqlDataReader myDataReader = null;
+                SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
+                SqlCommand mySqlCommand = new SqlCommand("SELECT " + IDName + " FROM " + tableName + " WHERE " + columnName + " = '" + valueToCheckFor + "';", mySqlConnection);
+                mySqlConnection.Open();
+                myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
 
-            List<int> tableIDs = new List<int>();
-            while (myDataReader.Read())
-            {
-                tableIDs.Add(myDataReader.GetInt32(0));
+                List<int> tableIDs = new List<int>();
+                while (myDataReader.Read())
+                {
+                    tableIDs.Add(myDataReader.GetInt32(0));
+                }
+                if (tableIDs.Count > 0)
+                {
+                    return tableIDs[0];
+                }
+                return 0;
             }
-            if (tableIDs.Count>0)
+            catch (Exception e)
             {
-                return tableIDs[0];
+                Console.WriteLine("An error occurred: '{0}'", e);
+            }
+            finally
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    conn.Close();
+                }
             }
             return 0;
         }
@@ -322,27 +414,42 @@ namespace HumaneSociety
 
         int GetIDSaveValue<T>(T columnValue, string primaryKey, string tableName, string columnName)
         {
-            int duplicateID = GetDuplicateID(columnValue, primaryKey, tableName, columnName);
-            if (duplicateID > 0)
+            try
             {
-                return duplicateID;
-            }
-            using (SqlConnection connection = new SqlConnection(connectionUsed))
-            {
-                using (SqlCommand cmd = new SqlCommand("INSERT INTO " + tableName + " output INSERTED." + primaryKey + " VALUES(@" + columnName + ")", connection))
+                int duplicateID = GetDuplicateID(columnValue, primaryKey, tableName, columnName);
+                if (duplicateID > 0)
                 {
-                    cmd.Parameters.AddWithValue("@" + columnName  + "", columnValue);
-                    connection.Open();
-
-                    int insertedID = (int)cmd.ExecuteScalar();
-
-                    if (connection.State == System.Data.ConnectionState.Open)
+                    return duplicateID;
+                }
+                using (SqlConnection connection = new SqlConnection(connectionUsed))
+                {
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO " + tableName + " output INSERTED." + primaryKey + " VALUES(@" + columnName + ")", connection))
                     {
-                        connection.Close();
+                        cmd.Parameters.AddWithValue("@" + columnName + "", columnValue);
+                        connection.Open();
+
+                        int insertedID = (int)cmd.ExecuteScalar();
+
+                        if (connection.State == System.Data.ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                        return insertedID;
                     }
-                    return insertedID;
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred: '{0}'", e);
+            }
+            finally
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+            return 0;
         }
 
     }

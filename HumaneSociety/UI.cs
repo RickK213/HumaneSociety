@@ -407,7 +407,7 @@ namespace HumaneSociety
         }
         public static void DisplaySingleObject(User adopter)
         {
-            Console.WriteLine("Adopter ID: {0} | Name: {1} | Email: {2} | Address: {3}\nAnimal Adopted: {4}\nHas paid for animal: {5}\n-----------------------------------", adopter.AdopterID, adopter.Name, adopter.Email, adopter.StreetAddress, adopter.AdoptedAnimalID, adopter.HasPaid);
+            Console.WriteLine("Adopter ID: {0} | Name: {1} | Email: {2} | Address: {3}\nAnimal Adopted: {4}\nHas paid for animal: {5}\nPersonality: {6}\n-----------------------------------", adopter.AdopterID, adopter.Name, adopter.Email, adopter.StreetAddress, adopter.AdoptedAnimalID, adopter.HasPaid, adopter.PreferedAnimalPersonality);
         }
 
         public static void DisplayList(List<Animal> animals)
