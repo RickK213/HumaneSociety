@@ -77,7 +77,7 @@ namespace HumaneSociety
                     }
 
                     adopter.HasPaid = myDataReader.GetBoolean(5);
-                    adopter.PreferedAnimalPersonality = myDataReader.GetString(5);
+                    adopter.PreferedAnimalPersonality = myDataReader.GetString(6);
                     adoptersSearched.Add(adopter);
                 }
                 myDataReader.Close();
