@@ -14,6 +14,7 @@ namespace HumaneSociety
         public Animal animal = null;
         public string userInput;
         public string role;
+        int adopterID;
         string name;
         string email;
         string streetAddress;
@@ -24,6 +25,17 @@ namespace HumaneSociety
         bool hasPaid = false;
 
         //properties
+        public int AdopterID
+        {
+            get
+            {
+                return adopterID;
+            }
+            set
+            {
+                adopterID = value;
+            }
+        }
         public string Name
         {
             get { return name; }
@@ -257,7 +269,7 @@ namespace HumaneSociety
             List<Animal> animals = database.GetAllAnimals();
             if ( animals.Count > 0)
             {
-                UI.DisplayAnimals(animals);
+                UI.DisplayList(animals);
                 EditAnimalFromList(animals);
             }
             else
@@ -346,7 +358,7 @@ namespace HumaneSociety
                     (isSearchingByAdoptionStatus ? m.IsAdopted == animalIsAdopted : m.IsAdopted != null)
                     ).OrderBy(m => m.AnimalID).ToList();
 
-                UI.DisplayAnimals(foundAnimals);
+                UI.DisplayList(foundAnimals);
                 return foundAnimals;
             }
         }
@@ -373,7 +385,7 @@ namespace HumaneSociety
             List<Animal> animals = database.GetAllAnimals();
             List<Animal> foundAnimals;
             foundAnimals = animals.Where(m => (m.Name.ToLower() == nameToSearch.ToLower())).ToList();
-            UI.DisplayAnimals(foundAnimals);
+            UI.DisplayList(foundAnimals);
             EditAnimalFromList(foundAnimals);
         }
 
@@ -382,7 +394,7 @@ namespace HumaneSociety
             List<Animal> animals = database.GetAllAnimals();
             List<Animal> foundAnimals;
             foundAnimals = animals.Where(m => (m.Species.ToLower() == speciesToSearch.ToLower())).ToList();
-            UI.DisplayAnimals(foundAnimals);
+            UI.DisplayList(foundAnimals);
             EditAnimalFromList(foundAnimals);
         }
 
@@ -396,7 +408,7 @@ namespace HumaneSociety
                 resultStatus = true;
             }
             foundAnimals = animals.Where(m => (m.IsImmunized == resultStatus)).ToList();
-            UI.DisplayAnimals(foundAnimals);
+            UI.DisplayList(foundAnimals);
             EditAnimalFromList(foundAnimals);
         }
 
@@ -410,7 +422,7 @@ namespace HumaneSociety
                 resultStatus = true;
             }
             foundAnimals = animals.Where(m => (m.IsAdopted == resultStatus)).ToList();
-            UI.DisplayAnimals(foundAnimals);
+            UI.DisplayList(foundAnimals);
             EditAnimalFromList(foundAnimals);
         }
 
@@ -419,14 +431,14 @@ namespace HumaneSociety
             List<Animal> animals = database.GetAllAnimals();
             List<Animal> foundAnimals;
             foundAnimals = animals.Where(m => (m.Price < Convert.ToDouble(maxPrice) )).ToList();
-            UI.DisplayAnimals(foundAnimals);
+            UI.DisplayList(foundAnimals);
             EditAnimalFromList(foundAnimals);
         }
 
         public void EditAnimal(Animal animal)
         {
             UI.DisplayPageHeader(String.Format("Edit Animal"));
-            UI.DisplaySingleAnimal(animal);
+            UI.DisplaySingleObject(animal);
             Console.WriteLine("Enter 'i' to switch immunization status to {0}", !animal.IsImmunized);
             Console.WriteLine("Enter 'a' to switch addoption status to {0}", !animal.IsAdopted);
             Console.WriteLine("Or press enter to return to main menu");

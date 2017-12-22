@@ -86,7 +86,18 @@ namespace HumaneSociety
 
         void ListAdopters()
         {
-
+            UI.DisplayPageHeader("All Adopters");
+            List<User> adopters = database.RetrieveUsers();
+            if (adopters.Count > 0)
+            {
+                //UI.DisplayAnimals(adopters);
+                //EditAnimalFromList(adopters);
+            }
+            else
+            {
+                UI.GetAnyKeyToContinue("No animals in database. Press any key to return to main menu.");
+                return;
+            }
         }
 
         public void SearchByAdoptionStatus()
