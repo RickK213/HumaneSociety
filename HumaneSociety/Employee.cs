@@ -29,8 +29,15 @@ namespace HumaneSociety
             SetAnimalFoodPerWeek(false);
             SetAnimalPrice(false);
             animal.IsAdopted = false;
-            database.AddAnimal(animal);
-            UI.GetAnyKeyToContinue("Animal added to database. Press any key to return to main menu.");
+            bool isSuccessful = database.AddAnimal(animal);
+            if (isSuccessful)
+            {
+                UI.GetAnyKeyToContinue("Animal added to database. Press any key to return to main menu.");
+            }
+            else
+            {
+                UI.GetAnyKeyToContinue("Failed to add animal, room number is already occupied.  Verify the room the animal is going into isn't occupied and try again.");
+            }
         }
 
         public override void StartFlow()
@@ -128,7 +135,8 @@ namespace HumaneSociety
                     StartFlow();
                     break;
                 case ("5"):
-                    SearchByMultipleCriteria();
+                    List<Animal> foundAnimals = SearchByMultipleCriteria();
+                    EditAnimalFromList(foundAnimals);
                     StartFlow();
                     break;
                 case ("6"):

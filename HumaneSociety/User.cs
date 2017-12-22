@@ -246,7 +246,7 @@ namespace HumaneSociety
             }
         }
 
-        public void SearchByMultipleCriteria()
+        public virtual List<Animal> SearchByMultipleCriteria()
         {
             bool isSearchingByName = false;
             bool isSearchingBySpecies = false;
@@ -310,7 +310,7 @@ namespace HumaneSociety
             {
                 Console.WriteLine("None of your inputs were recognized.  Please try again.");
                 Console.ReadKey();
-                SearchByMultipleCriteria();
+                return SearchByMultipleCriteria();                
             }
             else
             {
@@ -325,16 +325,12 @@ namespace HumaneSociety
                     (isSearchingByAdoptionStatus ? m.IsAdopted == animalIsAdopted : m.IsAdopted != null)
                     ).OrderBy(m => m.AnimalID).ToList();
 
-                //TO DO: Write method in UI to display a list of animals
-                foreach (Animal animal in foundAnimals)
-                {
-                    Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + " was found using the search criteria entered.");
-                }
-                Console.ReadKey();
+                UI.DisplayAnimals(foundAnimals);
+                return foundAnimals;
             }
         }
 
-        void EditAnimalFromList(List<Animal> animals)
+        public void EditAnimalFromList(List<Animal> animals)
         {
             userInput = UI.GetAnimalToEdit(animals);
             if (userInput == "")
