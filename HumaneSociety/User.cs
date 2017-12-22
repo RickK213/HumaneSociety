@@ -298,8 +298,7 @@ namespace HumaneSociety
             if(userSearchOptions.Remove("price"))
             {
                 isSearchingByPrice = true;
-                Console.WriteLine("need string convertable to double/float.  We can list all animals below a certain price.  What is the highest price you'd like to see?");
-                userInput = UI.GetAnimalPrice(false);
+                userInput = UI.GetAnimalPrice(true);
                 priceAmountToSearch = Convert.ToDouble(userInput);
             }
             //strip all spaces
@@ -311,7 +310,7 @@ namespace HumaneSociety
             List<Animal> foundAnimals;
             foundAnimals = animals.Where(
                 m =>
-                (isSearchingByName ? m.Name == nameToSearch : m.Name != null) &&
+                (isSearchingByName ? m.Name.ToLower() == nameToSearch.ToLower() : m.Name != null) &&
                 (isSearchingBySpecies ? m.Species == speciesToSearch : m.Species != null) &&
                 (isSearchingByImmunization ? m.IsImmunized == statusOfImmunization : m.IsImmunized != null) &&
                 (isSearchingByPrice ? m.Price < priceAmountToSearch : m.Price > 0) &&
