@@ -29,7 +29,6 @@ namespace HumaneSociety
             string path = (System.IO.Path.GetDirectoryName(executable));
             AppDomain.CurrentDomain.SetData("DataDirectory", path);
 
-            //link where database is
             try
             {
                 conn = new SqlConnection(rickConnection);
@@ -46,45 +45,7 @@ namespace HumaneSociety
             }
 
         }
-        public List<Animal> SearchAnimals()
-        {
-            try
-            {
-                SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
-                mySqlCommand = new SqlCommand("SELECT * FROM hs.Animals ORDER BY SpeciesID DESC", mySqlConnection); //put table name to search from, specify search
-                mySqlConnection.Open();
-                myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
 
-                //column order: name, species, room#, isAdopted, isImmunized, price, foodPerWeek
-                List<Animal> animalsSearched = new List<Animal>();
-                while (myDataReader.Read())
-                {
-                    Animal storeAnimal = animalFactory.CreateAnimal(GetOneOrMoreValues("SpeciesName", "Species", "SpeciesName", myDataReader.GetInt32(2)));
-                    storeAnimal.AnimalID = myDataReader.GetInt32(0);
-                    storeAnimal.Name = myDataReader.GetString(1);
-                    storeAnimal.RoomNumber = myDataReader.GetInt32(3);
-                    storeAnimal.IsAdopted = myDataReader.GetBoolean(4);
-                    storeAnimal.IsImmunized = myDataReader.GetBoolean(5);
-                    storeAnimal.Price = myDataReader.GetDouble(6);
-                    storeAnimal.OunceFoodPerWeek = myDataReader.GetInt32(7);
-                    animalsSearched.Add(storeAnimal);
-                }
-                myDataReader.Close();
-                conn.Close();
-
-                return animalsSearched;
-                //Console.WriteLine("   | Name | Species | Room | Adoption Status | Immunization Status | Price | Food Per Week");
-                //for(int i = 0; i < animalNames.Count; i++)
-                //{
-                //    Console.WriteLine(i + 1 + ". {0}|{1}|{2}|{3}|{4}|{5}|{6}", animalNames[i], animalSpecies[i], animalRoom[i], animalIsAdopted[i], animalIsImmunized[i], animalPrice[i], animalFood[i]);
-                //}
-            }
-            catch
-            {
-
-            }
-            return null;
-        }
         public List<User> RetrieveUsers()
         {
             try
@@ -94,7 +55,6 @@ namespace HumaneSociety
                 mySqlConnection.Open();
                 myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
 
-                //column order: name, email, address, animalAdopted, HasPaid
                 List<User> adoptersSearched = new List<User>();
                 while (myDataReader.Read())
                 {
@@ -120,11 +80,6 @@ namespace HumaneSociety
                 conn.Close();
 
                 return adoptersSearched;
-                //Console.WriteLine("   | Name | Species | Room | Adoption Status | Immunization Status | Price | Food Per Week");
-                //for(int i = 0; i < animalNames.Count; i++)
-                //{
-                //    Console.WriteLine(i + 1 + ". {0}|{1}|{2}|{3}|{4}|{5}|{6}", animalNames[i], animalSpecies[i], animalRoom[i], animalIsAdopted[i], animalIsImmunized[i], animalPrice[i], animalFood[i]);
-                //}
             }
             catch
             {
@@ -132,48 +87,11 @@ namespace HumaneSociety
             }
             return null;
         }
-        /// <summary>
-        /// Returns type DataTable.  To get specific value, after method call enter '.Rows[i][i]'.  Add .ToString() to the end to make it a string (if it's a string-able value) 
-        /// </summary>
-        /// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
-        /// <returns>My result</returns>
-        public string GetOneOrMoreValues<T>(string columnNameOne, string tableName, string columnNameTwo, T searchValue)
-        {
-            conn.Close();
-            conn.Open();
-            databaseCommand = new SqlDataAdapter("SELECT " + columnNameOne + " FROM hs." + tableName + " WHERE " + columnNameTwo + " = " + searchValue, conn);
-            fillerTable = new DataTable();
-            databaseCommand.Fill(fillerTable);
-            conn.Close();
 
-            return fillerTable.Rows[0][0].ToString();
-        }
-        /// <summary>
-        /// Returns type DataTable.  Returns all data or column-specific data based on columnNameOne entry.
-        /// </summary>
-        /// <param name="columnNameOne">Enter columnNameOne for specific search, or enter "*" to retrieve all data from table which contain searchValue.</param>
-        /// <returns>My result</returns>
-        public List<string> GetAllValues(string columnNameOne, string tableName)
-        {
-            conn.Close();
-            SqlDataReader myDataReader = null;
-            SqlCommand mySqlCommand = new SqlCommand("SELECT " + columnNameOne + " FROM hs." + tableName, conn);
-            conn.Open();
-            myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            fillerTable = new DataTable();
-            databaseCommand.Fill(fillerTable);
-            List<string> values = new List<string>();
-            while (myDataReader.Read())
-            {
-                values.Add(myDataReader.ToString());
-            }
-            conn.Close();
-
-            return values;
-        }
         /// <summary>
         /// Changes a single value on the specified data table.  Arguments 2 and 3 are where the data will be changed.  Arguments 4 and 5 are what specifies WHERE it will change.
         /// </summary>
+
         public void ChangeSingleValue<T>(string tableName, string columnValueToChange, T valueToInsert, string columnToVerifyWith, T verifyColumnValue)
         {
             string queryToLaunch = "UPDATE hs." + tableName + " SET " + columnValueToChange + " = " + valueToInsert + " WHERE " + columnToVerifyWith + " = " + verifyColumnValue + ";";
@@ -190,10 +108,7 @@ namespace HumaneSociety
                 }
             }
         }
-        public void ScanList<T>(List<T> scannedList)
-        {
 
-        }
         public bool AddAnimal(Animal animal)   //put arguments here to add full adoptable animal to database
         {
             int roomCheck = VerifyRoomIsAvailable(animal.RoomNumber);
@@ -243,19 +158,6 @@ namespace HumaneSociety
                     return true;
                 }
             }
-        }
-        public void CloseConnection()
-        {
-            conn.Close();
-        }
-        public void CommitConnection()
-        {
-
-        }
-        public void RollbackTransaction()
-        {
-            transaction.Rollback();
-            conn.Close();
         }
 
         int GetDuplicateAddressID(string streetAddress, int cityID, int stateID, int zipCodeID)

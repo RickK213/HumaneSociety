@@ -126,7 +126,7 @@ namespace HumaneSociety
                 price = value;
             }
         }
-        public Animal()//string name, bool isAdopted, bool isImmunized, double price
+        public Animal()
         {
 
         }

@@ -10,31 +10,8 @@ namespace HumaneSociety
     {
         static void Main(string[] args)
         {
-            //string test = UI.GetValidUserOption("enter a species", new List<string> { "cat", "dog", "ferret", "rabbit", "bird"});
             HumaneSociety humaneSociety = new HumaneSociety();
             humaneSociety.Start();
-
-            ////test animal, remove later
-            //test animal, remove later
-            //Animal animal = new Dog();
-            //animal.Name = "Fido";
-            //animal.IsAdopted = false;
-            //animal.IsImmunized = true;
-            //animal.OunceFoodPerWeek = 27;
-            //animal.Price = 25.06;
-            //animal.RoomNumber = 3;
-            ////-/remove
-            //User employee = new Employee();
-            //employee.SearchAnimals();
-            //-/remove
-            //DatabaseControl database = new DatabaseControl();
-            //database.SearchAnimals(animal);
-
-            //CSV stuff:
-            //CSVReader csvReader = new CSVReader();
-            //csvReader.Start();
-
-            Console.ReadKey();
         }
     }
 }

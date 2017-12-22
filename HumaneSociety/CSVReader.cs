@@ -75,8 +75,6 @@ namespace HumaneSociety
                 parser.SetDelimiters(",");
                 while (!parser.EndOfData)
                 {
-                    //Each row:
-                    //name	species	roomNumber	hasShots	price	foodPerWeek
                     string[] fields = parser.ReadFields();
                     if ( fields.Any(x => x.Length==0) )
                     {
