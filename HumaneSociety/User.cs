@@ -265,10 +265,42 @@ namespace HumaneSociety
             Console.WriteLine("Enter the criteria you would like to search for seperated by a comma.");
             Console.WriteLine("Options include 'name', 'species', 'immunization', 'price'");
             Console.WriteLine("Example: price,name,species");
-            string sampleInput = "price,name,species";
+            string sampleInput = Console.ReadLine().ToLower();
+            List<string> userSearchOptions = sampleInput.Split(',').ToList();
+            if(userSearchOptions.Remove("name"))
+            {
+                isSearchingByName = true;
+                Console.WriteLine("need string.  What is the name of the animal you are looking for?");
+                nameToSearch = Console.ReadLine();
+            }
+            if (userSearchOptions.Remove("species"))
+            {
+                isSearchingBySpecies = true;
+                Console.WriteLine("need string.  What is the species of animal you are looking for? (cat, dog, bird, rabbit or ferret)");
+                speciesToSearch = Console.ReadLine();
+            }
+            if (userSearchOptions.Remove("immunization"))
+            {
+                isSearchingByImmunization = true;
+                Console.WriteLine("need yes/no.  Would you like to see the animals we have that are immunized?");
+                string userInput = Console.ReadLine();
+                if (userInput == "yes")
+                {
+                    statusOfImmunization = true;
+                }
+                else
+                {
+                    statusOfImmunization = false;
+                }
+            }
+            if(userSearchOptions.Remove("price"))
+            {
+                isSearchingByPrice = true;
+                Console.WriteLine("need string convertable to double/float.  We can list all animals below a certain price.  What is the highest price you'd like to see?");
+                priceAmountToSearch = Convert.ToDouble(Console.ReadLine());
+            }
             //strip all spaces
             //split sampleInput into array or list seperated at the comma.
-            Console.ReadKey();
 
             //TO DO: put the below into method?
 
@@ -288,6 +320,7 @@ namespace HumaneSociety
             {
                 Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + " was found using the search criteria entered.");
             }
+            Console.ReadKey();
         }
 
         public void SearchByName(string nameToSearch)
