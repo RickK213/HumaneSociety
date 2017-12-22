@@ -17,10 +17,10 @@ namespace HumaneSociety
         //C:\Users\Rick Kippert\Dropbox\_devCodeCamp\Assignments\week9-2-humane_society\cSharp-HumaneSociety\HumaneSociety\bin\Debug
 
         //Relative path:
-        ../../../animals.csv
+        //../../../animals.csv
 
         //member variables
-        //string filePath = @"../../../animals.csv";
+        string filePath = @"../../../animals.csv";
 
         //Test CSVs:
         //string filePath = @"../../../animals-one_empty_field.csv";
