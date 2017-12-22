@@ -435,6 +435,20 @@ namespace HumaneSociety
             validIDs.Add("");
             return GetValidUserOption("", validIDs);
         }
+        public static string GetAdopterToEdit(List<User> users)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Enter an Adopter ID to edit that adopter.");
+            Console.WriteLine("Or press enter to return to main menu");
+            Console.ResetColor();
+            List<string> validIDs = new List<string>();
+            foreach (User adopter in users)
+            {
+                validIDs.Add(adopter.AdopterID.ToString());
+            }
+            validIDs.Add("");
+            return GetValidUserOption("", validIDs);
+        }
 
         public static void DisplayNoAnimalsFound()
         {
