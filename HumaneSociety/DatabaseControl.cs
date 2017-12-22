@@ -303,7 +303,7 @@ namespace HumaneSociety
                     cmd.Parameters.AddWithValue("@AdopterName", name);
                     cmd.Parameters.AddWithValue("@AdopterEmail", email);
                     cmd.Parameters.AddWithValue("@AddressID", addressID);
-                    cmd.Parameters.AddWithValue("@AnimalAdopted", 0);
+                    cmd.Parameters.AddWithValue("@AnimalAdopted", DBNull.Value);
                     cmd.Parameters.AddWithValue("@HasPaid", hasPaid);
                     connection.Open();
                     try
