@@ -274,7 +274,7 @@ namespace HumaneSociety
             }
             else
             {
-                UI.GetAnyKeyToContinue("No animals in database. Press any key to return to main menu.");
+                UI.DisplayNoAnimalsFound();
                 return;
             }
         }
@@ -348,6 +348,11 @@ namespace HumaneSociety
             else
             {
                 List<Animal> animals = database.GetAllAnimals();
+                if (animals.Count == 0)
+                {
+                    UI.DisplayNoAnimalsFound();
+                    return animals;
+                }
                 List<Animal> foundAnimals;
                 foundAnimals = animals.Where(
                     m =>
@@ -383,6 +388,11 @@ namespace HumaneSociety
         public void SearchByName(string nameToSearch)
         {
             List<Animal> animals = database.GetAllAnimals();
+            if (animals.Count == 0)
+            {
+                UI.DisplayNoAnimalsFound();
+                return;
+            }
             List<Animal> foundAnimals;
             foundAnimals = animals.Where(m => (m.Name.ToLower() == nameToSearch.ToLower())).ToList();
             UI.DisplayList(foundAnimals);
@@ -392,6 +402,11 @@ namespace HumaneSociety
         public void SearchBySpecies(string speciesToSearch)
         {
             List<Animal> animals = database.GetAllAnimals();
+            if (animals.Count == 0)
+            {
+                UI.DisplayNoAnimalsFound();
+                return;
+            }
             List<Animal> foundAnimals;
             foundAnimals = animals.Where(m => (m.Species.ToLower() == speciesToSearch.ToLower())).ToList();
             UI.DisplayList(foundAnimals);
@@ -401,6 +416,11 @@ namespace HumaneSociety
         public void SearchByImmunization(string immunizationToSearch)
         {
             List<Animal> animals = database.GetAllAnimals();
+            if (animals.Count == 0)
+            {
+                UI.DisplayNoAnimalsFound();
+                return;
+            }
             List<Animal> foundAnimals;
             bool resultStatus = false;
             if (immunizationToSearch == "y")
@@ -415,6 +435,11 @@ namespace HumaneSociety
         public void SearchByAdoption(string adoptionToSearch)
         {
             List<Animal> animals = database.GetAllAnimals();
+            if (animals.Count == 0)
+            {
+                UI.DisplayNoAnimalsFound();
+                return;
+            }
             List<Animal> foundAnimals;
             bool resultStatus = false;
             if (adoptionToSearch == "y")
@@ -429,6 +454,11 @@ namespace HumaneSociety
         public void SearchByMaxPrice(string maxPrice)
         {
             List<Animal> animals = database.GetAllAnimals();
+            if (animals.Count == 0)
+            {
+                UI.DisplayNoAnimalsFound();
+                return;
+            }
             List<Animal> foundAnimals;
             foundAnimals = animals.Where(m => (m.Price < Convert.ToDouble(maxPrice) )).ToList();
             UI.DisplayList(foundAnimals);

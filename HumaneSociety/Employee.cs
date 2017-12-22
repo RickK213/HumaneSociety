@@ -147,7 +147,10 @@ namespace HumaneSociety
                     break;
                 case ("5"):
                     List<Animal> foundAnimals = SearchByMultipleCriteria();
-                    EditAnimalFromList(foundAnimals);
+                    if (foundAnimals.Count > 0)
+                    {
+                        EditAnimalFromList(foundAnimals);
+                    }
                     StartFlow();
                     break;
                 case ("6"):

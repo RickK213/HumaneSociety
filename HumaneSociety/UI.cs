@@ -437,6 +437,11 @@ namespace HumaneSociety
             return GetValidUserOption("", validIDs);
         }
 
+        public static void DisplayNoAnimalsFound()
+        {
+            GetAnyKeyToContinue("No animals found. Press any key to return to main menu.");
+        }
+
 
     }
 }

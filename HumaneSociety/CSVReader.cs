@@ -107,8 +107,7 @@ namespace HumaneSociety
             bool animalsAddedSuccessfully = true;
             if ( numberOfInvalidRows > 0 )
             {
-                Console.WriteLine("\n{0} rows in your CSV contained errors. Please check your file and try again.\nPress any key to return to main menu", numberOfInvalidRows);
-                Console.ReadKey(true);
+                UI.GetAnyKeyToContinue(String.Format("\n{0} rows in your CSV contained errors. Please check your file and try again.\nPress any key to return to main menu", numberOfInvalidRows));
                 return false;
             }
             else
@@ -123,13 +122,12 @@ namespace HumaneSociety
             }
             if (animalsAddedSuccessfully)
             {
-                Console.WriteLine("\nSuccess! {0} animals have been imported to your database!\nPress any key to return to main menu.", validAnimals.Count);
+                UI.GetAnyKeyToContinue(String.Format("\nSuccess! {0} animals have been imported to your database!\nPress any key to return to main menu.", validAnimals.Count));
             }
             else
             {
-                Console.WriteLine("\nDuplicate room numbers were found, not all animals were added or this CSV was already imported.\nPress any key to return to main menu.");
+                UI.GetAnyKeyToContinue(String.Format("\nDuplicate room numbers were found, not all animals were added or this CSV was already imported.\nPress any key to return to main menu."));
             }
-                Console.ReadKey(true);
             return true;
         }
 

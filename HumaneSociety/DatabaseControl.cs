@@ -338,22 +338,21 @@ namespace HumaneSociety
             SaveProfileData(user.Name, user.Email, addressID, false);
         }
 
-
-        string GetSpecies(int speciesID)
+        string GetSingleValueFromID(int IDNumber, string columnName, string tableName, string IDName)
         {
             SqlDataReader myDataReader = null;
             SqlConnection mySqlConnection = new SqlConnection(connectionUsed);
-            SqlCommand mySqlCommand = new SqlCommand("SELECT SpeciesName FROM hs.Species WHERE SpeciesID = " + speciesID + ";", mySqlConnection);
+            SqlCommand mySqlCommand = new SqlCommand("SELECT " + columnName + " FROM " + tableName + " WHERE " + IDName + " = " + IDNumber + ";", mySqlConnection);
             mySqlConnection.Open();
             myDataReader = mySqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
-            string speciesName = "";
+            string value = "";
             while (myDataReader.Read())
             {
-                speciesName = myDataReader.GetString(0);
+                value = myDataReader.GetValue(0).ToString();
             }
             myDataReader.Close();
             conn.Close();
-            return speciesName;
+            return value;
         }
 
         public List<Animal> GetAllAnimals()
@@ -366,11 +365,12 @@ namespace HumaneSociety
             List<Animal> animals = new List<Animal>();
             while (myDataReader.Read())
             {
-                string species = GetSpecies(myDataReader.GetInt32(2));
+                string species = GetSingleValueFromID(myDataReader.GetInt32(2), "SpeciesName", "hs.Species", "SpeciesID");
                 Animal animal = animalFactory.CreateAnimal(species);
                 animal.AnimalID = myDataReader.GetInt32(0);
                 animal.Name = myDataReader.GetString(1);
-                animal.RoomNumber = myDataReader.GetInt32(3);
+                string roomNumber = GetSingleValueFromID(myDataReader.GetInt32(3), "RoomNumber", "hs.Rooms", "RoomID");
+                animal.RoomNumber = Convert.ToInt32(roomNumber);
                 animal.IsAdopted = myDataReader.GetBoolean(4);
                 animal.IsImmunized = myDataReader.GetBoolean(5);
                 animal.Price = myDataReader.GetDouble(6);
@@ -379,10 +379,6 @@ namespace HumaneSociety
             }
             myDataReader.Close();
             conn.Close();
-            if ( animals.Count == 0 )
-            {
-                return null;
-            }
             return animals;
         }
 
@@ -405,6 +401,7 @@ namespace HumaneSociety
             }
             return 0;
         }
+
         private int VerifyRoomIsAvailable(int roomID)
         {
             int roomNumberUsed = GetDuplicateID(roomID, "RoomNumber", "hs.Rooms", "RoomNumber");
