@@ -104,7 +104,7 @@ namespace HumaneSociety
                 ).ToList();
 
             int numberOfInvalidRows = rawAnimals.Count - validAnimals.Count;
-
+            bool animalsAddedSuccessfully = true;
             if ( numberOfInvalidRows > 0 )
             {
                 Console.WriteLine("\n{0} rows in your CSV contained errors. Please check your file and try again.\nPress any key to return to main menu", numberOfInvalidRows);
@@ -115,11 +115,21 @@ namespace HumaneSociety
             {
                 foreach (Animal animal in validAnimals)
                 {
-                    database.AddAnimal(animal);
+                    if (animalsAddedSuccessfully)
+                    {
+                        animalsAddedSuccessfully = database.AddAnimal(animal);
+                    }
                 }
             }
-            Console.WriteLine("\nSuccess! {0} animals have been imported to your database!\nPress any key to return to main menu.", validAnimals.Count);
-            Console.ReadKey(true);
+            if (animalsAddedSuccessfully)
+            {
+                Console.WriteLine("\nSuccess! {0} animals have been imported to your database!\nPress any key to return to main menu.", validAnimals.Count);
+            }
+            else
+            {
+                Console.WriteLine("\nDuplicate room numbers were found, not all animals were added or this CSV was already imported.\nPress any key to return to main menu.");
+            }
+                Console.ReadKey(true);
             return true;
         }
 
