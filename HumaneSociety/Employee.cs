@@ -85,7 +85,7 @@ namespace HumaneSociety
             //
 
             //user specified search variables
-            string nameToSearch = "Oreo";
+            string nameToSearch = "Oreo";   //do .ToLower() later on to keep it lower case
             string speciesToSearch = "dog";
             bool statusOfImmunization = true;
             double priceAmountToSearch = 113.09;
