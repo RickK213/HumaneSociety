@@ -23,6 +23,7 @@ namespace HumaneSociety
         string zipCode;
         int? adoptedAnimalID;
         bool hasPaid = false;
+        string preferedAnimalPersonality;
 
         //properties
         public int AdopterID
@@ -93,6 +94,17 @@ namespace HumaneSociety
                 hasPaid = value;
             }
         }
+        public string PreferedAnimalPersonality
+        {
+            get
+            {
+                return preferedAnimalPersonality;
+            }
+            set
+            {
+                preferedAnimalPersonality = value;
+            }
+        }
 
         //constructor
         public User()
@@ -109,6 +121,7 @@ namespace HumaneSociety
             City = UI.GetCity();
             State = UI.GetState();
             ZipCode = UI.GetZipCode();
+            PreferedAnimalPersonality = UI.GetPreferedPersonality();
             database.SaveAdopter(this);
             UI.GetAnyKeyToContinue("Profile Saved. Press any key to return to main menu.");
         }

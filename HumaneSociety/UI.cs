@@ -76,6 +76,12 @@ namespace HumaneSociety
             }
             return zipCode;
         }
+        public static string GetPreferedPersonality()
+        {
+            Console.WriteLine("And finally, what's your prefered pet personality? (happy, grumpy, anything but abusive)");
+
+            return Console.ReadLine();
+        }
 
         public static string GetCity()
         {

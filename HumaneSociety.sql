@@ -61,7 +61,8 @@ CREATE TABLE hs.Adopters (
 	FOREIGN KEY (AddressID) REFERENCES hs.Addresses(AddressID),
 	AnimalAdoptedID int,
 	FOREIGN KEY (AnimalAdoptedID) REFERENCES hs.Animals(AnimalID),
-	HasPaid bit
+	HasPaid bit,
+	Personality varchar(50)
 );
 
 INSERT INTO hs.Species VALUES ('cat');
