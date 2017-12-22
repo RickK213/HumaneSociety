@@ -208,17 +208,18 @@ namespace HumaneSociety
             }
         }
 
-        void SaveProfileData(string name, string email, int addressID, bool hasPaid)
+        void SaveProfileData(string name, string email, int addressID, bool hasPaid, string preferedAnimalPersonality)
         {
             using (SqlConnection connection = new SqlConnection(connectionUsed))
             {
-                using (SqlCommand cmd = new SqlCommand("INSERT INTO hs.Adopters output INSERTED.AdopterID VALUES(@AdopterName, @AdopterEmail, @AddressID, @AnimalAdopted, @HasPaid)", connection))
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO hs.Adopters output INSERTED.AdopterID VALUES(@AdopterName, @AdopterEmail, @AddressID, @AnimalAdopted, @HasPaid, @Personality)", connection))
                 {
                     cmd.Parameters.AddWithValue("@AdopterName", name);
                     cmd.Parameters.AddWithValue("@AdopterEmail", email);
                     cmd.Parameters.AddWithValue("@AddressID", addressID);
                     cmd.Parameters.AddWithValue("@AnimalAdopted", DBNull.Value);
                     cmd.Parameters.AddWithValue("@HasPaid", hasPaid);
+                    cmd.Parameters.AddWithValue("@Personality", preferedAnimalPersonality);
                     connection.Open();
                     try
                     {
@@ -246,7 +247,7 @@ namespace HumaneSociety
             int stateID = GetIDSaveValue(user.State, "StateID", "hs.States", "StateName");
             int cityID = GetIDSaveValue(user.City, "CityID", "hs.Cities", "CityName");
             int addressID = GetIDSaveAddress(user.StreetAddress, cityID, stateID, zipCodeID);
-            SaveProfileData(user.Name, user.Email, addressID, false);
+            SaveProfileData(user.Name, user.Email, addressID, false, user.PreferedAnimalPersonality);
         }
 
         string GetSingleValueFromID(int IDNumber, string columnName, string tableName, string IDName)
