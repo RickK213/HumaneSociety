@@ -267,25 +267,28 @@ namespace HumaneSociety
             Console.WriteLine("Example: price,name,species");
 
             //add verification for termsToSearch
+            int numberOfSearchOptionsAccepted = 0;
             string termsToSearch = Console.ReadLine();
             List<string> userSearchOptions = termsToSearch.Split(',').ToList();
             if(userSearchOptions.Remove("name"))
             {
+                numberOfSearchOptionsAccepted += 1;
                 isSearchingByName = true;
                 Console.WriteLine("Search by name:");
                 nameToSearch = UI.GetAnimalName(false);// Console.ReadLine();
             }
             if (userSearchOptions.Remove("species"))
             {
+                numberOfSearchOptionsAccepted += 1;
                 isSearchingBySpecies = true;
                 Console.WriteLine("Search by species:");
                 speciesToSearch = UI.GetValidUserOption("What is the species of animal you are looking for? (cat, dog, bird, rabbit or ferret)", new List<string> { "cat", "dog", "ferret", "rabbit", "bird" }); ;
             }
             if (userSearchOptions.Remove("immunization"))
             {
+                numberOfSearchOptionsAccepted += 1;
                 isSearchingByImmunization = true;
-                Console.WriteLine("Search by immunization status:");
-                userInput = UI.GetImmunizationStatus(false);
+                userInput = UI.GetImmunizationStatus(true);
                 if (userInput == "y")
                 {
                     statusOfImmunization = true;
@@ -297,32 +300,38 @@ namespace HumaneSociety
             }
             if(userSearchOptions.Remove("price"))
             {
+                numberOfSearchOptionsAccepted += 1;
                 isSearchingByPrice = true;
                 userInput = UI.GetAnimalPrice(true);
                 priceAmountToSearch = Convert.ToDouble(userInput);
             }
-            //strip all spaces
-            //split sampleInput into array or list seperated at the comma.
 
-            //TO DO: put the below into method?
-
-            List<Animal> animals = database.GetAllAnimals();
-            List<Animal> foundAnimals;
-            foundAnimals = animals.Where(
-                m =>
-                (isSearchingByName ? m.Name.ToLower() == nameToSearch.ToLower() : m.Name != null) &&
-                (isSearchingBySpecies ? m.Species == speciesToSearch : m.Species != null) &&
-                (isSearchingByImmunization ? m.IsImmunized == statusOfImmunization : m.IsImmunized != null) &&
-                (isSearchingByPrice ? m.Price < priceAmountToSearch : m.Price > 0) &&
-                (isSearchingByAdoptionStatus ? m.IsAdopted == animalIsAdopted : m.IsAdopted != null)
-                ).OrderBy(m => m.AnimalID).ToList();
-
-            //TO DO: Write method in UI to display a list of animals
-            foreach (Animal animal in foundAnimals)
+            if (numberOfSearchOptionsAccepted == 0)
             {
-                Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + " was found using the search criteria entered.");
+                Console.WriteLine("None of your inputs were recognized.  Please try again.");
+                Console.ReadKey();
+                SearchByMultipleCriteria();
             }
-            Console.ReadKey();
+            else
+            {
+                List<Animal> animals = database.GetAllAnimals();
+                List<Animal> foundAnimals;
+                foundAnimals = animals.Where(
+                    m =>
+                    (isSearchingByName ? m.Name.ToLower() == nameToSearch.ToLower() : m.Name != null) &&
+                    (isSearchingBySpecies ? m.Species == speciesToSearch : m.Species != null) &&
+                    (isSearchingByImmunization ? m.IsImmunized == statusOfImmunization : m.IsImmunized != null) &&
+                    (isSearchingByPrice ? m.Price < priceAmountToSearch : m.Price > 0) &&
+                    (isSearchingByAdoptionStatus ? m.IsAdopted == animalIsAdopted : m.IsAdopted != null)
+                    ).OrderBy(m => m.AnimalID).ToList();
+
+                //TO DO: Write method in UI to display a list of animals
+                foreach (Animal animal in foundAnimals)
+                {
+                    Console.WriteLine("(Animal ID: " + animal.AnimalID + ") " + animal.Name + " was found using the search criteria entered.");
+                }
+                Console.ReadKey();
+            }
         }
 
         void EditAnimalFromList(List<Animal> animals)
