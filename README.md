@@ -5,7 +5,9 @@
 	<li>As a developer, I want to produce an application for a humane society that stores data about dogs, cats, birds, rabbits, ferrets, etc.</li>
 	<li>As a developer, I want to use LINQ extension methods and/or LINQ query operators wherever applicable in my application.</li>
 	<li>As a developer, I want to use LINQ to import a CSV file that already contains data about several animals that are being transferred from a different humane society.</li>
-	<li>As a developer, I want to connect my application to a database to store data about animals housed at the humane society. (5 points): As a developer, I want to make good, consistent commits. (10 points) As a humane society employee, I want to be able to add an animal to the application.</li>
+	<li>As a developer, I want to connect my application to a database to store data about animals housed at the humane society.</li>
+	<li>As a developer, I want to make good, consistent commits.</li>
+	<li>As a humane society employee, I want to be able to add an animal to the application.</li>
 	<li>As a humane society employee, I want to be able to keep track of which room an animal is housed in (each animal will have its own room).</li>
 	<li>As a humane society employee, I want to be able to set an animal’s status to “adopted” after it becomes adopted, so that it is known exactly what animals have been adopted.</li>
 	<li>As a humane society employee, I want to be able to collect money from an adopter after that adopter adopts an animal.</li>
